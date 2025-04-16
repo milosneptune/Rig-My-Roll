@@ -4,10 +4,20 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GamblerGame
 {
+    public enum State
+    {
+        MainMenu,
+        Game,
+        Pause,
+        GameOver,
+        Quit
+    }
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        private State gameState;
 
         public Game1()
         {
@@ -19,7 +29,7 @@ namespace GamblerGame
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            gameState = State.MainMenu;
             base.Initialize();
         }
 
@@ -36,7 +46,19 @@ namespace GamblerGame
                 Exit();
 
             // TODO: Add your update logic here
-
+            switch (gameState)
+            {
+                case State.MainMenu:
+                    break;
+                case State.Game:
+                    break;
+                case State.Pause:
+                    break;
+                case State.GameOver:
+                    break;
+                case State.Quit:
+                    break;
+            }
             base.Update(gameTime);
         }
 
@@ -45,7 +67,19 @@ namespace GamblerGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            switch (gameState)
+            {
+                case State.MainMenu:
+                    break;
+                case State.Game:
+                    break;
+                case State.Pause:
+                    break;
+                case State.GameOver:
+                    break;
+                case State.Quit:
+                    break;
+            }
             base.Draw(gameTime);
         }
     }
