@@ -15,27 +15,29 @@ namespace GamblerGame
         string name;
         Texture2D symbol;
         double scoreValue;
+
+        public double ScoreValue { get { return scoreValue; } }
         
         public SlotSymbol(string name)
         {
             this.name = name;
-        }
-
-        internal double GetScore()
-        {
             switch (name)
             {
                 case "1":
-                    return 0;
+                    scoreValue = 0;
+                    break;
 
                 case "2":
-                    return 1;
+                    scoreValue = 1;
+                    break;
 
                 case "3":
-                    return 2;
+                    scoreValue = 2;
+                    break;
 
                 default:
-                    return 50;
+                    scoreValue = 50;
+                    break;
             }
         }
     }
