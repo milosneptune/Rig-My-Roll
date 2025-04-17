@@ -64,6 +64,7 @@ namespace GamblerGame
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
             IsMouseVisible = true;
         }
 
@@ -72,6 +73,7 @@ namespace GamblerGame
             // TODO: Add your initialization logic here
             _graphics.PreferredBackBufferWidth = DesiredWidth;
             _graphics.PreferredBackBufferHeight = DesiredHeight;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
             gameState = State.Game;
             base.Initialize();
@@ -105,6 +107,7 @@ namespace GamblerGame
                     Color.Black));
             menuButtons[1].OnLeftButtonClick += Exit;
 
+            // Roll (reposition
             gameButtons.Add(new Button(
                     _graphics.GraphicsDevice,
                     new Rectangle(pauseButtonXPos, rollButtonYPos, pauseButtonWidth, pauseButtonHeight),
@@ -113,7 +116,7 @@ namespace GamblerGame
                     Color.Black));
             gameButtons[0].OnLeftButtonClick += Roll;
 
-            // Quit
+            // Pause button
             gameButtons.Add(new Button(
                     _graphics.GraphicsDevice,
                     new Rectangle(pauseButtonXPos, pauseButtonYPos, pauseButtonWidth, pauseButtonHeight),
@@ -144,7 +147,7 @@ namespace GamblerGame
                     {
                         button.Update(gameTime);
                     }
-                    roundScore += 10;
+                    //roundScore += 10; // Testing how the score would look when it increases
                     backgroundPosition++; // moves the position of every tile down each frame
                     break;
                 case State.Pause:
@@ -185,14 +188,40 @@ namespace GamblerGame
                         button.Draw(_spriteBatch);
                     }
                     ShapeBatch.Begin(GraphicsDevice);
-                    ShapeBatch.Box(DesiredWidth / 2 - (int)(DesiredWidth / (1.75 * 2)), (int)(DesiredHeight / 8.25), (int)(DesiredWidth / 1.75), (int)(DesiredHeight / 2.25), Color.Black);
-                    ShapeBatch.BoxOutline(DesiredWidth / 2 - (int)(DesiredWidth / (1.75 * 2)), (int)(DesiredHeight / 8.25), (int)(DesiredWidth / 1.75) + 1, (int)(DesiredHeight / 2.25), Color.White);
-                    ShapeBatch.BoxOutline(playButtonXPos, menuButtonYPos, menuButtonWidth, menuButtonHeight, Color.White);
-                    ShapeBatch.BoxOutline(quitButtonXPos, menuButtonYPos, menuButtonWidth, menuButtonHeight, Color.White);
+                    // Title Box
+                    ShapeBatch.Box(
+                        DesiredWidth / 2 - (int)(DesiredWidth / (1.75 * 2)),
+                        (int)(DesiredHeight / 8.25), 
+                        (int)(DesiredWidth / 1.75),
+                        (int)(DesiredHeight / 2.25), 
+                        Color.Black);
+                    // Title Outline
+                    ShapeBatch.BoxOutline(
+                        DesiredWidth / 2 - (int)(DesiredWidth / (1.75 * 2)), 
+                        (int)(DesiredHeight / 8.25), 
+                        (int)(DesiredWidth / 1.75) + 1, 
+                        (int)(DesiredHeight / 2.25), 
+                        Color.White);
+                    // Play Button 0utline
+                    ShapeBatch.BoxOutline(
+                        playButtonXPos,
+                        menuButtonYPos, 
+                        menuButtonWidth, 
+                        menuButtonHeight, 
+                        Color.White);
+                    // Quit Button Outline
+                    ShapeBatch.BoxOutline(
+                        quitButtonXPos,
+                        menuButtonYPos,
+                        menuButtonWidth,
+                        menuButtonHeight,
+                        Color.White);
                     _spriteBatch.End();
                     ShapeBatch.End();
 
                     _spriteBatch.Begin();
+
+                    // Title Text
                     _spriteBatch.DrawString(titleFont, "Rig", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("Rig").X / 2, (int)(DesiredHeight / 6.25)), Color.White);
                     _spriteBatch.DrawString(titleFont, "my", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("my").X / 2, (int)(DesiredHeight / 3.6)), Color.White);
                     _spriteBatch.DrawString(titleFont, "Roll", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("Roll").X / 2, (int)(DesiredHeight / 2.50)), Color.White);
@@ -201,12 +230,29 @@ namespace GamblerGame
                 case State.Game:
                     
                     ShapeBatch.Begin(GraphicsDevice);
-                    ShapeBatch.Box((int)(DesiredWidth * .66), 0, (int)(DesiredWidth / 3.5), DesiredHeight, new Color(12, 7, 15));
-                    ShapeBatch.BoxOutline((int)(DesiredWidth * .66), 0, (int)(DesiredWidth / 3.5) + 1, DesiredHeight, Color.White);
+                    // HUD Background
+                    ShapeBatch.Box(
+                        (int)(DesiredWidth * .66),
+                        0,
+                        (int)(DesiredWidth / 3.5),
+                        DesiredHeight,
+                        new Color(12, 7, 15));
+                    // HUD Background Outline
+                    ShapeBatch.BoxOutline(
+                        (int)(DesiredWidth * .66),
+                        0,
+                        (int)(DesiredWidth / 3.5) + 1,
+                        DesiredHeight,
+                        Color.White);
+                    // Score requirement box
                     ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .03), (int)(DesiredWidth / 3.9), DesiredHeight / 4, Color.DarkGray);
+                    // Round score container box
                     ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .31), (int)(DesiredWidth / 3.9), DesiredHeight / 8, Color.DarkGray);
+                    // Round score display box
                     ShapeBatch.Box((int)(DesiredWidth * .755), (int)(DesiredHeight * .323), (int)(DesiredWidth / 5.9), DesiredHeight / 10, Color.Black);
+                    // Current score box
                     ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .465), (int)(DesiredWidth / 3.9), DesiredHeight / 4, Color.DarkGray);
+
                     _spriteBatch.End();
                     ShapeBatch.End();
                     _spriteBatch.Begin();
@@ -215,8 +261,10 @@ namespace GamblerGame
                     {
                         button.Draw(_spriteBatch);
                     }
+                    // Round score text
                     _spriteBatch.DrawString(scoreFont, "Round", new Vector2((int)(DesiredWidth * .715) - scoreFont.MeasureString("Round").X / 2, (int)(DesiredHeight * .345)), Color.White);
                     _spriteBatch.DrawString(scoreFont, "Score", new Vector2((int)(DesiredWidth * .715) - scoreFont.MeasureString("Score").X / 2, (int)(DesiredHeight * .375)), Color.White);
+                    // Round score variable displayed
                     _spriteBatch.DrawString(scoreFont, $"{roundScore}", new Vector2((int)(DesiredWidth * .835) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length )/ 2 , (int)(DesiredHeight * .36)), Color.White);
                     /*
                     _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .765), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
@@ -232,6 +280,7 @@ namespace GamblerGame
                     break;
 
             }
+            // Scanline filter
             _spriteBatch.Draw(scanlineTexture, new Rectangle(0, 0, DesiredWidth, DesiredHeight), new Color(25, 25, 25, 1));
             _spriteBatch.End();
             base.Draw(gameTime);
