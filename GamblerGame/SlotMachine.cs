@@ -10,14 +10,15 @@ namespace GamblerGame
     internal class SlotMachine
     {
         List<Slot> slots;
-        double roundScore;
         double rollScore;
+        List<double> rollScoreList;
 
         int matchedSymbols;
         Random rng = new Random();
 
-        public double RoundScore { get; private set; }
+        public double RollTotal { get; private set; }
         public double RollScore { get; private set; }
+        public List<double> ScoreList { get; private set; }
 
         public SlotMachine(ContentManager ct)
         {
@@ -35,15 +36,16 @@ namespace GamblerGame
         /// </summary>
         internal void Roll()
         {
-            roundScore = 0;
+            rollScoreList = new List<double>();
             rollScore = 0;
             for (int i = 0; i < slots.Count; i++)
             {
                 slots[i].Roll(rng);
                 rollScore += (int)slots[i].ResultName;
+                rollScoreList.Add((int)slots[i].ResultName);
             }
 
-            RoundScore = rollScore * CheckMultiply();
+            RollTotal = rollScore * CheckMultiply();
         }
 
         /// <summary>
@@ -54,15 +56,19 @@ namespace GamblerGame
         {
             matchedSymbols = 0;
 
-            if (slots[0].Result == slots[1].Result)
+            if (slots[0].ResultName.ToString() == slots[1].ResultName.ToString())
+            {
+                matchedSymbols++;
+                if (slots[0].ResultName.ToString() == slots[2].ResultName.ToString())
+                {
+                    matchedSymbols++;
+                }
+            }
+            else if (slots[0].ResultName.ToString() == slots[2].ResultName.ToString())
             {
                 matchedSymbols++;
             }
-            else if (slots[0].Result == slots[2].Result)
-            {
-                matchedSymbols++;
-            }
-            else if (slots[1].Result == slots[2].Result)
+            else if (slots[1].ResultName.ToString() == slots[2].ResultName.ToString())
             {
                 matchedSymbols++;
             }
@@ -73,16 +79,13 @@ namespace GamblerGame
             }
             else if (matchedSymbols == 1)
             {
-                return 1.3;
+                return 1.5;
             }
             else if (matchedSymbols == 2)
             {
-                return 1.6;
-            }
-            else if (matchedSymbols == 3)
-            {
                 return 2;
             }
+
             //This shouldn't happen
             else
             {

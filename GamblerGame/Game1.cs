@@ -76,7 +76,8 @@ namespace GamblerGame
 
         // Scoring
         private double roundScore = 0;
-        private double rollScore;
+        private double rollScore = 0;
+        private List<double> rollScores;
         private double totalScore;
 
         public Game1()
@@ -309,9 +310,10 @@ namespace GamblerGame
         private void Roll()
         {
             slotMachine.Roll();
-            rollScore = slotMachine.RollScore;
-            roundScore = slotMachine.RoundScore;
-            totalScore += slotMachine.RoundScore;
+            rollScores = new List<double>();
+            rollScores = slotMachine.ScoreList;
+            rollScore = slotMachine.RollTotal;
+            roundScore += slotMachine.RollTotal;
         }
 
         /// <summary>
