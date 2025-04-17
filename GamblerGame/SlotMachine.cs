@@ -30,7 +30,9 @@ namespace GamblerGame
         }
 
 
-
+        /// <summary>
+        /// Calls each of the slot roll methods and then adds up the scores. After, it calls check Multiply and handles the round scoring
+        /// </summary>
         internal void Roll()
         {
             roundScore = 0;
@@ -44,6 +46,10 @@ namespace GamblerGame
             RoundScore = rollScore * CheckMultiply();
         }
 
+        /// <summary>
+        /// Checks the number of matching symbols and returns a value for the score to get multiplied by
+        /// </summary>
+        /// <returns></returns>
         private double CheckMultiply()
         {
             matchedSymbols = 0;
