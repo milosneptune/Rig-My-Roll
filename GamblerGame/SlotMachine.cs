@@ -9,8 +9,14 @@ namespace GamblerGame
     internal class SlotMachine
     {
         List<Slot> slots;
+        double roundScore;
+        double rollScore;
+
         int matchedSymbols;
         Random rng = new Random();
+
+        public double RoundScore { get; private set; }
+        public double RollScore { get; private set; }
 
         public SlotMachine()
         {
@@ -26,13 +32,18 @@ namespace GamblerGame
 
         internal void Roll()
         {
+            roundScore = 0;
+            rollScore = 0;
             for (int i = 0; i < slots.Count; i++)
             {
                 slots[i].Roll(rng);
+                rollScore += (int)slots[i].Result;
             }
+
+            RoundScore = rollScore * CheckMultiply();
         }
 
-        internal double CheckMultiply()
+        private double CheckMultiply()
         {
             matchedSymbols = 0;
 
@@ -71,5 +82,7 @@ namespace GamblerGame
                 return 50;
             }
         }
+
+
     }
 }
