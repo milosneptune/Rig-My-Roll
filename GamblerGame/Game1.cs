@@ -1,6 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Intrinsics.Arm;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace GamblerGame
 {
@@ -16,6 +20,58 @@ namespace GamblerGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Random rng; 
+
+        private UIManager ui;
+
+        const int DesiredWidth = 1920;
+        const int DesiredHeight = 1080;
+
+        // Background Values
+        const int xAxisTiles = 16; // Number of background texture grids along the x axis
+        const int yAxisTiles = xAxisTiles / 2 + 1; // Number of background texture grids along the y axis
+        const int backgroundTileSize = DesiredWidth / xAxisTiles; // Size of the background tile texture (height and width because it is a square)
+        private int backgroundPosition = 0; // The position of the y value (of the tiole that spawns in the top left)
+
+        private Texture2D scanlineTexture;
+        private Texture2D backgroundTexture;
+        private SpriteFont pixelFont;
+        private SpriteFont scoreFont;
+        private SpriteFont titleFont;
+
+        private State gameState;
+
+        // Menu
+        const int menuButtonWidth = DesiredWidth / 4;
+        const int menuButtonHeight = DesiredHeight / 8;
+        const int menuButtonYPos = (int)(DesiredHeight / 1.55);
+        const int playButtonXPos = DesiredWidth / 2 - (int)(menuButtonWidth * 1.25);
+        const int quitButtonXPos = DesiredWidth / 2 + (int)(menuButtonWidth * .25);
+        private List<Button> menuButtons = new List<Button>();
+
+        // Game
+        const int pauseButtonWidth = (int)(DesiredWidth / 3.9);
+        const int pauseButtonHeight = DesiredHeight / 10;
+        const int rollButtonYPos = (int)(DesiredHeight * .874);
+        const int pauseButtonYPos = (int)(DesiredHeight * .739);
+        const int rollButtonXPos = (int)(DesiredWidth / 5.9);
+        const int pauseButtonXPos = (int)(DesiredWidth * .675);
+        private List<Button> gameButtons = new List<Button>();
+
+        private int r = 255;
+        private int g = 255;
+        private int b = 255;
+
+        private int desiredR;
+        private int desiredG;
+        private int desiredB;
+
+        // Symbols
+        private Texture2D sevenTexture;
+
+        // Scoring
+        private double roundScore = 0;
+        private double rollScore;
 
         private State gameState;
 
@@ -23,12 +79,17 @@ namespace GamblerGame
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
             IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            _graphics.PreferredBackBufferWidth = DesiredWidth;
+            _graphics.PreferredBackBufferHeight = DesiredHeight;
+            //_graphics.IsFullScreen = true;
+            _graphics.ApplyChanges();
             gameState = State.MainMenu;
             base.Initialize();
         }
@@ -36,7 +97,50 @@ namespace GamblerGame
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            backgroundTexture = Content.Load<Texture2D>("Background/Purple2");
+            scanlineTexture = Content.Load<Texture2D>("Background/SCANLINE 1");
+            sevenTexture = Content.Load<Texture2D>("UI/Symbols/seven");
+            pixelFont = Content.Load<SpriteFont>("Fonts/monogram");
+            titleFont = Content.Load<SpriteFont>("Fonts/Daydream");
+            scoreFont = Content.Load<SpriteFont>("Fonts/Daydream2");
 
+            ui = new UIManager(GraphicsDevice, new List<SpriteFont> { pixelFont, titleFont, scoreFont }, new List<Texture2D> { backgroundTexture, scanlineTexture, sevenTexture });
+
+            // Play Game
+            menuButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(playButtonXPos, menuButtonYPos, menuButtonWidth, menuButtonHeight),
+                    "Play",
+                    pixelFont,
+                    Color.Black));
+            menuButtons[0].OnLeftButtonClick += GameState;
+
+            // Quit
+            menuButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(quitButtonXPos, menuButtonYPos, menuButtonWidth, menuButtonHeight),
+                    "Quit",
+                    pixelFont,
+                    Color.Black));
+            menuButtons[1].OnLeftButtonClick += Exit;
+
+            // Roll (reposition
+            gameButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(pauseButtonXPos, rollButtonYPos, pauseButtonWidth, pauseButtonHeight),
+                    "Roll",
+                    pixelFont,
+                    Color.Black));
+            gameButtons[0].OnLeftButtonClick += Roll;
+
+            // Pause button
+            gameButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(pauseButtonXPos, pauseButtonYPos, pauseButtonWidth, pauseButtonHeight),
+                    "Pause",
+                    pixelFont,
+                    Color.Black));
+            gameButtons[1].OnLeftButtonClick += Pause;
             // TODO: use this.Content to load your game content here
         }
 
@@ -44,6 +148,7 @@ namespace GamblerGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            updateColor();
 
             // TODO: Add your update logic here
             switch (gameState)
@@ -51,6 +156,19 @@ namespace GamblerGame
                 case State.MainMenu:
                     break;
                 case State.Game:
+                    foreach (Button button in menuButtons)
+                    {
+                        button.Update(gameTime);
+                    }
+                    backgroundPosition += 2; // moves the position of every tile down each frame
+                    break;
+                case State.Game:
+                    foreach (Button button in gameButtons)
+                    {
+                        button.Update(gameTime);
+                    }
+                    //roundScore += 10; // Testing how the score would look when it increases
+                    backgroundPosition++; // moves the position of every tile down each frame
                     break;
                 case State.Pause:
                     break;
@@ -59,19 +177,45 @@ namespace GamblerGame
                 case State.Quit:
                     break;
             }
+            BackgroundScreenWrap(); // if the position has moved to the size of the tile, it resets its position (appearing to be constantly moving
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            GraphicsDevice.Clear(Color.Black);
             // TODO: Add your drawing code here
             switch (gameState)
             {
                 case State.MainMenu:
                     break;
                 case State.Game:
+            _spriteBatch.Begin();
+            // Prints the background as a grid with an extra row off screen
+            ui.DrawBackground(_spriteBatch, backgroundPosition, new Color(r, g, b));
+
+            switch (gameState)
+            {
+                case State.MainMenu:
+                    foreach (Button button in menuButtons)
+                    {
+                        button.Draw(_spriteBatch);
+                    }
+                    ui.DrawMenu(_spriteBatch);
+                    break;
+                case State.Game:
+                    ui.DrawGame(_spriteBatch);
+                    foreach (Button button in gameButtons)
+                    {
+                        button.Draw(_spriteBatch);
+                    }
+                    // Round score variable displayed
+                    _spriteBatch.DrawString(scoreFont, $"{roundScore}", new Vector2((int)(DesiredWidth * .835) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2, (int)(DesiredHeight * .36)), Color.White);
+                    /*
+                    _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .765), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
+                    _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .783), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
+                    _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .802), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
+                    */
                     break;
                 case State.Pause:
                     break;
@@ -80,7 +224,97 @@ namespace GamblerGame
                 case State.Quit:
                     break;
             }
+
+            }
+            ui.DrawScreenFilters(_spriteBatch);
+            _spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Detects if the background has moved off the screen and teleports it back
+        /// </summary>
+        /// <param name="circle"></param>
+        private void BackgroundScreenWrap()
+        {
+            if (backgroundPosition > backgroundTileSize)
+            {
+                backgroundPosition = 0;
+            }
+        }
+
+        /// <summary>
+        /// Sets the state to game
+        /// </summary>
+        /// <param name="circle"></param>
+        private void GameState()
+        {
+            desiredR = 100;
+            desiredG = 230;
+            desiredB = 175;
+            gameState = State.Game;
+        }
+
+        /// <summary>
+        /// Sets the state to paused
+        /// </summary>
+        /// <param name="circle"></param>
+        private void Pause()
+        {
+            gameState = State.Pause;
+        }
+        /// <summary>
+        /// Sets the state to Menu
+        /// </summary>
+        /// <param name="circle"></param>
+        private void Menu()
+        {
+            desiredR = 255;
+            desiredG = 255;
+            desiredB = 255;
+            gameState = State.MainMenu;
+        }
+
+        /// <summary>
+        /// Rolls slots
+        /// </summary>
+        /// <param name="circle"></param>
+        private void Roll()
+        {
+            // call roll logic ig maybe
+        }
+
+        /// <summary>
+        /// Updates color values r, g, and b for the background
+        /// </summary>
+        private void updateColor()
+        {
+            if(r > desiredR)
+            {
+                r--;
+            }
+            else if (r < desiredR)
+            {
+                r++;
+            }
+
+            if (g > desiredG)
+            {
+                g--;
+            }
+            else if (g < desiredG)
+            {
+                g++;
+            }
+
+            if (b > desiredB)
+            {
+                b--;
+            }
+            else if (b < desiredB)
+            {
+                b++;
+            }
         }
     }
 }

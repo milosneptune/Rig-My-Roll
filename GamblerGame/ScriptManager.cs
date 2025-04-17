@@ -126,7 +126,6 @@ namespace GamblerGame
             // Returns the action of the item without the item type symbol.
             return info[3].Trim(FindItemType(name));
         }
-
         /// <summary>
         /// Finds the index of the content in the file using the name. Returns -1 if unable to find content.
         /// </summary>
