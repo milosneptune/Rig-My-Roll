@@ -20,7 +20,7 @@ namespace GamblerGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Random rng; 
+        private Random rng;
 
         private UIManager ui;
 
@@ -62,9 +62,9 @@ namespace GamblerGame
         private int g = 255;
         private int b = 255;
 
-        private int desiredR;
-        private int desiredG;
-        private int desiredB;
+        private int desiredR = 255;
+        private int desiredG = 255;
+        private int desiredB = 255;
 
         // Symbols
         private Texture2D sevenTexture;
@@ -72,8 +72,6 @@ namespace GamblerGame
         // Scoring
         private double roundScore = 0;
         private double rollScore;
-
-        private State gameState;
 
         public Game1()
         {
@@ -154,13 +152,11 @@ namespace GamblerGame
             switch (gameState)
             {
                 case State.MainMenu:
-                    break;
-                case State.Game:
                     foreach (Button button in menuButtons)
                     {
                         button.Update(gameTime);
                     }
-                    backgroundPosition += 2; // moves the position of every tile down each frame
+                    backgroundPosition += 2;
                     break;
                 case State.Game:
                     foreach (Button button in gameButtons)
@@ -185,15 +181,9 @@ namespace GamblerGame
         {
             GraphicsDevice.Clear(Color.Black);
             // TODO: Add your drawing code here
-            switch (gameState)
-            {
-                case State.MainMenu:
-                    break;
-                case State.Game:
             _spriteBatch.Begin();
             // Prints the background as a grid with an extra row off screen
             ui.DrawBackground(_spriteBatch, backgroundPosition, new Color(r, g, b));
-
             switch (gameState)
             {
                 case State.MainMenu:
@@ -225,7 +215,7 @@ namespace GamblerGame
                     break;
             }
 
-            }
+
             ui.DrawScreenFilters(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
@@ -289,7 +279,7 @@ namespace GamblerGame
         /// </summary>
         private void updateColor()
         {
-            if(r > desiredR)
+            if (r > desiredR)
             {
                 r--;
             }
