@@ -54,15 +54,15 @@ namespace GamblerGame
         {
             matchedSymbols = 0;
 
-            if (slots[0].Result == slots[1].Result)
+            if (slots[0].ResultName == slots[1].ResultName)
             {
                 matchedSymbols++;
             }
-            if (slots[0].Result == slots[2].Result)
+            if (slots[0].ResultName == slots[2].ResultName)
             {
                 matchedSymbols++;
             }
-            if (slots[1].Result == slots[2].Result)
+            if (slots[1].ResultName == slots[2].ResultName)
             {
                 matchedSymbols++;
             }
