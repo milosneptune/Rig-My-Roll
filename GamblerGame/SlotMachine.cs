@@ -11,7 +11,6 @@ namespace GamblerGame
     {
         List<Slot> slots;
         double rollScore;
-        List<double> rollScoreList;
 
         int matchedSymbols;
         Random rng = new Random();
@@ -19,6 +18,7 @@ namespace GamblerGame
         public double RollTotal { get; private set; }
         public double RollScore { get; private set; }
         public List<double> ScoreList { get; private set; }
+        public List<Symbol> SymbolList { get; private set; }
 
         public SlotMachine(ContentManager ct)
         {
@@ -36,13 +36,15 @@ namespace GamblerGame
         /// </summary>
         internal void Roll()
         {
-            rollScoreList = new List<double>();
+            ScoreList = new List<double>();
+            SymbolList = new List<Symbol>();
             rollScore = 0;
             for (int i = 0; i < slots.Count; i++)
             {
                 slots[i].Roll(rng);
                 rollScore += (int)slots[i].ResultName;
-                rollScoreList.Add((int)slots[i].ResultName);
+                ScoreList.Add((int)slots[i].ResultName);
+                SymbolList.Add(slots[i].Result);
             }
 
             RollTotal = rollScore * CheckMultiply();
