@@ -47,9 +47,11 @@ namespace GamblerGame
         // method to roll the slot
         public void Roll(Random rng)
         {
-            // if item is being used 
-            // then manipulate the indices of the list
-            // otherwise, its rolling at even chances
+
+            // if their as item being used, the use item method will manipulate the private list
+            // example, an item increases the chance of cherry being rolled, then the use item method 
+            // would replace one of the symbol names with cherry
+
             Result = symbols[rng.Next(1, symbols.Count)];
         }
 
