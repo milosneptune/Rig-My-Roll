@@ -61,6 +61,7 @@ namespace GamblerGame
 
         private int blackBarYPos = 0;
         private int desiredBlackBarYPos = DesiredHeight/2 - DesiredHeight/10;
+        SlotMachine slotMachine;
 
         private int r = 255;
         private int g = 255;
@@ -76,6 +77,7 @@ namespace GamblerGame
         // Scoring
         private double roundScore = 0;
         private double rollScore;
+        private double totalScore;
 
         public Game1()
         {
@@ -93,6 +95,7 @@ namespace GamblerGame
             //_graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
             gameState = State.MainMenu;
+            slotMachine = new SlotMachine(Content);
             base.Initialize();
         }
 
@@ -303,7 +306,10 @@ namespace GamblerGame
         /// <param name="circle"></param>
         private void Roll()
         {
-            // call roll logic ig maybe
+            slotMachine.Roll();
+            rollScore = slotMachine.RollScore;
+            roundScore = slotMachine.RoundScore;
+            totalScore += slotMachine.RoundScore;
         }
 
         /// <summary>

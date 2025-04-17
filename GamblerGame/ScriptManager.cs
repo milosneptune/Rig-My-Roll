@@ -40,7 +40,7 @@ namespace GamblerGame
                 reader.Close();
             }
             catch
-            {
+            { 
                 SmartConsole.PrintError($"Unable to load script.{fileName}");
             }
         }
