@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Content;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,13 +19,13 @@ namespace GamblerGame
         public double RoundScore { get; private set; }
         public double RollScore { get; private set; }
 
-        public SlotMachine()
+        public SlotMachine(ContentManager ct)
         {
             slots = new List<Slot>()
             { 
-                new Slot(),
-                new Slot(),
-                new Slot()
+                new Slot(ct),
+                new Slot(ct),
+                new Slot(ct)
             };
         }
 
@@ -37,7 +38,7 @@ namespace GamblerGame
             for (int i = 0; i < slots.Count; i++)
             {
                 slots[i].Roll(rng);
-                rollScore += (int)slots[i].Result;
+                rollScore += (int)slots[i].ResultName;
             }
 
             RoundScore = rollScore * CheckMultiply();

@@ -58,7 +58,7 @@ namespace GamblerGame
         const int pauseButtonXPos = (int)(DesiredWidth * .675);
         private List<Button> gameButtons = new List<Button>();
 
-        SlotMachine slotMachine = new SlotMachine();
+        SlotMachine slotMachine;
 
         private int r = 255;
         private int g = 255;
@@ -92,6 +92,7 @@ namespace GamblerGame
             //_graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
             gameState = State.MainMenu;
+            slotMachine = new SlotMachine(Content);
             base.Initialize();
         }
 
