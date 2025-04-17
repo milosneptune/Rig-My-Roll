@@ -58,6 +58,8 @@ namespace GamblerGame
         const int pauseButtonXPos = (int)(DesiredWidth * .675);
         private List<Button> gameButtons = new List<Button>();
 
+        SlotMachine slotMachine = new SlotMachine();
+
         private int r = 255;
         private int g = 255;
         private int b = 255;
@@ -72,6 +74,7 @@ namespace GamblerGame
         // Scoring
         private double roundScore = 0;
         private double rollScore;
+        private double totalScore;
 
         public Game1()
         {
@@ -271,7 +274,10 @@ namespace GamblerGame
         /// <param name="circle"></param>
         private void Roll()
         {
-            // call roll logic ig maybe
+            slotMachine.Roll();
+            rollScore = slotMachine.RollScore;
+            roundScore = slotMachine.RoundScore;
+            totalScore += slotMachine.RoundScore;
         }
 
         /// <summary>
