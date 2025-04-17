@@ -29,6 +29,7 @@ namespace GamblerGame
     {
         // list of symbol textures
         private List<Texture2D> pictures;
+        private List<SymbolName> symbols;
 
         /// <summary>
         /// for getting the result of a roll from the slot 
@@ -46,50 +47,10 @@ namespace GamblerGame
         // method to roll the slot
         public void Roll(Random rng)
         {
-            // TODO: since we havent figured out the details of how items will interact
-            // with the slots, this method just rolls them at an equal chance for now. 
-            int roll = rng.Next(1, 13);
-
-            switch (roll)
-            {
-                case 1:
-                    Result = SymbolName.Cherry;
-                    break;
-                case 2:
-                    Result = SymbolName.Seven;
-                    break;
-                case 3:
-                    Result = SymbolName.Lemon;
-                    break;
-                case 4:
-                    Result = SymbolName.Lime;
-                    break;
-                case 5:
-                    Result = SymbolName.Grape;
-                    break;
-                case 6:
-                    Result = SymbolName.Pineapple;
-                    break;
-                case 7:
-                    Result = SymbolName.Watermelon;
-                    break;
-                case 8: 
-                    Result = SymbolName.Orange;
-                    break;
-                case 9: 
-                    Result = SymbolName.Kiwi;
-                    break;
-                case 10: 
-                    Result = SymbolName.Apple;
-                    break;
-                case 11: 
-                    Result = SymbolName.Strawberry;
-                    break;
-                case 12: 
-                    Result = SymbolName.Banana;
-                    break;
-            }
-
+            // if item is being used 
+            // then manipulate the indices of the list
+            // otherwise, its rolling at even chances
+            Result = symbols[rng.Next(1, symbols.Count)];
         }
 
     }
