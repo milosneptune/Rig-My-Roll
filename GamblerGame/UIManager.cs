@@ -137,6 +137,7 @@ namespace GamblerGame
             // Round score text
             sb.DrawString(scoreFont, "Round", new Vector2((int)(DesiredWidth * .715) - scoreFont.MeasureString("Round").X / 2, (int)(DesiredHeight * .345)), Color.White);
             sb.DrawString(scoreFont, "Score", new Vector2((int)(DesiredWidth * .715) - scoreFont.MeasureString("Score").X / 2, (int)(DesiredHeight * .375)), Color.White);
+            sb.End();
         }
         /// <summary>
         /// Draws the background as a grid with an extra row off screen, 

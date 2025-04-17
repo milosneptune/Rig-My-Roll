@@ -212,6 +212,7 @@ namespace GamblerGame
                     break;
                 case State.Game:
                     ui.DrawGame(_spriteBatch);
+                    _spriteBatch.Begin();
                     foreach (Button button in gameButtons)
                     {
                         button.Draw(_spriteBatch);
@@ -226,6 +227,7 @@ namespace GamblerGame
                     _spriteBatch.End();
                     break;
                 case State.Pause:
+                    _spriteBatch.End();
                     break;
                 case State.GameOver:
                     break;
