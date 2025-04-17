@@ -57,6 +57,7 @@ namespace GamblerGame
         const int rollButtonXPos = (int)(DesiredWidth / 5.9);
         const int pauseButtonXPos = (int)(DesiredWidth * .675);
         private List<Button> gameButtons = new List<Button>();
+        SlotMachine SlotMachine = new SlotMachine();
 
         private int r = 255;
         private int g = 255;
@@ -271,7 +272,7 @@ namespace GamblerGame
         /// <param name="circle"></param>
         private void Roll()
         {
-            // call roll logic ig maybe
+            SlotMachine.Roll();
         }
 
         /// <summary>
