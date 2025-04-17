@@ -20,6 +20,8 @@ namespace GamblerGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        private UIManager ui;
+
         const int DesiredWidth = 1920;
         const int DesiredHeight = 1080;
 
@@ -28,6 +30,7 @@ namespace GamblerGame
         const int yAxisTiles = xAxisTiles / 2 + 1; // Number of background texture grids along the y axis
         const int backgroundTileSize = DesiredWidth / xAxisTiles; // Size of the background tile texture (height and width because it is a square)
         private int backgroundPosition = 0; // The position of the y value (of the tiole that spawns in the top left)
+
         private Texture2D scanlineTexture;
         private Texture2D backgroundTexture;
         private SpriteFont pixelFont;
@@ -53,6 +56,14 @@ namespace GamblerGame
         const int pauseButtonXPos = (int)(DesiredWidth * .675);
         private List<Button> gameButtons = new List<Button>();
 
+        private int r = 255;
+        private int g = 255;
+        private int b = 255;
+
+        private int desiredR;
+        private int desiredG;
+        private int desiredB;
+
         // Symbols
         private Texture2D sevenTexture;
 
@@ -73,9 +84,9 @@ namespace GamblerGame
             // TODO: Add your initialization logic here
             _graphics.PreferredBackBufferWidth = DesiredWidth;
             _graphics.PreferredBackBufferHeight = DesiredHeight;
-            _graphics.IsFullScreen = true;
+            //_graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
-            gameState = State.Game;
+            gameState = State.MainMenu;
             base.Initialize();
         }
 
@@ -88,6 +99,8 @@ namespace GamblerGame
             pixelFont = Content.Load<SpriteFont>("Fonts/monogram");
             titleFont = Content.Load<SpriteFont>("Fonts/Daydream");
             scoreFont = Content.Load<SpriteFont>("Fonts/Daydream2");
+
+            ui = new UIManager(GraphicsDevice, new List<SpriteFont> { pixelFont, titleFont, scoreFont }, new List<Texture2D> { backgroundTexture, scanlineTexture, sevenTexture });
 
             // Play Game
             menuButtons.Add(new Button(
@@ -131,6 +144,7 @@ namespace GamblerGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            updateColor();
 
             // TODO: Add your update logic here
             switch (gameState)
@@ -168,17 +182,7 @@ namespace GamblerGame
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
             // Prints the background as a grid with an extra row off screen
-            for (int i = 0; i < xAxisTiles; i++) //columns
-            {
-                for (int j = -1; j < yAxisTiles; j++) //rows
-                {
-                    _spriteBatch.Draw(backgroundTexture,                  // Texture
-                        new Rectangle(i * backgroundTileSize,             // X position
-                        (j * backgroundTileSize) + backgroundPosition,    // Y Position
-                        backgroundTileSize, backgroundTileSize),          // Width and Height
-                        Color.White);                                     // Color (plan on updating color when the state changes
-                }
-            }
+            ui.DrawBackground(_spriteBatch, backgroundPosition, new Color(r, g, b));
 
             switch (gameState)
             {
@@ -187,85 +191,16 @@ namespace GamblerGame
                     {
                         button.Draw(_spriteBatch);
                     }
-                    ShapeBatch.Begin(GraphicsDevice);
-                    // Title Box
-                    ShapeBatch.Box(
-                        DesiredWidth / 2 - (int)(DesiredWidth / (1.75 * 2)),
-                        (int)(DesiredHeight / 8.25), 
-                        (int)(DesiredWidth / 1.75),
-                        (int)(DesiredHeight / 2.25), 
-                        Color.Black);
-                    // Title Outline
-                    ShapeBatch.BoxOutline(
-                        DesiredWidth / 2 - (int)(DesiredWidth / (1.75 * 2)), 
-                        (int)(DesiredHeight / 8.25), 
-                        (int)(DesiredWidth / 1.75) + 1, 
-                        (int)(DesiredHeight / 2.25), 
-                        Color.White);
-                    // Play Button 0utline
-                    ShapeBatch.BoxOutline(
-                        playButtonXPos,
-                        menuButtonYPos, 
-                        menuButtonWidth, 
-                        menuButtonHeight, 
-                        Color.White);
-                    // Quit Button Outline
-                    ShapeBatch.BoxOutline(
-                        quitButtonXPos,
-                        menuButtonYPos,
-                        menuButtonWidth,
-                        menuButtonHeight,
-                        Color.White);
-                    _spriteBatch.End();
-                    ShapeBatch.End();
-
-                    _spriteBatch.Begin();
-
-                    // Title Text
-                    _spriteBatch.DrawString(titleFont, "Rig", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("Rig").X / 2, (int)(DesiredHeight / 6.25)), Color.White);
-                    _spriteBatch.DrawString(titleFont, "my", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("my").X / 2, (int)(DesiredHeight / 3.6)), Color.White);
-                    _spriteBatch.DrawString(titleFont, "Roll", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("Roll").X / 2, (int)(DesiredHeight / 2.50)), Color.White);
-
+                    ui.DrawMenu(_spriteBatch);
                     break;
                 case State.Game:
-                    
-                    ShapeBatch.Begin(GraphicsDevice);
-                    // HUD Background
-                    ShapeBatch.Box(
-                        (int)(DesiredWidth * .66),
-                        0,
-                        (int)(DesiredWidth / 3.5),
-                        DesiredHeight,
-                        new Color(12, 7, 15));
-                    // HUD Background Outline
-                    ShapeBatch.BoxOutline(
-                        (int)(DesiredWidth * .66),
-                        0,
-                        (int)(DesiredWidth / 3.5) + 1,
-                        DesiredHeight,
-                        Color.White);
-                    // Score requirement box
-                    ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .03), (int)(DesiredWidth / 3.9), DesiredHeight / 4, Color.DarkGray);
-                    // Round score container box
-                    ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .31), (int)(DesiredWidth / 3.9), DesiredHeight / 8, Color.DarkGray);
-                    // Round score display box
-                    ShapeBatch.Box((int)(DesiredWidth * .755), (int)(DesiredHeight * .323), (int)(DesiredWidth / 5.9), DesiredHeight / 10, Color.Black);
-                    // Current score box
-                    ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .465), (int)(DesiredWidth / 3.9), DesiredHeight / 4, Color.DarkGray);
-
-                    _spriteBatch.End();
-                    ShapeBatch.End();
-                    _spriteBatch.Begin();
-
+                    ui.DrawGame(_spriteBatch);
                     foreach (Button button in gameButtons)
                     {
                         button.Draw(_spriteBatch);
                     }
-                    // Round score text
-                    _spriteBatch.DrawString(scoreFont, "Round", new Vector2((int)(DesiredWidth * .715) - scoreFont.MeasureString("Round").X / 2, (int)(DesiredHeight * .345)), Color.White);
-                    _spriteBatch.DrawString(scoreFont, "Score", new Vector2((int)(DesiredWidth * .715) - scoreFont.MeasureString("Score").X / 2, (int)(DesiredHeight * .375)), Color.White);
                     // Round score variable displayed
-                    _spriteBatch.DrawString(scoreFont, $"{roundScore}", new Vector2((int)(DesiredWidth * .835) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length )/ 2 , (int)(DesiredHeight * .36)), Color.White);
+                    _spriteBatch.DrawString(scoreFont, $"{roundScore}", new Vector2((int)(DesiredWidth * .835) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2, (int)(DesiredHeight * .36)), Color.White);
                     /*
                     _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .765), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
                     _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .783), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
@@ -280,8 +215,7 @@ namespace GamblerGame
                     break;
 
             }
-            // Scanline filter
-            _spriteBatch.Draw(scanlineTexture, new Rectangle(0, 0, DesiredWidth, DesiredHeight), new Color(25, 25, 25, 1));
+            ui.DrawScreenFilters(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -304,6 +238,9 @@ namespace GamblerGame
         /// <param name="circle"></param>
         private void GameState()
         {
+            desiredR = 100;
+            desiredG = 230;
+            desiredB = 175;
             gameState = State.Game;
         }
 
@@ -315,6 +252,17 @@ namespace GamblerGame
         {
             gameState = State.Pause;
         }
+        /// <summary>
+        /// Sets the state to Menu
+        /// </summary>
+        /// <param name="circle"></param>
+        private void Menu()
+        {
+            desiredR = 255;
+            desiredG = 255;
+            desiredB = 255;
+            gameState = State.MainMenu;
+        }
 
         /// <summary>
         /// Rolls slots
@@ -323,6 +271,39 @@ namespace GamblerGame
         private void Roll()
         {
             // call roll logic ig maybe
+        }
+
+        /// <summary>
+        /// Updates color values r, g, and b for the background
+        /// </summary>
+        private void updateColor()
+        {
+            if(r > desiredR)
+            {
+                r--;
+            }
+            else if (r < desiredR)
+            {
+                r++;
+            }
+
+            if (g > desiredG)
+            {
+                g--;
+            }
+            else if (g < desiredG)
+            {
+                g++;
+            }
+
+            if (b > desiredB)
+            {
+                b--;
+            }
+            else if (b < desiredB)
+            {
+                b++;
+            }
         }
     }
 }
