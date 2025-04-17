@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -26,7 +27,11 @@ namespace GamblerGame
         private string text;
         protected Rectangle position; // Button position and size
         private Vector2 textLoc;
+        private Vector2 textLocPressed;
+        private Vector2 textLocUnpressed;
         Texture2D buttonImg;
+        Texture2D buttonUnpressedImg;
+        Texture2D buttonPressedImg;
         private Color textColor;
 
         /// <summary>
@@ -37,7 +42,6 @@ namespace GamblerGame
         /// The delegate will be called with a reference to the clicked button.
         /// </summary>
         public event OnButtonClickDelegate OnLeftButtonClick;
-        public event OnButtonClickDelegate OnRightButtonClick;
 
         /// <summary>
         /// Create a new custom button
@@ -46,7 +50,7 @@ namespace GamblerGame
         /// <param name="text">The text to draw on the button</param>
         /// <param name="font">The font to use when drawing the button text.</param>
         /// <param name="color">The color to tint the button when it is active. Buttons are always grayed out when disabled.</param>
-        public Button(GraphicsDevice device, Rectangle position, String text, SpriteFont font, Color color)
+        public Button(GraphicsDevice device, Rectangle position, String text, SpriteFont font, Color color, List<Texture2D> textures)
         {
             // Save copies/references to the info we'll need later
             this.font = font;
@@ -55,19 +59,26 @@ namespace GamblerGame
 
             // Figure out where on the button to draw it
             Vector2 textSize = font.MeasureString(text);
-            textLoc = new Vector2(
+            textLocPressed = new Vector2(
+                (position.X + position.Width / 2) - textSize.X / 2,
+                (position.Y + position.Height / 2) - textSize.Y/4 
+            );
+            textLocUnpressed = new Vector2(
                 (position.X + position.Width / 2) - textSize.X / 2,
                 (position.Y + position.Height / 2) - textSize.Y / 2
             );
+            textLoc = textLocUnpressed;
 
             // Invert the button color for the text color (because why not)
             this.textColor = new Color(255 - color.R, 255 - color.G, 255 - color.B);
 
             // Make a custom 2d texture for the button itself
-            buttonImg = new Texture2D(device, position.Width, position.Height, false, SurfaceFormat.Color);
-            int[] colorData = new int[buttonImg.Width * buttonImg.Height];
-            Array.Fill<int>(colorData, (int)color.PackedValue);
-            buttonImg.SetData<Int32>(colorData,0,colorData.Length);
+            buttonUnpressedImg = textures[0];
+            buttonPressedImg = textures[1];
+            buttonImg = buttonUnpressedImg;
+            //int[] colorData = new int[buttonImg.Width * buttonImg.Height];
+            //Array.Fill<int>(colorData, (int)color.PackedValue);
+            //buttonImg.SetData<Int32>(colorData,0,colorData.Length);
         }
 
         /// <summary>
@@ -92,7 +103,13 @@ namespace GamblerGame
             if (mState.LeftButton  == ButtonState.Pressed &&
                 this.position.Contains(mState.Position))
             {
-                
+                buttonImg = buttonPressedImg;
+                textLoc = textLocPressed;
+            }
+            else
+            {
+                buttonImg = buttonUnpressedImg;
+                textLoc = textLocUnpressed;
             }
 
             prevMState = mState;
@@ -107,10 +124,10 @@ namespace GamblerGame
         public void Draw(SpriteBatch spriteBatch)
         {
             // Draw the button itself
-            spriteBatch.Draw(buttonImg, position, Color.White);
+            spriteBatch.Draw(buttonImg, position, new Color(15, 15, 15));
 
             // Draw button text over the button
-            spriteBatch.DrawString(font, text, textLoc, textColor);
+            spriteBatch.DrawString(font, text, textLoc, Color.White);
         }
 
     }
