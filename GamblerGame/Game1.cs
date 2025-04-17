@@ -73,6 +73,8 @@ namespace GamblerGame
         private double roundScore = 0;
         private double rollScore;
 
+        private State gameState;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -152,6 +154,8 @@ namespace GamblerGame
             switch (gameState)
             {
                 case State.MainMenu:
+                    break;
+                case State.Game:
                     foreach (Button button in menuButtons)
                     {
                         button.Update(gameTime);
@@ -173,7 +177,6 @@ namespace GamblerGame
                 case State.Quit:
                     break;
             }
-
             BackgroundScreenWrap(); // if the position has moved to the size of the tile, it resets its position (appearing to be constantly moving
             base.Update(gameTime);
         }
@@ -182,6 +185,11 @@ namespace GamblerGame
         {
             GraphicsDevice.Clear(Color.Black);
             // TODO: Add your drawing code here
+            switch (gameState)
+            {
+                case State.MainMenu:
+                    break;
+                case State.Game:
             _spriteBatch.Begin();
             // Prints the background as a grid with an extra row off screen
             ui.DrawBackground(_spriteBatch, backgroundPosition, new Color(r, g, b));
@@ -215,6 +223,7 @@ namespace GamblerGame
                     break;
                 case State.Quit:
                     break;
+            }
 
             }
             ui.DrawScreenFilters(_spriteBatch);
