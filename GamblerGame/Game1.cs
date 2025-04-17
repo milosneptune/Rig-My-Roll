@@ -308,8 +308,7 @@ namespace GamblerGame
         {
             slotMachine.Roll();
             rollScore = slotMachine.RollScore;
-            roundScore = slotMachine.RoundScore;
-            totalScore += slotMachine.RoundScore;
+            roundScore += slotMachine.RoundScore;
         }
 
         /// <summary>
