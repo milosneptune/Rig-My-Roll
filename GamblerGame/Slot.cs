@@ -47,6 +47,7 @@ namespace GamblerGame
         {
             //symbols = new List<Symbol>();
             //newSymbols = new List<Symbol>();
+            sm = new ScriptManager("SymbolsFile");
             LoadSymbols(ct);
         }
 
@@ -61,7 +62,7 @@ namespace GamblerGame
             // needs to intialize each of them with it's name and appropriate texture, 
             // then it needs to be added to both the symbols list and new symbols
 
-            sm = new ScriptManager("SymbolsFile");
+            
             List<string> names = new List<string>();
             names = sm.GetNames();
             foreach (string name in names)
