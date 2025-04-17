@@ -89,14 +89,10 @@ namespace GamblerGame
                 }
             }
 
-            if (mState.RightButton == ButtonState.Released &&
-                prevMState.RightButton == ButtonState.Pressed &&
+            if (mState.LeftButton  == ButtonState.Pressed &&
                 this.position.Contains(mState.Position))
             {
-                if (OnRightButtonClick != null)
-                {
-                    OnRightButtonClick();
-                }
+                
             }
 
             prevMState = mState;
