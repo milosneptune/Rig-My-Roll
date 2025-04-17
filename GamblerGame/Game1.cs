@@ -4,7 +4,6 @@ using System.Runtime.Intrinsics.Arm;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 
 namespace GamblerGame
 {
@@ -35,6 +34,8 @@ namespace GamblerGame
 
         private Texture2D scanlineTexture;
         private Texture2D backgroundTexture;
+        private Texture2D buttonUnpressed;
+        private Texture2D buttonPressed;
         private SpriteFont pixelFont;
         private SpriteFont scoreFont;
         private SpriteFont titleFont;
@@ -58,6 +59,8 @@ namespace GamblerGame
         const int pauseButtonXPos = (int)(DesiredWidth * .675);
         private List<Button> gameButtons = new List<Button>();
 
+        private int blackBarYPos = 0;
+        private int desiredBlackBarYPos = DesiredHeight/2 - DesiredHeight/10;
         SlotMachine slotMachine;
 
         private int r = 255;
@@ -100,11 +103,14 @@ namespace GamblerGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             backgroundTexture = Content.Load<Texture2D>("Background/Purple2");
+            buttonUnpressed = Content.Load<Texture2D>("UI/Menu/ButtonUnpressed");
+            buttonPressed = Content.Load<Texture2D>("UI/Menu/ButtonPressed");
             scanlineTexture = Content.Load<Texture2D>("Background/SCANLINE 1");
             sevenTexture = Content.Load<Texture2D>("UI/Symbols/seven");
             pixelFont = Content.Load<SpriteFont>("Fonts/monogram");
             titleFont = Content.Load<SpriteFont>("Fonts/Daydream");
             scoreFont = Content.Load<SpriteFont>("Fonts/Daydream2");
+            List <Texture2D> buttonTextures = new List<Texture2D> { buttonUnpressed, buttonPressed };
 
             ui = new UIManager(GraphicsDevice, new List<SpriteFont> { pixelFont, titleFont, scoreFont }, new List<Texture2D> { backgroundTexture, scanlineTexture, sevenTexture });
 
@@ -114,7 +120,8 @@ namespace GamblerGame
                     new Rectangle(playButtonXPos, menuButtonYPos, menuButtonWidth, menuButtonHeight),
                     "Play",
                     pixelFont,
-                    Color.Black));
+                    Color.Black,
+                    buttonTextures));
             menuButtons[0].OnLeftButtonClick += GameState;
 
             // Quit
@@ -123,7 +130,8 @@ namespace GamblerGame
                     new Rectangle(quitButtonXPos, menuButtonYPos, menuButtonWidth, menuButtonHeight),
                     "Quit",
                     pixelFont,
-                    Color.Black));
+                    Color.Black,
+                    buttonTextures));
             menuButtons[1].OnLeftButtonClick += Exit;
 
             // Roll (reposition
@@ -132,7 +140,8 @@ namespace GamblerGame
                     new Rectangle(pauseButtonXPos, rollButtonYPos, pauseButtonWidth, pauseButtonHeight),
                     "Roll",
                     pixelFont,
-                    Color.Black));
+                    Color.Black,
+                    buttonTextures));
             gameButtons[0].OnLeftButtonClick += Roll;
 
             // Pause button
@@ -141,7 +150,8 @@ namespace GamblerGame
                     new Rectangle(pauseButtonXPos, pauseButtonYPos, pauseButtonWidth, pauseButtonHeight),
                     "Pause",
                     pixelFont,
-                    Color.Black));
+                    Color.Black,
+                    buttonTextures));
             gameButtons[1].OnLeftButtonClick += Pause;
             // TODO: use this.Content to load your game content here
         }
@@ -151,6 +161,7 @@ namespace GamblerGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             updateColor();
+            MoveBlackBar();
 
             // TODO: Add your update logic here
             switch (gameState)
@@ -167,7 +178,6 @@ namespace GamblerGame
                     {
                         button.Update(gameTime);
                     }
-                    //roundScore += 10; // Testing how the score would look when it increases
                     backgroundPosition++; // moves the position of every tile down each frame
                     break;
                 case State.Pause:
@@ -187,7 +197,10 @@ namespace GamblerGame
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
             // Prints the background as a grid with an extra row off screen
-            ui.DrawBackground(_spriteBatch, backgroundPosition, new Color(r, g, b));
+            if (backgroundPosition != DesiredHeight / 2)
+            {
+                ui.DrawBackground(_spriteBatch, backgroundPosition, new Color(r, g, b));
+            }
             switch (gameState)
             {
                 case State.MainMenu:
@@ -210,6 +223,7 @@ namespace GamblerGame
                     _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .783), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
                     _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .802), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
                     */
+                    _spriteBatch.End();
                     break;
                 case State.Pause:
                     break;
@@ -219,7 +233,7 @@ namespace GamblerGame
                     break;
             }
 
-
+            ui.DrawBlackBars(GraphicsDevice, blackBarYPos);
             ui.DrawScreenFilters(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
@@ -238,6 +252,22 @@ namespace GamblerGame
         }
 
         /// <summary>
+        /// Detects if the background has moved off the screen and teleports it back
+        /// </summary>
+        /// <param name="circle"></param>
+        private void MoveBlackBar()
+        {
+            if (blackBarYPos < desiredBlackBarYPos)
+            {
+                blackBarYPos += 2;
+            }
+            else if (blackBarYPos > desiredBlackBarYPos)
+            {
+                blackBarYPos -= 2;
+            }
+        }
+
+        /// <summary>
         /// Sets the state to game
         /// </summary>
         /// <param name="circle"></param>
@@ -246,6 +276,7 @@ namespace GamblerGame
             desiredR = 100;
             desiredG = 230;
             desiredB = 175;
+            desiredBlackBarYPos = DesiredHeight / 2;
             gameState = State.Game;
         }
 

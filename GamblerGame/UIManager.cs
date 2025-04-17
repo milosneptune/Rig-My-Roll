@@ -20,7 +20,7 @@ namespace GamblerGame
         const int xAxisTiles = 16; // Number of background texture grids along the x axis
         const int yAxisTiles = xAxisTiles / 2 + 1; // Number of background texture grids along the y axis
         const int backgroundTileSize = DesiredWidth / xAxisTiles; // Size of the background tile texture (height and width because it is a square)
-        
+
         // Textures and Fonts
         private Texture2D scanlineTexture;
         private Texture2D backgroundTexture;
@@ -35,6 +35,13 @@ namespace GamblerGame
         const int playButtonXPos = DesiredWidth / 2 - (int)(menuButtonWidth * 1.25);
         const int quitButtonXPos = DesiredWidth / 2 + (int)(menuButtonWidth * .25);
 
+        private int titleWidth = (int)(DesiredWidth / 3);
+        private int titleHeight = (int)(DesiredHeight / 2.25);
+        private int titleXPos = DesiredWidth / 2 - (int)(DesiredWidth / (3 * 2));
+        private int titleYPos = (int)(DesiredHeight / 10) + DesiredHeight / 2 - (int)(DesiredHeight / 2.25);
+        private int blackBarHeight = (int)(DesiredHeight / 2);
+
+
         // Game
         const int pauseButtonWidth = (int)(DesiredWidth / 3.9);
         const int pauseButtonHeight = DesiredHeight / 10;
@@ -43,7 +50,9 @@ namespace GamblerGame
         const int rollButtonXPos = (int)(DesiredWidth / 5.9);
         const int pauseButtonXPos = (int)(DesiredWidth * .675);
 
-        public UIManager(GraphicsDevice graphicsDevice, List<SpriteFont> fonts, List<Texture2D> textures) 
+
+
+        public UIManager(GraphicsDevice graphicsDevice, List<SpriteFont> fonts, List<Texture2D> textures)
         {
             this.graphicsDevice = graphicsDevice;
             pixelFont = fonts[0];
@@ -57,19 +66,19 @@ namespace GamblerGame
             ShapeBatch.Begin(graphicsDevice);
             // Title Box
             ShapeBatch.Box(
-                DesiredWidth / 2 - (int)(DesiredWidth / (1.75 * 2)),
-                (int)(DesiredHeight / 8.25),
-                (int)(DesiredWidth / 1.75),
-                (int)(DesiredHeight / 2.25),
+                titleXPos,
+                titleYPos,
+                titleWidth,
+                titleHeight,
                 Color.Black);
             // Title Outline
             ShapeBatch.BoxOutline(
-                DesiredWidth / 2 - (int)(DesiredWidth / (1.75 * 2)),
-                (int)(DesiredHeight / 8.25),
-                (int)(DesiredWidth / 1.75) + 1,
-                (int)(DesiredHeight / 2.25),
+                titleXPos,
+                titleYPos,
+                titleWidth + 1,
+                titleHeight,
                 Color.White);
-            // Play Button 0utline
+            /*
             ShapeBatch.BoxOutline(
                 playButtonXPos,
                 menuButtonYPos,
@@ -83,14 +92,16 @@ namespace GamblerGame
                 menuButtonWidth,
                 menuButtonHeight,
                 Color.White);
+            */
             sb.End();
             ShapeBatch.End();
 
             // Title Text
             sb.Begin();
-            sb.DrawString(titleFont, "Rig", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("Rig").X / 2, (int)(DesiredHeight / 6.25)), Color.White);
-            sb.DrawString(titleFont, "my", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("my").X / 2, (int)(DesiredHeight / 3.6)), Color.White);
-            sb.DrawString(titleFont, "Roll", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("Roll").X / 2, (int)(DesiredHeight / 2.50)), Color.White);
+            sb.DrawString(titleFont, "Rig", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("Rig").X / 2, titleYPos + titleFont.MeasureString("Rig").Y / 4), Color.White);
+            sb.DrawString(titleFont, "my", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("my").X / 2, titleYPos + titleFont.MeasureString("Rig").Y * 1.25f), Color.White);
+            sb.DrawString(titleFont, "Roll", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("Roll").X / 2, titleYPos + titleFont.MeasureString("Rig").Y * 2.25f), Color.White);
+            sb.End();
         }
 
         public void DrawGame(SpriteBatch sb)
@@ -126,7 +137,6 @@ namespace GamblerGame
             // Round score text
             sb.DrawString(scoreFont, "Round", new Vector2((int)(DesiredWidth * .715) - scoreFont.MeasureString("Round").X / 2, (int)(DesiredHeight * .345)), Color.White);
             sb.DrawString(scoreFont, "Score", new Vector2((int)(DesiredWidth * .715) - scoreFont.MeasureString("Score").X / 2, (int)(DesiredHeight * .375)), Color.White);
-
         }
         /// <summary>
         /// Draws the background as a grid with an extra row off screen, 
@@ -157,7 +167,28 @@ namespace GamblerGame
         /// <param name="sb"></param>
         public void DrawScreenFilters(SpriteBatch sb)
         {
+            sb.Begin();
             sb.Draw(scanlineTexture, new Rectangle(0, 0, DesiredWidth, DesiredHeight), new Color(25, 25, 25, 1));
         }
+
+        public void DrawBlackBars(GraphicsDevice graphicsDevice, int blackBarYPosition)
+        {
+            ShapeBatch.Begin(graphicsDevice);
+            // Black Bar
+            ShapeBatch.Box(
+                0,
+                0 - blackBarYPosition,
+                DesiredWidth,
+                blackBarHeight,
+                Color.Black);
+            ShapeBatch.Box(
+                0,
+                DesiredHeight / 2 + blackBarYPosition,
+                DesiredWidth,
+                blackBarHeight,
+                Color.Black);
+            ShapeBatch.End();
+        }
+
     }
 }
