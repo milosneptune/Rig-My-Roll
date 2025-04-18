@@ -55,6 +55,7 @@ namespace GamblerGame
         const int rollButtonXPos = (int)(DesiredWidth / 5.9);
         const int pauseButtonXPos = (int)(DesiredWidth * .675);
         private List<Button> gameButtons = new List<Button>();
+        private List<Button> pauseButtons = new List<Button>();
 
         private int blackBarYPos = 0;
         private int desiredBlackBarYPos = DesiredHeight/2 - DesiredHeight/10;
@@ -92,7 +93,7 @@ namespace GamblerGame
             // TODO: Add your initialization logic here
             _graphics.PreferredBackBufferWidth = DesiredWidth;
             _graphics.PreferredBackBufferHeight = DesiredHeight;
-            //_graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
             gameState = State.MainMenu;
             slotMachine = new SlotMachine(Content);
@@ -172,12 +173,22 @@ namespace GamblerGame
                     backgroundPosition += 2;
                     break;
                 case State.Game:
-                    foreach (Button button in gameButtons)
+                    if (!paused)
                     {
-                        button.Update(gameTime);
+                        foreach (Button button in gameButtons)
+                        {
+                            button.Update(gameTime);
+                        }
+                        backgroundPosition++; // moves the position of every tile down each frame
                     }
-                    backgroundPosition++; // moves the position of every tile down each frame
-                    break;
+                    else
+                    {
+                        foreach (Button button in pauseButtons)
+                        {
+                            button.Update(gameTime);
+                        }
+                    }
+                        break;
                 case State.GameOver:
                     break;
                 case State.Quit:
@@ -221,7 +232,7 @@ namespace GamblerGame
                         _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .802), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
                         */
                         _spriteBatch.End();
-                    if (!paused)
+                    if (paused)
                     {
                         ui.DrawPaused(_spriteBatch);
                     }
