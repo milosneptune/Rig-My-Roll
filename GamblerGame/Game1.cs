@@ -78,6 +78,9 @@ namespace GamblerGame
         private List<double> rollScores;
         private double totalScore;
         private bool paused = false;
+        private int numRolls;
+        private int minScore;
+        private bool hasWon;
 
         public Game1()
         {
@@ -97,6 +100,10 @@ namespace GamblerGame
             gameState = State.MainMenu;
             rng = new Random();
             slotMachine = new SlotMachine(Content);
+
+            //This is subject to change
+            minScore = 500;
+
             base.Initialize();
         }
 
@@ -192,7 +199,15 @@ namespace GamblerGame
                     }
                         break;
                 case State.GameOver:
-                    break;
+                    if (hasWon)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                        break;
                 case State.Quit:
                     break;
             }
@@ -246,7 +261,15 @@ namespace GamblerGame
                     }
                     break;
                 case State.GameOver:
-                    break;
+                    if (hasWon)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                        break;
                 case State.Quit:
                     break;
             }
@@ -322,11 +345,28 @@ namespace GamblerGame
         /// <param name="circle"></param>
         private void Roll()
         {
-            slotMachine.Roll(rng);
-            rollScores = new List<double>();
-            rollScores = slotMachine.ScoreList;
-            rollScore = slotMachine.RollTotal;
-            roundScore += slotMachine.RollTotal;
+            if (numRolls < 10)
+            {
+                slotMachine.Roll(rng);
+                rollScores = new List<double>();
+                rollScores = slotMachine.ScoreList;
+                rollScore = slotMachine.RollTotal;
+                roundScore += slotMachine.RollTotal;
+                numRolls++;
+            }
+            else
+            {
+                if (roundScore >= minScore)
+                {
+                    hasWon = true;
+                    gameState = State.GameOver;
+                }
+                else
+                {
+                    hasWon = false;
+                    gameState = State.GameOver;
+                }
+            }
 
         }
 
