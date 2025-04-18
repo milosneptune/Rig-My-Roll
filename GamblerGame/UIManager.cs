@@ -79,21 +79,6 @@ namespace GamblerGame
                 titleWidth + 1,
                 titleHeight + 1,
                 Color.White);
-            /*
-            ShapeBatch.BoxOutline(
-                playButtonXPos,
-                menuButtonYPos,
-                menuButtonWidth,
-                menuButtonHeight,
-                Color.White);
-            // Quit Button Outline
-            ShapeBatch.BoxOutline(
-                quitButtonXPos,
-                menuButtonYPos,
-                menuButtonWidth,
-                menuButtonHeight,
-                Color.White);
-            */
             sb.End();
             ShapeBatch.End();
 
@@ -137,6 +122,16 @@ namespace GamblerGame
             // Current score box
             ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .465), (int)(DesiredWidth / 3.9), DesiredHeight / 4, Color.DarkGray);
 
+            // Outer Slot Box
+            //ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .03), (int)(DesiredWidth / 3.9), DesiredHeight / 4, Color.DarkGray);
+
+            // Slot box
+            ShapeBatch.Box(DesiredWidth / 20, DesiredHeight / 2 - (DesiredWidth / 10), DesiredWidth / 20 + ((DesiredWidth / 6) * 3), DesiredWidth / 5, new Color(12, 7, 15));
+
+            //ShapeBatch.Box(DesiredWidth / 20, DesiredHeight / 2 - (DesiredWidth / 10)-1, DesiredWidth / 20 + ((DesiredWidth / 6) * 3)+1, DesiredWidth / 5+1, Color.Black);
+            ShapeBatch.Box(DesiredWidth / 20 + DesiredWidth / 80, DesiredHeight / 2 - (DesiredWidth / 11.5f) , DesiredWidth / 5.75f , DesiredWidth / 6, Color.DarkGray);
+            ShapeBatch.Box(DesiredWidth / 20 + (DesiredWidth / 5.75f) + DesiredWidth/68, DesiredHeight / 2 - (DesiredWidth / 11.5f) , DesiredWidth / 5.75f, DesiredWidth / 6 , Color.DarkGray);
+            ShapeBatch.Box(DesiredWidth / 20 + ((DesiredWidth / 5.75f) * 2) + DesiredWidth / 60, DesiredHeight / 2 - (DesiredWidth / 11.5f), DesiredWidth / 5.75f, DesiredWidth / 6, Color.DarkGray);
             sb.End();
             ShapeBatch.End();
             sb.Begin();
