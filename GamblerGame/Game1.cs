@@ -352,7 +352,7 @@ namespace GamblerGame
         /// <param name="circle"></param>
         private void Roll()
         {
-            if (numRolls < 10)
+            if (numRolls <= 10)
             {
                 slotMachine.Roll(rng);
                 rollScores = new List<double>();
