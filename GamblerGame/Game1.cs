@@ -77,7 +77,6 @@ namespace GamblerGame
         private double rollScore = 0;
         private List<double> rollScores;
         private double totalScore;
-
         private bool paused = false;
 
         public Game1()
@@ -233,6 +232,10 @@ namespace GamblerGame
                         */
                         _spriteBatch.End();
                     if (paused)
+                    ui.DrawGame(_spriteBatch);
+
+                    foreach (Button button in gameButtons)
+
                     {
                         ui.DrawPaused(_spriteBatch);
                     }
@@ -314,11 +317,12 @@ namespace GamblerGame
         /// <param name="circle"></param>
         private void Roll()
         {
-            slotMachine.Roll();
+            slotMachine.Roll(rng);
             rollScores = new List<double>();
             rollScores = slotMachine.ScoreList;
             rollScore = slotMachine.RollTotal;
             roundScore += slotMachine.RollTotal;
+
         }
 
         /// <summary>

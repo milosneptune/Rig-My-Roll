@@ -28,30 +28,40 @@ namespace GamblerGame
     }
     internal class Slot
     {
-        // list of symbol textures
-        //private List<Texture2D> pictures;
+
         private List<Symbol> symbols; // the unchanged list of symbols
         private List<Symbol> newSymbols; // this is the list that will change if an item is used
 
         private ScriptManager sm;
 
         /// <summary>
-        /// for getting the result of a roll from the slot 
+        /// for getting the Symbol result of a roll from the slot 
         /// </summary>
         public Symbol Result { get; private set; }
+        /// <summary>
+        /// For getting the Symbol NAME of the Result
+        /// </summary>
         public SymbolName ResultName { get { return Result.Name; } }
-        
 
         public Slot(ContentManager ct)
         {
+
+            //symbols = new List<Symbol>();
+            //newSymbols = new List<Symbol>();
+            
             symbols = new List<Symbol>();
             newSymbols = new List<Symbol>();
+
             LoadSymbols(ct);
         }
 
         // method to use an item
 
-        // method to load symbolsnames into symbosl
+        /// <summary>
+        /// Intializes script manager, loads the names from file, and adds the symbols
+        /// to the unchanged and changed lists 
+        /// </summary>
+        /// <param name="ct"></param>
         private void LoadSymbols(ContentManager ct)
         {
 
@@ -61,6 +71,7 @@ namespace GamblerGame
             // then it needs to be added to both the symbols list and new symbols
 
             sm = new ScriptManager("SymbolsFile.txt");
+
             List<string> names = new List<string>();
             names = sm.GetNames();
             foreach (string name in names)
@@ -71,7 +82,10 @@ namespace GamblerGame
 
         }
 
-        // method to roll the slot
+        /// <summary>
+        /// Chooses a random index from the symbols list
+        /// </summary>
+        /// <param name="rng"></param>
         public void Roll(Random rng)
         {
             // if their as item being used, the use item method will manipulate the private list

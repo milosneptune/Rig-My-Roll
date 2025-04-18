@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,7 +15,7 @@ namespace GamblerGame
         double rollScore;
 
         int matchedSymbols;
-        Random rng = new Random();
+        //Random rng = new Random();
 
         public double RollTotal { get; private set; }
         public double RollScore { get; private set; }
@@ -23,7 +25,7 @@ namespace GamblerGame
         public SlotMachine(ContentManager ct)
         {
             slots = new List<Slot>()
-            { 
+            {
                 new Slot(ct),
                 new Slot(ct),
                 new Slot(ct)
@@ -32,9 +34,10 @@ namespace GamblerGame
 
 
         /// <summary>
-        /// Calls each of the slot roll methods and then adds up the scores. After, it calls check Multiply and handles the round scoring
+        /// Calls each of the slot roll methods and then adds up the scores. 
+        /// After, it calls check Multiply and handles the round scoring
         /// </summary>
-        internal void Roll()
+internal void Roll(Random rng)
         {
             ScoreList = new List<double>();
             SymbolList = new List<Symbol>();
@@ -51,7 +54,8 @@ namespace GamblerGame
         }
 
         /// <summary>
-        /// Checks the number of matching symbols and returns a value for the score to get multiplied by
+        /// Checks the number of matching symbols 
+        /// and returns a value for the score to get multiplied by
         /// </summary>
         /// <returns></returns>
         private double CheckMultiply()
@@ -71,10 +75,11 @@ namespace GamblerGame
                 matchedSymbols++;
             }
             else if (slots[1].ResultName.ToString() == slots[2].ResultName.ToString())
+
             {
                 matchedSymbols++;
             }
-            
+
             if (matchedSymbols == 0)
             {
                 return 1;
@@ -87,14 +92,26 @@ namespace GamblerGame
             {
                 return 2;
             }
-
-            //This shouldn't happen
+            // This shouldn't happen
             else
             {
                 return 50;
             }
         }
 
+        /// <summary>
+        /// draws RESULTS of a roll for now
+        /// </summary>
+        public void DrawSymbols(SpriteBatch sb)
+        {
+        //    Vector2 position = new Vector2(300, 300);
+            int x = 300;
+            int y = 300;
 
+            for (int i = 0; i < slots.Count; i++)
+            {
+                slots[i].Result.DrawSymbol(sb, new Vector2(x + i*10, y));
+            }
+        }
     }
 }
