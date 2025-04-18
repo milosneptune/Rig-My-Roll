@@ -92,9 +92,10 @@ namespace GamblerGame
             // TODO: Add your initialization logic here
             _graphics.PreferredBackBufferWidth = DesiredWidth;
             _graphics.PreferredBackBufferHeight = DesiredHeight;
-            _graphics.IsFullScreen = true;
+            // _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
             gameState = State.MainMenu;
+            rng = new Random();
             slotMachine = new SlotMachine(Content);
             base.Initialize();
         }
@@ -152,7 +153,7 @@ namespace GamblerGame
                     pixelFont,
                     Color.Black,
                     buttonTextures));
-            gameButtons[1].OnLeftButtonClick += Pause;
+            //gameButtons[1].OnLeftButtonClick += Pause;
             // TODO: use this.Content to load your game content here
         }
 
@@ -184,10 +185,10 @@ namespace GamblerGame
                     }
                     else
                     {
-                        foreach (Button button in pauseButtons)
+                        /*foreach (Button button in pauseButtons)
                         {
                             button.Update(gameTime);
-                        }
+                        }*/
                     }
                         break;
                 case State.GameOver:
@@ -234,12 +235,14 @@ namespace GamblerGame
                         */
                         _spriteBatch.End();
                     if (paused)
-                    ui.DrawGame(_spriteBatch);
-
-                    foreach (Button button in gameButtons)
-
                     {
                         ui.DrawPaused(_spriteBatch);
+                        /*
+                        foreach (Button button in pauseButtons)
+                        {
+                            
+                        }
+                        */
                     }
                     break;
                 case State.GameOver:

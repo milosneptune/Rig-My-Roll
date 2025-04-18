@@ -75,9 +75,9 @@ namespace GamblerGame
             // Title Outline
             ShapeBatch.BoxOutline(
                 titleXPos,
-                titleYPos,
+                titleYPos-1,
                 titleWidth + 1,
-                titleHeight,
+                titleHeight + 1,
                 Color.White);
             /*
             ShapeBatch.BoxOutline(
