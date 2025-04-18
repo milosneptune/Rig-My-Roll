@@ -14,7 +14,7 @@ namespace GamblerGame
         double rollScore;
 
         int matchedSymbols;
-        Random rng = new Random();
+        //Random rng = new Random();
 
         public double RoundScore { get; private set; }
         public double RollScore { get; private set; }
