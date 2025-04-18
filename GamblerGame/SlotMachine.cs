@@ -16,7 +16,9 @@ namespace GamblerGame
         private double rollScore;
         private int matchedSymbols;
         //private Random rng = new Random();
+        private double multiplier;
 
+        public double Multiplier { get { return multiplier; } }
         public double RollTotal { get; private set; }
         public double RollScore { get; private set; }
         public List<double> ScoreList { get; private set; }
@@ -30,8 +32,9 @@ namespace GamblerGame
                 new Slot(ct),
                 new Slot(ct)
             };
+            ScoreList = new List<double>();
+            multiplier = 1;
         }
-
 
         /// <summary>
         /// Calls each of the slot roll methods and then adds up the scores. 
@@ -39,7 +42,7 @@ namespace GamblerGame
         /// </summary>
         internal void Roll(Random rng)
         {
-            ScoreList = new List<double>();
+           // ScoreList = new List<double>();
             SymbolList = new List<Symbol>();
             rollScore = 0;
             for (int i = 0; i < slots.Count; i++)
@@ -82,20 +85,20 @@ namespace GamblerGame
 
             if (matchedSymbols == 0)
             {
-                return 1;
+                return multiplier;
             }
             else if (matchedSymbols == 1)
             {
-                return 1.5;
+                return multiplier = 1.5;
             }
             else if (matchedSymbols == 2)
             {
-                return 2;
+                return multiplier = 2;
             }
             // This shouldn't happen
             else
             {
-                return 50;
+                return multiplier = 50;
             }
         }
 

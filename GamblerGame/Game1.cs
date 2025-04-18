@@ -243,6 +243,7 @@ namespace GamblerGame
                     }
                     // Round score variable displayed
                     _spriteBatch.DrawString(scoreFont, $"{roundScore}", new Vector2((int)(DesiredWidth * .835) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2, (int)(DesiredHeight * .36)), Color.White);
+
                     if (slotMachine.SymbolList != null)
                     {
                         for(int i = 0; i < slotMachine.SymbolList.Count; i++)
@@ -250,6 +251,8 @@ namespace GamblerGame
                             slotMachine.SymbolList[i].DrawSymbol(_spriteBatch, DesiredWidth/20 + ((DesiredWidth / 6)* i), DesiredHeight/2 - (DesiredWidth / 10), DesiredWidth / 5, DesiredWidth / 5);
                         }
                     }
+                    DisplayScoreList();
+
                     /*
                     _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .765), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
                     _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .783), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
@@ -354,6 +357,7 @@ namespace GamblerGame
         {
             if (numRolls <= 10)
             {
+                slotMachine.ScoreList.Clear();
                 slotMachine.Roll(rng);
                 rollScores = new List<double>();
                 rollScores = slotMachine.ScoreList;
@@ -374,6 +378,19 @@ namespace GamblerGame
                     gameState = State.GameOver;
                 }
             }
+        }
+
+        private void DisplayScoreList()
+        {
+            int move = 0;
+
+            _spriteBatch.DrawString(scoreFont, "(", new Vector2(((int)(DesiredWidth * .700) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
+            for (int i = 0; i < slotMachine.ScoreList.Count; i++)
+            {
+                _spriteBatch.DrawString(scoreFont, slotMachine.ScoreList[i].ToString(), new Vector2(((int)(DesiredWidth * .715) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
+                move += 60;
+            }
+            _spriteBatch.DrawString(scoreFont, ")  x  " +  slotMachine.Multiplier.ToString(), new Vector2(((int)(DesiredWidth * .715) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
         }
 
         /// <summary>
