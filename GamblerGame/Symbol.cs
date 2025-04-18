@@ -17,10 +17,10 @@ namespace GamblerGame
 
         public SymbolName Name { get { return name; } }
 
-        public Symbol(SymbolName name, ContentManager ct)
+        public Symbol(SymbolName name, Texture2D texture)
         {
             this.name = name;
-            this.texture = ct.Load<Texture2D>("UI/Symbols/" + name.ToString());
+            this.texture = texture;
         }
 
         public override string ToString()

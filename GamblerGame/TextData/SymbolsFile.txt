@@ -1,1 +1,1 @@
-Cherries/Cherries.png@Seven/Seven.png@Lemon/Lemon.png@Lime/Lime.png@Pineapple/Pineapple.png@Melon/Melon.png@Orange/Orange.png@Kiwi/Kiwi.png@Apple/Apple.png@Strawberry/Strawberry.png@Bananas/Bananas.png
+Cherries@Seven@Lemon@Lime@Pineapple@Melon@Orange@Kiwi@Apple@Strawberry@Bananas

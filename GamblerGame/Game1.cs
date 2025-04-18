@@ -95,14 +95,14 @@ namespace GamblerGame
             // TODO: Add your initialization logic here
             _graphics.PreferredBackBufferWidth = DesiredWidth;
             _graphics.PreferredBackBufferHeight = DesiredHeight;
-            // _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
             gameState = State.MainMenu;
             rng = new Random();
             slotMachine = new SlotMachine(Content);
 
             //This is subject to change
-            minScore = 500;
+            minScore = 2000;
 
             base.Initialize();
         }
@@ -168,7 +168,7 @@ namespace GamblerGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            updateColor();
+            UpdateColor();
             MoveBlackBar();
 
             // TODO: Add your update logic here
@@ -358,7 +358,7 @@ namespace GamblerGame
         /// <param name="circle"></param>
         private void Roll()
         {
-            if (numRolls <= 10)
+            if (numRolls < 10)
             {
                 slotMachine.ScoreList.Clear();
                 slotMachine.Roll(rng);
@@ -405,7 +405,7 @@ namespace GamblerGame
         /// <summary>
         /// Updates color values r, g, and b for the background
         /// </summary>
-        private void updateColor()
+        private void UpdateColor()
         {
             if (r > desiredR)
             {

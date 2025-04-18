@@ -76,8 +76,9 @@ namespace GamblerGame
             names = symbolFile.GetNames();
             foreach (string name in names)
             {
-                symbols.Add(new Symbol(Enum.Parse<SymbolName>(name), ct));
-                newSymbols.Add(new Symbol(Enum.Parse<SymbolName>(name), ct));
+                Texture2D texture = ct.Load<Texture2D>("UI/Symbols/" + name.ToString());
+                symbols.Add(new Symbol(Enum.Parse<SymbolName>(name), texture));
+                newSymbols.Add(new Symbol(Enum.Parse<SymbolName>(name), texture));
             }
 
         }
