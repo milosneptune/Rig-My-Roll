@@ -102,6 +102,7 @@ namespace GamblerGame
             }
         }
 
+        /*
         /// <summary>
         /// draws RESULTS of a roll for now
         /// </summary>
@@ -116,5 +117,6 @@ namespace GamblerGame
                 slots[i].Result.DrawSymbol(sb, new Vector2(x + i*10, y));
             }
         }
+        */
     }
 }

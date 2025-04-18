@@ -78,6 +78,9 @@ namespace GamblerGame
         private List<double> rollScores;
         private double totalScore;
         private bool paused = false;
+        private int numRolls;
+        private int minScore;
+        private bool hasWon;
 
         public Game1()
         {
@@ -97,6 +100,10 @@ namespace GamblerGame
             gameState = State.MainMenu;
             rng = new Random();
             slotMachine = new SlotMachine(Content);
+
+            //This is subject to change
+            minScore = 500;
+
             base.Initialize();
         }
 
@@ -192,7 +199,15 @@ namespace GamblerGame
                     }
                     break;
                 case State.GameOver:
-                    break;
+                    if (hasWon)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                        break;
                 case State.Quit:
                     break;
             }
@@ -230,6 +245,13 @@ namespace GamblerGame
                     _spriteBatch.DrawString(scoreFont, $"{roundScore}", new Vector2((int)(DesiredWidth * .835) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2, (int)(DesiredHeight * .36)), Color.White);
                     DisplayScoreList();
                     //_spriteBatch.DrawString(scoreFont, $"{}")
+                    if (slotMachine.SymbolList != null)
+                    {
+                        for(int i = 0; i < slotMachine.SymbolList.Count; i++)
+                        {
+                            slotMachine.SymbolList[i].DrawSymbol(_spriteBatch, DesiredWidth/20 + ((DesiredWidth / 6)* i), DesiredHeight/2 - (DesiredWidth / 10), DesiredWidth / 5, DesiredWidth / 5);
+                        }
+                    }
                     /*
                     _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .765), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
                     _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .783), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
@@ -248,7 +270,15 @@ namespace GamblerGame
                     }
                     break;
                 case State.GameOver:
-                    break;
+                    if (hasWon)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                        break;
                 case State.Quit:
                     break;
             }
@@ -331,6 +361,28 @@ namespace GamblerGame
             rollScore = slotMachine.RollTotal;
             roundScore += slotMachine.RollTotal;
 
+            if (numRolls <= 10)
+            {
+                slotMachine.Roll(rng);
+                rollScores = new List<double>();
+                rollScores = slotMachine.ScoreList;
+                rollScore = slotMachine.RollTotal;
+                roundScore += slotMachine.RollTotal;
+                numRolls++;
+            }
+            else
+            {
+                if (roundScore >= minScore)
+                {
+                    hasWon = true;
+                    gameState = State.GameOver;
+                }
+                else
+                {
+                    hasWon = false;
+                    gameState = State.GameOver;
+                }
+            }
         }
 
         private void DisplayScoreList()
