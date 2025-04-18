@@ -115,7 +115,9 @@ namespace GamblerGame
             scoreFont = Content.Load<SpriteFont>("Fonts/Daydream2");
             List <Texture2D> buttonTextures = new List<Texture2D> { buttonUnpressed, buttonPressed };
 
-            ui = new UIManager(GraphicsDevice, new List<SpriteFont> { pixelFont, titleFont, scoreFont }, new List<Texture2D> { backgroundTexture, scanlineTexture, sevenTexture });
+            ui = new UIManager(GraphicsDevice, 
+                new List<SpriteFont> { pixelFont, titleFont, scoreFont }, 
+                new List<Texture2D> { backgroundTexture, scanlineTexture, sevenTexture });
 
             // Play Game
             menuButtons.Add(new Button(
