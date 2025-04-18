@@ -61,6 +61,7 @@ namespace GamblerGame
             backgroundTexture = textures[0];
             scanlineTexture = textures[1];
         }
+
         public void DrawMenu(SpriteBatch sb)
         {
             ShapeBatch.Begin(graphicsDevice);
@@ -103,7 +104,12 @@ namespace GamblerGame
             sb.DrawString(titleFont, "Roll", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("Roll").X / 2, titleYPos + titleFont.MeasureString("Rig").Y * 2.25f), Color.White);
             sb.End();
         }
-
+        public void DrawPaused(SpriteBatch sb)
+        {
+            ShapeBatch.Begin(graphicsDevice);
+            ShapeBatch.Box(0, 0, DesiredWidth, DesiredHeight, new Color (0, 0, 0, 200));
+            ShapeBatch.End();
+        }
         public void DrawGame(SpriteBatch sb)
         {
 
@@ -172,7 +178,7 @@ namespace GamblerGame
             sb.Draw(scanlineTexture, new Rectangle(0, 0, DesiredWidth, DesiredHeight), new Color(25, 25, 25, 1));
         }
 
-        public void DrawBlackBars(GraphicsDevice graphicsDevice, int blackBarYPosition)
+        public void DrawBlackBars(int blackBarYPosition)
         {
             ShapeBatch.Begin(graphicsDevice);
             // Black Bar

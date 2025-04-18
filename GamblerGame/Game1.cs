@@ -11,7 +11,6 @@ namespace GamblerGame
     {
         MainMenu,
         Game,
-        Pause,
         GameOver,
         Quit
     }
@@ -34,8 +33,6 @@ namespace GamblerGame
 
         private Texture2D scanlineTexture;
         private Texture2D backgroundTexture;
-        private Texture2D buttonUnpressed;
-        private Texture2D buttonPressed;
         private SpriteFont pixelFont;
         private SpriteFont scoreFont;
         private SpriteFont titleFont;
@@ -80,6 +77,8 @@ namespace GamblerGame
         private List<double> rollScores;
         private double totalScore;
 
+        private bool paused = false;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -104,14 +103,12 @@ namespace GamblerGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             backgroundTexture = Content.Load<Texture2D>("Background/Purple2");
-            buttonUnpressed = Content.Load<Texture2D>("UI/Menu/ButtonUnpressed");
-            buttonPressed = Content.Load<Texture2D>("UI/Menu/ButtonPressed");
             scanlineTexture = Content.Load<Texture2D>("Background/SCANLINE 1");
             sevenTexture = Content.Load<Texture2D>("UI/Symbols/seven");
             pixelFont = Content.Load<SpriteFont>("Fonts/monogram");
             titleFont = Content.Load<SpriteFont>("Fonts/Daydream");
             scoreFont = Content.Load<SpriteFont>("Fonts/Daydream2");
-            List <Texture2D> buttonTextures = new List<Texture2D> { buttonUnpressed, buttonPressed };
+            List <Texture2D> buttonTextures = new List<Texture2D> { Content.Load<Texture2D>("UI/Menu/ButtonUnpressed"), Content.Load<Texture2D>("UI/Menu/ButtonPressed") };
 
             ui = new UIManager(GraphicsDevice, new List<SpriteFont> { pixelFont, titleFont, scoreFont }, new List<Texture2D> { backgroundTexture, scanlineTexture, sevenTexture });
 
@@ -181,8 +178,6 @@ namespace GamblerGame
                     }
                     backgroundPosition++; // moves the position of every tile down each frame
                     break;
-                case State.Pause:
-                    break;
                 case State.GameOver:
                     break;
                 case State.Quit:
@@ -212,23 +207,24 @@ namespace GamblerGame
                     ui.DrawMenu(_spriteBatch);
                     break;
                 case State.Game:
-                    ui.DrawGame(_spriteBatch);
-                    _spriteBatch.Begin();
-                    foreach (Button button in gameButtons)
+                        ui.DrawGame(_spriteBatch);
+                        _spriteBatch.Begin();
+                        foreach (Button button in gameButtons)
+                        {
+                            button.Draw(_spriteBatch);
+                        }
+                        // Round score variable displayed
+                        _spriteBatch.DrawString(scoreFont, $"{roundScore}", new Vector2((int)(DesiredWidth * .835) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2, (int)(DesiredHeight * .36)), Color.White);
+                        /*
+                        _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .765), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
+                        _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .783), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
+                        _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .802), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
+                        */
+                        _spriteBatch.End();
+                    if (!paused)
                     {
-                        button.Draw(_spriteBatch);
+                        ui.DrawPaused(_spriteBatch);
                     }
-                    // Round score variable displayed
-                    _spriteBatch.DrawString(scoreFont, $"{roundScore}", new Vector2((int)(DesiredWidth * .835) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2, (int)(DesiredHeight * .36)), Color.White);
-                    /*
-                    _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .765), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
-                    _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .783), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
-                    _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .802), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
-                    */
-                    _spriteBatch.End();
-                    break;
-                case State.Pause:
-                    _spriteBatch.End();
                     break;
                 case State.GameOver:
                     break;
@@ -236,7 +232,7 @@ namespace GamblerGame
                     break;
             }
 
-            ui.DrawBlackBars(GraphicsDevice, blackBarYPos);
+            ui.DrawBlackBars(blackBarYPos);
             ui.DrawScreenFilters(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
@@ -245,7 +241,6 @@ namespace GamblerGame
         /// <summary>
         /// Detects if the background has moved off the screen and teleports it back
         /// </summary>
-        /// <param name="circle"></param>
         private void BackgroundScreenWrap()
         {
             if (backgroundPosition > backgroundTileSize)
@@ -257,7 +252,6 @@ namespace GamblerGame
         /// <summary>
         /// Detects if the background has moved off the screen and teleports it back
         /// </summary>
-        /// <param name="circle"></param>
         private void MoveBlackBar()
         {
             if (blackBarYPos < desiredBlackBarYPos)
@@ -273,7 +267,6 @@ namespace GamblerGame
         /// <summary>
         /// Sets the state to game
         /// </summary>
-        /// <param name="circle"></param>
         private void GameState()
         {
             desiredR = 100;
@@ -286,15 +279,16 @@ namespace GamblerGame
         /// <summary>
         /// Sets the state to paused
         /// </summary>
-        /// <param name="circle"></param>
         private void Pause()
         {
-            gameState = State.Pause;
+            desiredR = 67;
+            desiredG = 78;
+            desiredB = 78;
+            paused = true;
         }
         /// <summary>
         /// Sets the state to Menu
         /// </summary>
-        /// <param name="circle"></param>
         private void Menu()
         {
             desiredR = 255;
