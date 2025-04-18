@@ -14,6 +14,7 @@ namespace GamblerGame
         private SymbolName name;
         private Texture2D texture;
 
+
         public SymbolName Name { get { return name; } }
 
         public Symbol(SymbolName name, ContentManager ct)

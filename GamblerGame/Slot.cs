@@ -16,15 +16,14 @@ namespace GamblerGame
     {
         Cherries = 10,
         Seven = 100,
-        Lemon = 30,
-        Lime = 50,
-        Grape = 70,
+        Lemon = 35,
+        Lime = 55,
         Pineapple = 60,
-        Melon = 10,
-        Orange = 60,
+        Melon = 25,
+        Orange = 65,
         Kiwi = 50,
-        Apple = 10,
-        Strawberry = 10,
+        Apple = 15,
+        Strawberry = 20,
         Bananas = 30,
     }
     internal class Slot
@@ -46,8 +45,13 @@ namespace GamblerGame
 
         public Slot(ContentManager ct)
         {
+
             //symbols = new List<Symbol>();
             //newSymbols = new List<Symbol>();
+            
+            symbols = new List<Symbol>();
+            newSymbols = new List<Symbol>();
+
             LoadSymbols(ct);
         }
 
@@ -67,6 +71,7 @@ namespace GamblerGame
             // then it needs to be added to both the symbols list and new symbols
 
             sm = new ScriptManager("SymbolsFile.txt");
+
             List<string> names = new List<string>();
             names = sm.GetNames();
             foreach (string name in names)

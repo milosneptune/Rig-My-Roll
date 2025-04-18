@@ -36,7 +36,7 @@ namespace GamblerGame
         /// Calls each of the slot roll methods and then adds up the scores. 
         /// After, it calls check Multiply and handles the round scoring
         /// </summary>
-        internal void Roll(Random rng)
+internal void Roll(Random rng)
         {
             roundScore = 0;
             rollScore = 0;
@@ -58,15 +58,15 @@ namespace GamblerGame
         {
             matchedSymbols = 0;
 
-            if (slots[0].Result == slots[1].Result)
+            if (slots[0].ResultName == slots[1].ResultName)
             {
                 matchedSymbols++;
             }
-            else if (slots[0].Result == slots[2].Result)
+            if (slots[0].ResultName == slots[2].ResultName)
             {
                 matchedSymbols++;
             }
-            else if (slots[1].Result == slots[2].Result)
+            if (slots[1].ResultName == slots[2].ResultName)
             {
                 matchedSymbols++;
             }
