@@ -58,7 +58,7 @@ namespace GamblerGame
         private List<Button> pauseButtons = new List<Button>();
 
         private int blackBarYPos = 0;
-        private int desiredBlackBarYPos = DesiredHeight/2 - DesiredHeight/10;
+        private int desiredBlackBarYPos = DesiredHeight / 2 - DesiredHeight / 10;
         SlotMachine slotMachine;
 
         private int r = 255;
@@ -109,10 +109,10 @@ namespace GamblerGame
             pixelFont = Content.Load<SpriteFont>("Fonts/monogram");
             titleFont = Content.Load<SpriteFont>("Fonts/Daydream");
             scoreFont = Content.Load<SpriteFont>("Fonts/Daydream2");
-            List <Texture2D> buttonTextures = new List<Texture2D> { Content.Load<Texture2D>("UI/Menu/ButtonUnpressed"), Content.Load<Texture2D>("UI/Menu/ButtonPressed") };
+            List<Texture2D> buttonTextures = new List<Texture2D> { Content.Load<Texture2D>("UI/Menu/ButtonUnpressed"), Content.Load<Texture2D>("UI/Menu/ButtonPressed") };
 
-            ui = new UIManager(GraphicsDevice, 
-                new List<SpriteFont> { pixelFont, titleFont, scoreFont }, 
+            ui = new UIManager(GraphicsDevice,
+                new List<SpriteFont> { pixelFont, titleFont, scoreFont },
                 new List<Texture2D> { backgroundTexture, scanlineTexture, sevenTexture });
 
             // Play Game
@@ -190,7 +190,7 @@ namespace GamblerGame
                             button.Update(gameTime);
                         }*/
                     }
-                        break;
+                    break;
                 case State.GameOver:
                     break;
                 case State.Quit:
@@ -220,20 +220,22 @@ namespace GamblerGame
                     ui.DrawMenu(_spriteBatch);
                     break;
                 case State.Game:
-                        ui.DrawGame(_spriteBatch);
-                        _spriteBatch.Begin();
-                        foreach (Button button in gameButtons)
-                        {
-                            button.Draw(_spriteBatch);
-                        }
-                        // Round score variable displayed
-                        _spriteBatch.DrawString(scoreFont, $"{roundScore}", new Vector2((int)(DesiredWidth * .835) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2, (int)(DesiredHeight * .36)), Color.White);
-                        /*
-                        _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .765), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
-                        _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .783), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
-                        _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .802), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
-                        */
-                        _spriteBatch.End();
+                    ui.DrawGame(_spriteBatch);
+                    _spriteBatch.Begin();
+                    foreach (Button button in gameButtons)
+                    {
+                        button.Draw(_spriteBatch);
+                    }
+                    // Round score variable displayed
+                    _spriteBatch.DrawString(scoreFont, $"{roundScore}", new Vector2((int)(DesiredWidth * .835) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2, (int)(DesiredHeight * .36)), Color.White);
+                    DisplayScoreList();
+                    //_spriteBatch.DrawString(scoreFont, $"{}")
+                    /*
+                    _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .765), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
+                    _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .783), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
+                    _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .802), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
+                    */
+                    _spriteBatch.End();
                     if (paused)
                     {
                         ui.DrawPaused(_spriteBatch);
@@ -322,12 +324,26 @@ namespace GamblerGame
         /// <param name="circle"></param>
         private void Roll()
         {
+            slotMachine.ScoreList.Clear();
             slotMachine.Roll(rng);
             rollScores = new List<double>();
             rollScores = slotMachine.ScoreList;
             rollScore = slotMachine.RollTotal;
             roundScore += slotMachine.RollTotal;
 
+        }
+
+        private void DisplayScoreList()
+        {
+            int move = 0;
+
+            _spriteBatch.DrawString(scoreFont, "(", new Vector2(((int)(DesiredWidth * .700) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
+            for (int i = 0; i < slotMachine.ScoreList.Count; i++)
+            {
+                _spriteBatch.DrawString(scoreFont, slotMachine.ScoreList[i].ToString(), new Vector2(((int)(DesiredWidth * .715) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
+                move += 60;
+            }
+            _spriteBatch.DrawString(scoreFont, ")  x  " +  slotMachine.Multiplier.ToString(), new Vector2(((int)(DesiredWidth * .715) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
         }
 
         /// <summary>
