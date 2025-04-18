@@ -32,7 +32,7 @@ namespace GamblerGame
         private List<Symbol> symbols; // the unchanged list of symbols
         private List<Symbol> newSymbols; // this is the list that will change if an item is used
 
-        private ScriptManager sm;
+        private ScriptManager symbolFile;
 
         /// <summary>
         /// for getting the Symbol result of a roll from the slot 
@@ -70,10 +70,10 @@ namespace GamblerGame
             // needs to intialize each of them with it's name and appropriate texture, 
             // then it needs to be added to both the symbols list and new symbols
 
-            sm = new ScriptManager("SymbolsFile.txt");
+            symbolFile = new ScriptManager("SymbolsFile.txt");
 
             List<string> names = new List<string>();
-            names = sm.GetNames();
+            names = symbolFile.GetNames();
             foreach (string name in names)
             {
                 symbols.Add(new Symbol(Enum.Parse<SymbolName>(name), ct));

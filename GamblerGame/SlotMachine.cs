@@ -11,11 +11,11 @@ namespace GamblerGame
 {
     internal class SlotMachine
     {
-        List<Slot> slots;
-        double rollScore;
 
-        int matchedSymbols;
-        //Random rng = new Random();
+        private List<Slot> slots;
+        private double rollScore;
+        private int matchedSymbols;
+        //private Random rng = new Random();
 
         public double RollTotal { get; private set; }
         public double RollScore { get; private set; }
@@ -37,7 +37,7 @@ namespace GamblerGame
         /// Calls each of the slot roll methods and then adds up the scores. 
         /// After, it calls check Multiply and handles the round scoring
         /// </summary>
-internal void Roll(Random rng)
+        internal void Roll(Random rng)
         {
             ScoreList = new List<double>();
             SymbolList = new List<Symbol>();
