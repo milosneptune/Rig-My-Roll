@@ -27,9 +27,11 @@ namespace GamblerGame
             return name.ToString();
         }
 
-        public void DrawSymbol(SpriteBatch sb)
+        public void DrawSymbol(SpriteBatch sb, Vector2 position)
         {
-            sb.Draw(texture, new Vector2(300, 300), Color.White);
+            // TODO: Gabe feel free to change the vector, I hardcoded it for now just to see if it would show up
+            // but it would be nice if it could take the vector as a parameter and be called from slot machine
+            sb.Draw(texture, position, Color.White);
         }
     }
 }

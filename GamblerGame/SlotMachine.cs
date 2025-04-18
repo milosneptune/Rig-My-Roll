@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,7 +24,7 @@ namespace GamblerGame
         public SlotMachine(ContentManager ct)
         {
             slots = new List<Slot>()
-            { 
+            {
                 new Slot(ct),
                 new Slot(ct),
                 new Slot(ct)
@@ -68,7 +70,7 @@ namespace GamblerGame
             {
                 matchedSymbols++;
             }
-            
+
             if (matchedSymbols == 0)
             {
                 return 1;
@@ -92,10 +94,19 @@ namespace GamblerGame
             }
         }
 
-        public void DrawSymbols()
+        /// <summary>
+        /// draws RESULTS of a roll for now
+        /// </summary>
+        public void DrawSymbols(SpriteBatch sb)
         {
+        //    Vector2 position = new Vector2(300, 300);
+            int x = 300;
+            int y = 300;
 
+            for (int i = 0; i < slots.Count; i++)
+            {
+                slots[i].Result.DrawSymbol(sb, new Vector2(x + i*10, y));
+            }
         }
-
     }
 }

@@ -204,7 +204,7 @@ namespace GamblerGame
                     ui.DrawGame(_spriteBatch);
 
                     // --- TESTING ---
-                    tester.DrawSymbol(_spriteBatch);
+                    //tester.DrawSymbol(_spriteBatch);
 
 
                     foreach (Button button in gameButtons)
@@ -287,6 +287,7 @@ namespace GamblerGame
             rollScore = slotMachine.RollScore;
             roundScore = slotMachine.RoundScore;
             totalScore += slotMachine.RoundScore;
+            slotMachine.DrawSymbols(_spriteBatch);
         }
 
         /// <summary>
