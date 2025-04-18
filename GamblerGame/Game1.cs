@@ -76,6 +76,7 @@ namespace GamblerGame
         private double rollScore;
         private double totalScore;
 
+        Symbol tester;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -93,6 +94,8 @@ namespace GamblerGame
             _graphics.ApplyChanges();
             gameState = State.MainMenu;
             slotMachine = new SlotMachine(Content);
+             tester = new Symbol(SymbolName.Seven, Content);
+
             base.Initialize();
         }
 
@@ -199,6 +202,11 @@ namespace GamblerGame
                     break;
                 case State.Game:
                     ui.DrawGame(_spriteBatch);
+
+                    // --- TESTING ---
+                    tester.DrawSymbol(_spriteBatch);
+
+
                     foreach (Button button in gameButtons)
                     {
                         button.Draw(_spriteBatch);
@@ -275,7 +283,7 @@ namespace GamblerGame
         /// <param name="circle"></param>
         private void Roll()
         {
-            slotMachine.Roll();
+            slotMachine.Roll(rng);
             rollScore = slotMachine.RollScore;
             roundScore = slotMachine.RoundScore;
             totalScore += slotMachine.RoundScore;
