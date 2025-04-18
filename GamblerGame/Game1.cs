@@ -243,6 +243,8 @@ namespace GamblerGame
                     }
                     // Round score variable displayed
                     _spriteBatch.DrawString(scoreFont, $"{roundScore}", new Vector2((int)(DesiredWidth * .835) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2, (int)(DesiredHeight * .36)), Color.White);
+                    DisplayScoreList();
+                    //_spriteBatch.DrawString(scoreFont, $"{}")
                     if (slotMachine.SymbolList != null)
                     {
                         for(int i = 0; i < slotMachine.SymbolList.Count; i++)
@@ -352,6 +354,13 @@ namespace GamblerGame
         /// <param name="circle"></param>
         private void Roll()
         {
+            slotMachine.ScoreList.Clear();
+            slotMachine.Roll(rng);
+            rollScores = new List<double>();
+            rollScores = slotMachine.ScoreList;
+            rollScore = slotMachine.RollTotal;
+            roundScore += slotMachine.RollTotal;
+
             if (numRolls <= 10)
             {
                 slotMachine.Roll(rng);
@@ -374,6 +383,19 @@ namespace GamblerGame
                     gameState = State.GameOver;
                 }
             }
+        }
+
+        private void DisplayScoreList()
+        {
+            int move = 0;
+
+            _spriteBatch.DrawString(scoreFont, "(", new Vector2(((int)(DesiredWidth * .700) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
+            for (int i = 0; i < slotMachine.ScoreList.Count; i++)
+            {
+                _spriteBatch.DrawString(scoreFont, slotMachine.ScoreList[i].ToString(), new Vector2(((int)(DesiredWidth * .715) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
+                move += 60;
+            }
+            _spriteBatch.DrawString(scoreFont, ")  x  " +  slotMachine.Multiplier.ToString(), new Vector2(((int)(DesiredWidth * .715) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
         }
 
         /// <summary>
