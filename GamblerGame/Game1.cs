@@ -199,6 +199,7 @@ namespace GamblerGame
                     }
                     break;
                 case State.GameOver:
+                    backgroundPosition++;
                     if (hasWon)
                     {
 
@@ -251,13 +252,14 @@ namespace GamblerGame
                             slotMachine.SymbolList[i].DrawSymbol(_spriteBatch, DesiredWidth/20 + ((DesiredWidth / 6)* i), DesiredHeight/2 - (DesiredWidth / 10), DesiredWidth / 5, DesiredWidth / 5);
                         }
                     }
-                    DisplayScoreList();
 
+                    DisplayScoreList();
                     /*
                     _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .765), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
                     _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .783), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
                     _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .802), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
                     */
+
                     _spriteBatch.End();
                     if (paused)
                     {
@@ -273,12 +275,13 @@ namespace GamblerGame
                 case State.GameOver:
                     if (hasWon)
                     {
-
+                        _spriteBatch.DrawString(titleFont, "You Win", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("You Win").X / 2, DesiredHeight / 2 - titleFont.MeasureString("You Win").Y / 2), Color.White);
                     }
                     else
                     {
-
+                        _spriteBatch.DrawString(titleFont, "You Lose", new Vector2(DesiredWidth / 2 - titleFont.MeasureString("You Lose").X / 2, DesiredHeight / 2 - titleFont.MeasureString("You Lose").Y / 2), Color.White);
                     }
+                    _spriteBatch.End();
                         break;
                 case State.Quit:
                     break;
@@ -371,11 +374,17 @@ namespace GamblerGame
                 {
                     hasWon = true;
                     gameState = State.GameOver;
+                    desiredR = 75;
+                    desiredG = 200;
+                    desiredB = 75;
                 }
                 else
                 {
                     hasWon = false;
                     gameState = State.GameOver;
+                    desiredR = 200;
+                    desiredG = 75;
+                    desiredB = 75;
                 }
             }
         }
