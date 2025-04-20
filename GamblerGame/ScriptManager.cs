@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection.Metadata;
 
 namespace GamblerGame
 {
@@ -45,6 +46,16 @@ namespace GamblerGame
             }
         }
 
+        /// <summary>
+        /// Returns the name of the item using the index.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public string GetName(int index)
+        {
+            string[] info = contents[index].Split('/');
+            return info[0];
+        }
         /// <summary>
         /// Returns all the names of contents.
         /// </summary>
