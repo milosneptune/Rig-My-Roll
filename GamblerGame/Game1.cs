@@ -24,6 +24,7 @@ namespace GamblerGame
 
         const int DesiredWidth = 1920;
         const int DesiredHeight = 1080;
+        const int TotNumOfItems = 7;
 
         // Background Values
         const int xAxisTiles = 16; // Number of background texture grids along the x axis
@@ -56,6 +57,7 @@ namespace GamblerGame
         const int pauseButtonXPos = (int)(DesiredWidth * .675);
         private List<Button> gameButtons = new List<Button>();
         private List<Button> pauseButtons = new List<Button>();
+        private List<Item> allItems = new List<Item>();
 
         private int blackBarYPos = 0;
         private int desiredBlackBarYPos = DesiredHeight / 2 - DesiredHeight / 10;
@@ -161,7 +163,24 @@ namespace GamblerGame
                     Color.Black,
                     buttonTextures));
             //gameButtons[1].OnLeftButtonClick += Pause;
-            // TODO: use this.Content to load your game content here
+
+            // Adds a list of all existing items.
+            for (int i = 0; i < TotNumOfItems; i++)
+            {
+                // TODO: Change the textures for the item buttons.
+                allItems.Add(new Item(i, _graphics.GraphicsDevice, pixelFont, buttonTextures));
+            }
+
+            // Adds events based on the type of item.
+            foreach (Item item in allItems)
+            {
+                switch (item.Type)
+                {
+                    case '#':
+                        item.UseItem += slotMachine.RollSpecificSymbol;
+                        break;
+                }
+            }
         }
 
         protected override void Update(GameTime gameTime)
@@ -434,5 +453,7 @@ namespace GamblerGame
                 b++;
             }
         }
+
+
     }
 }

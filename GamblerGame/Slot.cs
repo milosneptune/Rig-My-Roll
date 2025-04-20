@@ -95,5 +95,13 @@ namespace GamblerGame
             Result = symbols[rng.Next(1, symbols.Count)];
         }
 
+        /// <summary>
+        /// Rolls a specific symbol using an item.
+        /// </summary>
+        /// <param name="name"></param>
+        public void RollSpecificSymbol(string name)
+        {
+            Result = symbols[symbolFile.FindIndex(name)];
+        }
     }
 }

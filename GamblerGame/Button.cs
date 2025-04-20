@@ -24,14 +24,14 @@ namespace GamblerGame
         protected SpriteFont font;
         protected MouseState prevMState;
         protected bool enabled = true;
-        private string text;
+        protected string text;
         protected Rectangle position; // Button position and size
-        private Vector2 textLoc;
-        private Vector2 textLocPressed;
-        private Vector2 textLocUnpressed;
-        Texture2D buttonImg;
-        Texture2D buttonUnpressedImg;
-        Texture2D buttonPressedImg;
+        protected Vector2 textLoc;
+        protected Vector2 textLocPressed;
+        protected Vector2 textLocUnpressed;
+        protected Texture2D buttonImg;
+        protected Texture2D buttonUnpressedImg;
+        protected Texture2D buttonPressedImg;
         private Color textColor;
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace GamblerGame
         /// Each frame, update its status if it's been clicked.
         /// </summary>
         /// <param name="gameTime">Unused, but required to implement abstract class</param>
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             // Check/capture the mouse state regardless of whether this button
             // if active so that it's up to date next time!

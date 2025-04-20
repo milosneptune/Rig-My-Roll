@@ -118,5 +118,16 @@ namespace GamblerGame
             }
         }
         */
+
+        /// <summary>
+        /// Rolls a specific symbol in one slot.
+        /// </summary>
+        /// <param name="action"></param>
+        public void RollSpecificSymbol(string action)
+        {
+            // TODO: Add roll logic with this set slot symbol.
+            string[] info = action.Split(',');
+            slots[int.Parse(info[0])].RollSpecificSymbol(info[1]);
+        }
     }
 }
