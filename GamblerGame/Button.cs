@@ -61,7 +61,7 @@ namespace GamblerGame
             Vector2 textSize = font.MeasureString(text);
             textLocPressed = new Vector2(
                 (position.X + position.Width / 2) - textSize.X / 2,
-                (position.Y + position.Height / 2) - textSize.Y/4 
+                (position.Y + position.Height / 2) - textSize.Y / 4 
             );
             textLocUnpressed = new Vector2(
                 (position.X + position.Width / 2) - textSize.X / 2,
@@ -90,13 +90,23 @@ namespace GamblerGame
             // Check/capture the mouse state regardless of whether this button
             // if active so that it's up to date next time!
             MouseState mState = Mouse.GetState();
-            if (mState.LeftButton == ButtonState.Released &&
-                prevMState.LeftButton == ButtonState.Pressed &&
-                this.position.Contains(mState.Position))
+
+            if (this.position.Contains(mState.Position))
             {
-                if (OnLeftButtonClick != null)
+                // If it is pressed
+                if (mState.LeftButton == ButtonState.Released &&
+                prevMState.LeftButton == ButtonState.Pressed)
                 {
-                    OnLeftButtonClick();
+                    if (OnLeftButtonClick != null)
+                    {
+                        OnLeftButtonClick();
+                    }
+                }
+
+                // If it is only hovering over the button
+                else
+                {
+                    Hover();
                 }
             }
 
@@ -121,7 +131,7 @@ namespace GamblerGame
         /// </summary>
         /// <param name="spriteBatch">The spriteBatch on which to draw this button. The button 
         /// assumes that Begin() has already been called and End() will be called later.</param>
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             // Draw the button itself
             spriteBatch.Draw(buttonImg, position, new Color(15, 15, 15));
@@ -130,5 +140,12 @@ namespace GamblerGame
             spriteBatch.DrawString(font, text, textLoc, Color.White);
         }
 
+        /// <summary>
+        /// Runs when the mouse is hovered over the button.
+        /// </summary>
+        public virtual void Hover()
+        {
+
+        }
     }
 }

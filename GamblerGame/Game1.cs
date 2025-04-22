@@ -11,6 +11,7 @@ namespace GamblerGame
     {
         MainMenu,
         Game,
+        Store,
         GameOver,
         Quit
     }
@@ -62,6 +63,7 @@ namespace GamblerGame
         private int blackBarYPos = 0;
         private int desiredBlackBarYPos = DesiredHeight / 2 - DesiredHeight / 10;
         SlotMachine slotMachine;
+        Store store;
 
         private int r = 255;
         private int g = 255;
@@ -83,6 +85,7 @@ namespace GamblerGame
         private int numRolls;
         private int minScore;
         private bool hasWon;
+        private int money;
 
         public Game1()
         {
@@ -168,7 +171,8 @@ namespace GamblerGame
             for (int i = 0; i < TotNumOfItems; i++)
             {
                 // TODO: Change the textures for the item buttons.
-                allItems.Add(new Item(i, _graphics.GraphicsDevice, pixelFont, buttonTextures));
+                // TODO: Change the second font for the description.
+                allItems.Add(new Item(i, _graphics.GraphicsDevice, pixelFont, pixelFont, buttonTextures));
             }
 
             // Adds events based on the type of item.
