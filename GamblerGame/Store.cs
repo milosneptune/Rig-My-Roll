@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -31,9 +32,13 @@ namespace GamblerGame
             storeItems = new List<Item>();
         }
         
-        public void StoreInteraction(Random rng)
+        public void StoreInteraction(Random rng, GameTime gametime)
         {
             StockStore(rng);
+            foreach (Item item in storeItems)
+            {
+                item.Update(gametime);
+            }
         }
 
         private void StockStore(Random rng)

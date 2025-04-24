@@ -241,10 +241,7 @@ namespace GamblerGame
                     }
                     break;
                 case State.Store:
-                    foreach (Button item in store.storeItems)
-                    {
-                        item.Update(gameTime);
-                    }
+                    store.StoreInteraction(rng, gameTime);
                     break;
                 case State.GameOver:
                     backgroundPosition++;
