@@ -64,6 +64,7 @@ namespace GamblerGame
         private double CheckMultiply()
         {
             matchedSymbols = 0;
+            multiplier = 1;
 
             if (slots[0].ResultName.ToString() == slots[1].ResultName.ToString())
             {
