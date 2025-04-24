@@ -106,6 +106,7 @@ namespace GamblerGame
             rng = new Random();
             slotMachine = new SlotMachine(Content);
 
+
             //This is subject to change
             minScore = 2000;
 
@@ -174,6 +175,8 @@ namespace GamblerGame
                 // TODO: Change the second font for the description.
                 allItems.Add(new Item(i, _graphics.GraphicsDevice, pixelFont, pixelFont, buttonTextures));
             }
+            
+            store = new Store(allItems);
 
             // Adds events based on the type of item.
             foreach (Item item in allItems)
@@ -235,6 +238,12 @@ namespace GamblerGame
                         {
                             button.Update(gameTime);
                         }*/
+                    }
+                    break;
+                case State.Store:
+                    foreach (Button item in store.storeItems)
+                    {
+                        item.Update(gameTime);
                     }
                     break;
                 case State.GameOver:

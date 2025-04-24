@@ -42,6 +42,7 @@ namespace GamblerGame
         /// </summary>
         internal void Roll(Random rng)
         {
+
            // ScoreList = new List<double>();
             SymbolList = new List<Symbol>();
             rollScore = 0;
