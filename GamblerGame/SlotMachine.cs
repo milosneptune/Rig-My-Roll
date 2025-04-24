@@ -42,6 +42,7 @@ namespace GamblerGame
         /// </summary>
         internal void Roll(Random rng)
         {
+
            // ScoreList = new List<double>();
             SymbolList = new List<Symbol>();
             rollScore = 0;
@@ -64,6 +65,7 @@ namespace GamblerGame
         private double CheckMultiply()
         {
             matchedSymbols = 0;
+            multiplier = 1;
 
             if (slots[0].ResultName.ToString() == slots[1].ResultName.ToString())
             {
