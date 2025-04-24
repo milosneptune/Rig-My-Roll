@@ -129,5 +129,25 @@ namespace GamblerGame
             string[] info = action.Split(',');
             slots[int.Parse(info[0])].RollSpecificSymbol(info[1]);
         }
+
+        /// <summary>
+        /// Increases a chance of a symbol in a slot.
+        /// </summary>
+        /// <param name="action"></param>
+        public void IncreaseSymbolChance(string action)
+        {
+            // TODO: Add increase chance logic.
+            string[] info = action.Split(',');
+            slots[int.Parse(info[0])].IncreaseSymbolChance(info[1], int.Parse(info[2]));
+        }
+
+        /// <summary>
+        /// Freezes the slot.
+        /// </summary>
+        /// <param name="action"></param>
+        public void FreezeSlot(string action)
+        {
+            slots[int.Parse(action)].Freeze();
+        }
     }
 }

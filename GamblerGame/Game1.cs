@@ -25,7 +25,7 @@ namespace GamblerGame
 
         const int DesiredWidth = 1920;
         const int DesiredHeight = 1080;
-        const int TotNumOfItems = 7;
+        const int TotNumOfItems = 4;
 
         // Background Values
         const int xAxisTiles = 16; // Number of background texture grids along the x axis
@@ -180,8 +180,24 @@ namespace GamblerGame
             {
                 switch (item.Type)
                 {
+                    // Guaranteeing a symbol in a slot.
                     case '#':
                         item.UseItem += slotMachine.RollSpecificSymbol;
+                        break;
+
+                    // Increasing the chances of a symbol in a slot.
+                    case '^':
+                        item.UseItem += slotMachine.IncreaseSymbolChance;
+                        break;
+
+                    // Freezes a slot.
+                    case '&':
+                        item.UseItem += slotMachine.FreezeSlot;
+                        break;
+
+                    // Adds a multiplier.
+                    case '*':
+                        item.UseItem += Multiplier;
                         break;
                 }
             }
@@ -458,6 +474,13 @@ namespace GamblerGame
             }
         }
 
-
+        /// <summary>
+        /// Adds a multiplier for the score.
+        /// </summary>
+        /// <param name="action"></param>
+        public void Multiplier(string action)
+        {
+            // TODO: Add multiplier logic.
+        }
     }
 }

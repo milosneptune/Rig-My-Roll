@@ -115,5 +115,24 @@ namespace GamblerGame
         {
             Result = symbols[symbolFile.FindIndex(name)];
         }
+
+        /// <summary>
+        /// Increases the chance of a symbol in this slot.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="chance"></param>
+        public void IncreaseSymbolChance(string name, int chance)
+        {
+            // The symbol is: symbols[symbolFile.FindIndex(name)]
+            // TODO: Add chance
+        }
+
+        /// <summary>
+        /// Freezes the slot symbol.
+        /// </summary>
+        public void Freeze()
+        {
+            // TODO: Add freeze logic.
+        }
     }
 }

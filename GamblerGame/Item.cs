@@ -83,9 +83,13 @@ namespace GamblerGame
                 prevMState.LeftButton == ButtonState.Pressed)
                 {
                     // If it isn't store, then the item will be used.
-                    if (UseItem != null)
+                    if (UseItem != null && !showDescription)
                     {
                         UseItem(action);
+                    }
+                    else
+                    {
+                        BuyItemChoice();
                     }
                 }
 
@@ -187,6 +191,15 @@ namespace GamblerGame
                 textLoc = textLocUnpressed;
                 descriptionLoc = descriptionLocUnpressed;
             }
+        }
+
+        /// <summary>
+        /// Displays the choice of buy or cancel.
+        /// </summary>
+        public void BuyItemChoice()
+        {
+            // TODO: Add choice of buying or cancelling. There should be one button to buy, and once that button is pressed,
+            // the delegate allows it to return the purchased item.
         }
     }
 }
