@@ -57,10 +57,15 @@ namespace GamblerGame
         const int pauseButtonYPos = (int)(DesiredHeight * .739);
         const int rollButtonXPos = (int)(DesiredWidth / 5.9);
         const int pauseButtonXPos = (int)(DesiredWidth * .675);
+        private int rollButtonDelay = 0;
+        private int rollingAnimationDelay = 0;
         private List<Button> gameButtons = new List<Button>();
         private List<Button> pauseButtons = new List<Button>();
         private List<Button> gameOverButtons = new List<Button>();
         private List<Item> allItems = new List<Item>();
+        private List<Symbol> symbols = new List<Symbol>();
+        private bool[] displaySymbol;
+        private int[] rollingNumber;
 
         private int blackBarYPos = 0;
         private int desiredBlackBarYPos = DesiredHeight / 2 - DesiredHeight / 10;
@@ -106,8 +111,9 @@ namespace GamblerGame
             _graphics.ApplyChanges();
             gameState = State.MainMenu;
             rng = new Random();
+            rollingNumber = new int[3];
             slotMachine = new SlotMachine(Content);
-
+            symbols = slotMachine.SlotList[0].Symbols;
 
             //This is subject to change
             minScore = 2000;
@@ -120,7 +126,6 @@ namespace GamblerGame
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             backgroundTexture = Content.Load<Texture2D>("Background/Purple2");
             scanlineTexture = Content.Load<Texture2D>("Background/SCANLINE 1");
-            sevenTexture = Content.Load<Texture2D>("UI/Symbols/seven");
             pixelFont = Content.Load<SpriteFont>("Fonts/monogram");
             titleFont = Content.Load<SpriteFont>("Fonts/Daydream");
             scoreFont = Content.Load<SpriteFont>("Fonts/Daydream2");
@@ -130,6 +135,8 @@ namespace GamblerGame
                 new List<SpriteFont> { pixelFont, titleFont, scoreFont },
                 new List<Texture2D> { backgroundTexture, scanlineTexture, sevenTexture });
 
+
+            // ----------- MENU BUTTONS ---------------
             // Play Game
             menuButtons.Add(new Button(
                     _graphics.GraphicsDevice,
@@ -150,13 +157,14 @@ namespace GamblerGame
                     buttonTextures));
             menuButtons[1].OnLeftButtonClick += Exit;
 
+            // ----------- GAME BUTTONS ---------------
             // Roll (reposition
             gameButtons.Add(new Button(
                     _graphics.GraphicsDevice,
                     new Rectangle(pauseButtonXPos, rollButtonYPos, pauseButtonWidth, pauseButtonHeight),
                     "Roll",
                     pixelFont,
-                    new Color(30, 30, 50),
+                    new Color(120, 30, 30),
                     buttonTextures));
             gameButtons[0].OnLeftButtonClick += Roll;
 
@@ -170,46 +178,48 @@ namespace GamblerGame
                     buttonTextures));
             gameButtons[1].OnLeftButtonClick += Pause;
 
-            // Quit
+            // ----------- PAUSE BUTTONS ---------------
+            // Resume
             pauseButtons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(playButtonXPos, menuButtonYPos, menuButtonWidth, menuButtonHeight),
-                    "Quit",
-                    pixelFont,
-                    Color.Black,
-                    buttonTextures));
-            pauseButtons[0].OnLeftButtonClick += Exit;
-
-            // resume
-            pauseButtons.Add(new Button(
-                    _graphics.GraphicsDevice,
-                    new Rectangle(quitButtonXPos, menuButtonYPos, menuButtonWidth, menuButtonHeight),
+                    new Rectangle(DesiredWidth / 2 - DesiredWidth / 12, (int)(DesiredHeight / 10) + DesiredHeight / 2 - (int)(DesiredHeight / 3), DesiredWidth / 6, DesiredHeight / 12),
                     "Resume",
                     pixelFont,
-                    Color.Black,
+                    new Color(40, 80, 50),
                     buttonTextures));
-            pauseButtons[1].OnLeftButtonClick += Resume;
-
-            // Options
-            pauseButtons.Add(new Button(
-                    _graphics.GraphicsDevice,
-                    new Rectangle(playButtonXPos, menuButtonYPos + 100, menuButtonWidth, menuButtonHeight),
-                    "Options",
-                    pixelFont,
-                    Color.Black,
-                    buttonTextures));
-            pauseButtons[2].OnLeftButtonClick += Options;
+            pauseButtons[0].OnLeftButtonClick += Resume;
 
             // New Run
             pauseButtons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(quitButtonXPos, menuButtonYPos + 100, menuButtonWidth, menuButtonHeight),
+                    new Rectangle(DesiredWidth / 2 - DesiredWidth / 12, (int)(DesiredHeight / 10) + DesiredHeight / 2 - (int)(DesiredHeight / 3) + DesiredHeight / 9, DesiredWidth / 6, DesiredHeight / 12),
                     "New Run",
                     pixelFont,
-                    Color.Black,
+                    new Color(130, 120, 30),
                     buttonTextures));
-            pauseButtons[3].OnLeftButtonClick += GameState;
+            pauseButtons[1].OnLeftButtonClick += GameState;
 
+            // Options
+            pauseButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(DesiredWidth / 2 - DesiredWidth / 12, (int)(DesiredHeight / 10) + DesiredHeight / 2 - (int)(DesiredHeight / 3) + (2 * (DesiredHeight / 9)), DesiredWidth / 6, DesiredHeight / 12),
+                    "Options",
+                    pixelFont,
+                    new Color(120, 60, 40),
+                    buttonTextures));
+            pauseButtons[2].OnLeftButtonClick += Options;
+
+            // Quit
+            pauseButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(DesiredWidth / 2 - DesiredWidth / 12, (int)(DesiredHeight / 10) + DesiredHeight / 2 - (int)(DesiredHeight / 3) + (3 * (DesiredHeight / 9)), DesiredWidth / 6, DesiredHeight / 12),
+                    "Quit",
+                    pixelFont,
+                    new Color(80, 30, 30),
+                    buttonTextures));
+            pauseButtons[3].OnLeftButtonClick += Exit;
+
+            // ----------- GAME OVER BUTTONS ---------------
             // Play Game
             gameOverButtons.Add(new Button(
                     _graphics.GraphicsDevice,
@@ -229,6 +239,8 @@ namespace GamblerGame
                     new Color(15, 15, 15),
                     buttonTextures));
             gameOverButtons[1].OnLeftButtonClick += Menu;
+
+            // ----------- OPTIONS MENU BUTTONS ---------------
 
             // Adds a list of all existing items.
             for (int i = 0; i < TotNumOfItems; i++)
@@ -288,9 +300,60 @@ namespace GamblerGame
                 case State.Game:
                     if (!paused)
                     {
-                        foreach (Button button in gameButtons)
+                        gameButtons[1].Update(gameTime);
+                        if (rollButtonDelay == 0)
                         {
-                            button.Update(gameTime);
+                            gameButtons[0].Update(gameTime);
+                        }
+                        else
+                        {
+                            if (rollButtonDelay > 0)
+                            {
+                                rollButtonDelay--;
+                            }
+                            if (rollButtonDelay == 260)
+                            {
+                                displaySymbol[0] = true;
+                            }
+                            if (rollButtonDelay == 180)
+                            {
+                                displaySymbol[1] = true;
+                            }
+                            if (rollButtonDelay == 80)
+                            {
+                                displaySymbol[2] = true;
+                            }
+                            if (rollButtonDelay == 1)
+                            {
+                                for (int i = 0; i < 3; i++)
+                                {
+                                    displaySymbol[i] = false;
+                                }
+
+                            }
+                        }
+                        if (rollingAnimationDelay == 0)
+                        {
+                            rollingAnimationDelay = 3;
+                        }
+                        else
+                        {
+                            if (rollingAnimationDelay > 0)
+                            {
+                                rollingAnimationDelay--;
+                            }
+                            if (rollingAnimationDelay == 2)
+                            {
+                                rollingNumber[0] = rng.Next(symbols.Count);
+                            }
+                            if (rollingAnimationDelay == 1)
+                            {
+                                rollingNumber[1] = rng.Next(symbols.Count);
+                            }
+                            if (rollingAnimationDelay == 0)
+                            {
+                                rollingNumber[2] = rng.Next(symbols.Count);
+                            }
                         }
                         backgroundPosition++; // moves the position of every tile down each frame
                     }
@@ -303,13 +366,14 @@ namespace GamblerGame
                     }
                     break;
                 case State.Store:
+                    backgroundPosition += 2;
                     store.StoreInteraction(rng, gameTime);
                     break;
                 case State.Options:
-
+                    backgroundPosition += 2;
                     break;
                 case State.GameOver:
-                    backgroundPosition++;
+                    backgroundPosition += 2;
                     if (hasWon)
                     {
 
@@ -363,16 +427,18 @@ namespace GamblerGame
                     {
                         for (int i = 0; i < slotMachine.SymbolList.Count; i++)
                         {
-                            slotMachine.SymbolList[i].DrawSymbol(_spriteBatch, DesiredWidth / 20 + ((DesiredWidth / 6) * i), DesiredHeight / 2 - (DesiredWidth / 10), DesiredWidth / 5, DesiredWidth / 5);
+                            if (displaySymbol[i] == true)
+                            {
+                                slotMachine.SymbolList[i].DrawSymbol(_spriteBatch, DesiredWidth / 20 + (int)((DesiredWidth / 5.666) * i), DesiredHeight / 2 - (DesiredWidth / 10) - DesiredHeight / 100, DesiredWidth / 5, DesiredWidth / 5);
+                            }
+                            else
+                            {
+                                    symbols[rollingNumber[i]].DrawSymbol(_spriteBatch, DesiredWidth / 20 + (int)((DesiredWidth / 5.666) * i), DesiredHeight / 2 - (DesiredWidth / 10) - DesiredHeight / 100, DesiredWidth / 5, DesiredWidth / 5);
+                            }
                         }
                     }
 
                     DisplayScoreList();
-                    /*
-                    _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .765), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
-                    _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .783), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
-                    _spriteBatch.Draw(sevenTexture, new Rectangle((int)(DesiredWidth * .802), (int)(DesiredHeight * .345), (int)(DesiredWidth / 32), (int)(DesiredWidth / 32)), Color.White);
-                    */
 
                     _spriteBatch.End();
                     if (paused)
@@ -447,6 +513,7 @@ namespace GamblerGame
         private void GameState()
         {
             Reset();
+            slotMachine.Reset();
             desiredR = 100;
             desiredG = 230;
             desiredB = 175;
@@ -486,6 +553,7 @@ namespace GamblerGame
             desiredR = 100;
             desiredG = 230;
             desiredB = 175;
+            desiredBlackBarYPos = DesiredHeight / 2;
             paused = false;
         }
         /// <summary>
@@ -507,6 +575,8 @@ namespace GamblerGame
         {
             if (numRolls < 10)
             {
+                rollButtonDelay = 300;
+                displaySymbol = new bool[3] { false, false, false};
                 slotMachine.ScoreList.Clear();
                 slotMachine.Roll(rng);
                 rollScores = new List<double>();
@@ -603,5 +673,5 @@ namespace GamblerGame
             hasWon = false;
             money = 4;
         }
-}
+    }
 }

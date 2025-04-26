@@ -23,6 +23,7 @@ namespace GamblerGame
         public double RollScore { get; private set; }
         public List<double> ScoreList { get; private set; }
         public List<Symbol> SymbolList { get; private set; }
+        public List<Slot> SlotList { get; private set; }
 
         public SlotMachine(ContentManager ct)
         {
@@ -32,6 +33,7 @@ namespace GamblerGame
                 new Slot(ct),
                 new Slot(ct)
             };
+            SlotList = slots;
             ScoreList = new List<double>();
             multiplier = 1;
         }
@@ -150,6 +152,16 @@ namespace GamblerGame
         public void FreezeSlot(string action)
         {
             slots[int.Parse(action)].Freeze();
+        }
+
+        /// <summary>
+        /// Resets the slot machine symbols for new runs
+        /// </summary>
+        public void Reset()
+        {
+            if (SymbolList != null) { 
+            SymbolList.Clear();
+        }
         }
     }
 }

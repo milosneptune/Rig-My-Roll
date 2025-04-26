@@ -47,6 +47,8 @@ namespace GamblerGame
         /// </summary>
         public bool UsedItem { get; set; }
 
+        public List<Symbol> Symbols { get; private set;}
+
         public Slot(ContentManager ct)
         {
 
@@ -84,7 +86,7 @@ namespace GamblerGame
                 symbols.Add(new Symbol(Enum.Parse<SymbolName>(name), texture));
                 newSymbols.Add(new Symbol(Enum.Parse<SymbolName>(name), texture));
             }
-
+            Symbols = symbols;
         }
 
         /// <summary>
