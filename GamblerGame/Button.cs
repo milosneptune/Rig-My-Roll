@@ -33,6 +33,9 @@ namespace GamblerGame
         protected Texture2D buttonUnpressedImg;
         protected Texture2D buttonPressedImg;
         private Color textColor;
+        private Color buttonColor;
+        private Color hoverColor;
+        private Color normalColor;
 
         /// <summary>
         /// If the client wants to be notified when a button is clicked, it must
@@ -56,6 +59,8 @@ namespace GamblerGame
             this.font = font;
             this.position = position;
             this.text = text;
+            normalColor = color;
+            buttonColor = normalColor;
 
             // Figure out where on the button to draw it
             Vector2 textSize = font.MeasureString(text);
@@ -91,6 +96,7 @@ namespace GamblerGame
             // if active so that it's up to date next time!
             MouseState mState = Mouse.GetState();
 
+            buttonColor = normalColor;
             if (this.position.Contains(mState.Position))
             {
                 // If it is pressed
@@ -134,7 +140,7 @@ namespace GamblerGame
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             // Draw the button itself
-            spriteBatch.Draw(buttonImg, position, new Color(15, 15, 15));
+            spriteBatch.Draw(buttonImg, position, buttonColor);
 
             // Draw button text over the button
             spriteBatch.DrawString(font, text, textLoc, Color.White);
@@ -145,7 +151,8 @@ namespace GamblerGame
         /// </summary>
         public virtual void Hover()
         {
-
+            hoverColor = new Color (normalColor.R + 5, normalColor.G + 5, normalColor.B + 5);
+            buttonColor = hoverColor;
         }
     }
 }
