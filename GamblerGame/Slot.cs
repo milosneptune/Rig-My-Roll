@@ -47,14 +47,10 @@ namespace GamblerGame
         /// </summary>
         public bool UsedItem { get; set; }
 
-        public List<Symbol> Symbols { get; private set;}
+        public List<Symbol> Symbols { get; private set; }
 
         public Slot(ContentManager ct)
         {
-
-            //symbols = new List<Symbol>();
-            //newSymbols = new List<Symbol>();
-            
             symbols = new List<Symbol>();
             newSymbols = new List<Symbol>();
 
@@ -101,6 +97,7 @@ namespace GamblerGame
             if (UsedItem)
             {
                 Result = newSymbols[rng.Next(1, newSymbols.Count)];
+                UsedItem = false;
             }
             else
             {
@@ -126,7 +123,17 @@ namespace GamblerGame
         public void IncreaseSymbolChance(string name, int chance)
         {
             // The symbol is: symbols[symbolFile.FindIndex(name)]
-            // TODO: Add chance
+            Symbol target = symbols[symbolFile.FindIndex(name)];
+
+            for (int i = 0; i < chance; i++)
+            {
+                newSymbols.Add(target);
+                if (newSymbols[i] != target)
+                {
+                    newSymbols.RemoveAt(i);
+                }
+            }
+            UsedItem = true;
         }
 
         /// <summary>
@@ -134,6 +141,8 @@ namespace GamblerGame
         /// </summary>
         public void Freeze()
         {
+
+
             // TODO: Add freeze logic.
         }
     }
