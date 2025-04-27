@@ -55,14 +55,7 @@ namespace GamblerGame
         public override Rectangle Position
         {
             get { return position; }
-            set
-            {
-                position = value;
-
-                // Figure out where on the button to draw the text after setting the position.
-                // Runs every time the location changes.
-                SetLocations();
-            }
+            set {  position = value; }
         }
         public Button BuyButton
         {
@@ -72,7 +65,7 @@ namespace GamblerGame
         public event UseItemDelegate UseItem;
 
         public Item(int itemIndex, GraphicsDevice device, SpriteFont font, SpriteFont descriptionFont, List<Texture2D> textures)
-            : base(device, new Rectangle(0, 0, 0, 0), "name_here", font, Color.Black, textures)
+            : base(device, new Rectangle(0, 0, 0, 0), "name_here", font, Color.White, textures) // TODO: Change color
         {
             name = itemsFile.GetName(itemIndex);
             description = itemsFile.GetDescription(name);
@@ -84,12 +77,12 @@ namespace GamblerGame
             this.descriptionFont = descriptionFont;
 
             buyButton = new Button(device, new Rectangle(0,0,0,0), "Buy", font, Color.Black, textures);
-            cancelButton = new Button(device, new Rectangle(0, 0, 0, 0), "Cancel", font, Color.Black, textures);
-            useItemButton = new Button(device, new Rectangle(0, 0, 0, 0), "Use Item", font, Color.Black, textures);
+            cancelButton = new Button(device, new Rectangle(0, 0, 0, 0), "Cancel", font, Color.Black, textures);// TODO: Change color
+            useItemButton = new Button(device, new Rectangle(0, 0, 0, 0), "Use Item", font, Color.Black, textures);// TODO: Change color
             choiceBox = new Rectangle(0, 0, 0, 0);
 
-            normalSize = new Vector2(200, 200);
-            withDescriptionSize = new Vector2(200, 500);
+            normalSize = new Vector2(500, 200);
+            withDescriptionSize = new Vector2(500, 500);
 
             // Changes display name
             text = name;
@@ -110,6 +103,10 @@ namespace GamblerGame
             // if active so that it's up to date next time!
             MouseState mState = Mouse.GetState();
             
+            buyButton.Update(gameTime);
+            cancelButton.Update(gameTime);
+            useItemButton.Update(gameTime);
+
             if (this.position.Contains(mState.Position))
             {
                 // If it is pressed
@@ -178,7 +175,9 @@ namespace GamblerGame
             }
             if (displayBuyBox)
             {
-                // TODO: Draw the rectangle of the buy box.
+                ShapeBatch.Begin(device);
+                ShapeBatch.Box(choiceBox, Color.Pink);
+                ShapeBatch.End();
                 buyButton.Draw(spriteBatch);
                 cancelButton.Draw(spriteBatch);
             }
@@ -197,8 +196,11 @@ namespace GamblerGame
         /// <summary>
         /// Finds the locations.
         /// </summary>
-        public void SetLocations()
+        public void SetLocations(int xLoc, int yLoc)
         {
+            position.X = xLoc; 
+            position.Y = yLoc;
+
             // If there is only the name
             if (hideDescription)
             {
@@ -247,15 +249,13 @@ namespace GamblerGame
 
                 descriptionLocPressed = new Vector2(
                     (position.X + position.Width / 2) - descriptionSize.X / 2,
-                    (position.Y + position.Height / 2) - descriptionSize.Y / 4
+                    (position.Y + position.Height / 2) - descriptionSize.Y / 4 + ButtonOffset
                 );
                 descriptionLocUnpressed = new Vector2(
                     (position.X + position.Width / 2) - descriptionSize.X / 2,
-                    (position.Y + position.Height / 2) - descriptionSize.Y / 2
+                    (position.Y + position.Height / 2) - descriptionSize.Y / 2 + ButtonOffset
                 );
 
-                // This is subjected to change. Also an actual box should be drawn.
-                // TODO: Draw the actual box.
                 choiceBox = new Rectangle(
                     (int)position.X,
                     (int)((position.Y + position.Height)),
@@ -286,9 +286,14 @@ namespace GamblerGame
         /// </summary>
         public void BuyItemChoice()
         {
-            // TODO: Add choice of buying or cancelling. There should be one button to buy, and once that button is pressed,
-            // the delegate allows it to return the purchased item.
-            displayBuyBox = true;
+            if (displayBuyBox)
+            {
+                displayBuyBox = false;
+            }
+            else
+            {
+                displayBuyBox = true;
+            }
         }
 
         /// <summary>
@@ -297,21 +302,13 @@ namespace GamblerGame
         /// </summary>
         public void DisplayUseItem()
         {
-            if (displayUseItem && hideDescription)
+            if (displayUseItem)
             {
                 displayUseItem = false;
             }
-            else if (!displayUseItem && hideDescription)
+            else
             {
                 displayUseItem = true;
-            }
-            else if (displayBuyBox && hideDescription)
-            {
-                displayBuyBox = false;
-            }
-            else if (!displayBuyBox && hideDescription)
-            {
-                displayBuyBox = true;
             }
         }
 

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,12 +13,19 @@ namespace GamblerGame
     internal class Store
     {
         private List<Item> items; // list of all items
-        private List<Item> tempItems; // temporary list of items 
         private List<Item> inventory;
+        private List<Item> storeItems;
+        private Vector2 boxOne;
+        private Vector2 boxTwo;
+        private Vector2 boxThree;
+        private Vector2 boxFour;
         private int money;
 
-        // public int Money { get; set; }
-        public List<Item> StoreItems { get; private set; }
+        public List<Item> StoreItems
+        {
+            get { return storeItems; }
+            set { storeItems = value; }
+        }
         public List<Item> Inventory
         {
             get { return inventory; }
@@ -36,12 +45,32 @@ namespace GamblerGame
         public Store(List<Item> items, int money, List<Item> inventory)
         {
             this.items = items;
-            this.tempItems = items;
-            StoreItems = new List<Item>();
+            storeItems = new List<Item>();
             this.inventory = inventory;
             this.money = money;
+
+            boxOne = new Vector2(100, 50);
+            boxTwo = new Vector2(800, 50);
+            boxThree = new Vector2(100, 600);
+            boxFour = new Vector2(800, 600);
         }
-        
+        public void Update(GameTime gameTime)
+        {
+            if (storeItems != null)
+            {
+                foreach (Item item in StoreItems)
+                {
+                    item.Update(gameTime);
+                }
+            }
+        }
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (Item item in storeItems)
+            {
+                item.Draw(spriteBatch);
+            }
+        }
         /// <summary>
         /// Updates each item in StoreItems
         /// </summary>
@@ -50,11 +79,17 @@ namespace GamblerGame
         public void StoreInteraction(Random rng, GameTime gametime)
         {
             StockStore(rng);
-            foreach (Item item in StoreItems)
+            foreach (Item item in storeItems)
             {
                 item.Update(gametime);
                 item.BuyButton.OnLeftButtonClick += BuyItem;
             }
+
+            storeItems[0].SetLocations((int)boxOne.X, (int)boxOne.Y);
+            storeItems[1].SetLocations((int)boxTwo.X, (int)boxTwo.Y);
+            storeItems[2].SetLocations((int)boxThree.X, (int)boxThree.Y);
+            storeItems[3].SetLocations((int)boxFour.X, (int)boxFour.Y);
+
         }
 
         /// <summary>
@@ -63,11 +98,11 @@ namespace GamblerGame
         /// <param name="rng"></param>
         private void StockStore(Random rng)
         {
-            // TODO: theres a runtime error caused by this 
-            for (int i = 0; i < 5; i++)
+            storeItems = new List<Item>();
+            for (int i = 0; i < 4; i++)
             {
-                rng.Next(tempItems.Count);
-                StoreItems.Add(tempItems[i]);
+                Item item = items[rng.Next(0, items.Count)];
+                storeItems.Add(item);
             }
         }
 
@@ -76,14 +111,25 @@ namespace GamblerGame
         /// </summary>
         public void BuyItem()
         {
-            foreach (Item item in StoreItems)
+            foreach (Item item in storeItems)
             {
                 if (item.Bought)
                 {
                     inventory.Add(item);
                     money -= item.Price;
-                    StoreItems.Remove(item);
+                    storeItems.Remove(item);
+                    break;
                 }
+            }
+        }
+        public void Reset()
+        {
+            inventory = null;
+            money = 0;
+            storeItems = null;
+            foreach (Item item in items)
+            {
+                item.Bought = false;
             }
         }
     }

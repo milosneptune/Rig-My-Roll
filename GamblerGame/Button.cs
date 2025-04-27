@@ -22,6 +22,7 @@ namespace GamblerGame
     {
         // Button specific fields
         protected SpriteFont font;
+        protected GraphicsDevice device;
         protected MouseState prevMState;
         protected bool enabled = true;
         protected string text;
@@ -63,6 +64,7 @@ namespace GamblerGame
         {
             // Save copies/references to the info we'll need later
             this.font = font;
+            this.device = device;
             this.position = position;
             this.text = text;
             normalColor = color;
@@ -96,6 +98,7 @@ namespace GamblerGame
         {
             // Save copies/references to the info we'll need later
             this.font = font;
+            this.device = device;
             this.position = position;
             this.text = text;
             normalColor = color;

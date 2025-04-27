@@ -245,7 +245,7 @@ namespace GamblerGame
             // ----------- STORE BUTTONS -------------------
             storeButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(playButtonXPos, menuButtonYPos + 55, menuButtonWidth, menuButtonHeight), // TODO: this bs logic 
+                new Rectangle(DesiredWidth - menuButtonWidth - 12, menuButtonYPos + 55, menuButtonWidth, menuButtonHeight), // TODO: this bs logic 
                 "Return to Game",
                 pixelFont,
                 new Color(30, 30, 50),
@@ -501,6 +501,11 @@ namespace GamblerGame
                     }
                     break;
                 case State.Store:
+                    if (store.Inventory == null)
+                    {
+                        store.Inventory = inventory;
+                        store.StoreInteraction(rng, gameTime);
+                    }
                     if (backgroundAnimationToggle)
                     {
                         backgroundPosition += 2;
@@ -509,7 +514,7 @@ namespace GamblerGame
                     {
                         button.Update(gameTime);
                     }
-                    store.StoreInteraction(rng, gameTime);
+                    store.Update(gameTime);
                     break;
                 case State.Options:
                     optionsButtons[0].CheckboxUpdate(gameTime, rollingAnimationToggle);
@@ -653,6 +658,7 @@ namespace GamblerGame
                     {
                         button.Draw(_spriteBatch);
                     }
+                    store.Draw(_spriteBatch);
                     _spriteBatch.End();
                     break;
                 case State.Options:
@@ -889,6 +895,9 @@ namespace GamblerGame
             rollScores = new List<double>();
             inRound = true;
             gameState = State.Game;
+            money = store.Money;
+            inventory = store.Inventory;
+            store.Reset();
         }
 
         public void Back()
@@ -908,7 +917,7 @@ namespace GamblerGame
             minScore = 300;
             hasWon = false;
             money = 4;
-            inventory = null;
+            inventory = new List<Item>();
         }
 
         public void ToggleScanline()
