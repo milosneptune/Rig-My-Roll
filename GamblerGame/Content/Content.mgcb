@@ -77,6 +77,16 @@
 #begin Fonts/monogram.ttf
 /copy:Fonts/monogram.ttf
 
+#begin Fonts/monogram2.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/monogram2.spritefont
+
+#begin Fonts/monogram2.ttf
+/copy:Fonts/monogram2.ttf
+
 #begin UI/Menu/ButtonPressed.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -100,6 +110,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:UI/Menu/ButtonUnpressed.png
+
+#begin UI/Menu/CheckedCheckBox.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/Menu/CheckedCheckBox.png
+
+#begin UI/Menu/EmptyCheckBox.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/Menu/EmptyCheckBox.png
 
 #begin UI/Symbols/Apple.png
 /importer:TextureImporter
