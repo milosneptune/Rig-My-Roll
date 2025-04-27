@@ -107,6 +107,7 @@ namespace GamblerGame
         private int minScore;
         private bool hasWon;
         private int money;
+        private List<Item> inventory;
 
         public Game1()
         {
@@ -337,8 +338,6 @@ namespace GamblerGame
                 allItems.Add(new Item(i, _graphics.GraphicsDevice, pixelFont, pixelFont, buttonTextures));
             }
 
-            store = new Store(allItems);
-
             // Adds events based on the type of item.
             foreach (Item item in allItems)
             {
@@ -368,6 +367,8 @@ namespace GamblerGame
                         break;
                 }
             }
+
+            store = new Store(allItems, money, inventory);
         }
 
         protected override void Update(GameTime gameTime)
@@ -907,6 +908,7 @@ namespace GamblerGame
             minScore = 300;
             hasWon = false;
             money = 4;
+            inventory = null;
         }
 
         public void ToggleScanline()

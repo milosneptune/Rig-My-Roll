@@ -64,6 +64,11 @@ namespace GamblerGame
                 SetLocations();
             }
         }
+        public Button BuyButton
+        {
+            get { return buyButton; }
+            set { buyButton = value; }
+        }
         public event UseItemDelegate UseItem;
 
         public Item(int itemIndex, GraphicsDevice device, SpriteFont font, SpriteFont descriptionFont, List<Texture2D> textures)
