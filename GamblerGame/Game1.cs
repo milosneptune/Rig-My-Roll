@@ -27,7 +27,7 @@ namespace GamblerGame
 
         const int DesiredWidth = 1920;
         const int DesiredHeight = 1080;
-        const int TotNumOfItems = 4;
+        const int TotNumOfItems = 5;
 
         // Background Values
         const int xAxisTiles = 16; // Number of background texture grids along the x axis
@@ -301,7 +301,9 @@ namespace GamblerGame
                     case '*':
                         item.UseItem += Multiplier;
                         break;
-                        // TODO: add the two other new methods (found inside SlotMachine, IncreasePoints and IncreaseMultipler)
+                    case '$':
+                        item.UseItem += AddScore;
+                        break;
                 }
             }
         }
@@ -754,7 +756,15 @@ namespace GamblerGame
         /// <param name="action"></param>
         public void Multiplier(string action)
         {
-            // TODO: Add multiplier logic.
+            slotMachine.IncreaseMultipler(int.Parse(action));
+        }
+        /// <summary>
+        /// Increases the points.
+        /// </summary>
+        /// <param name="action"></param>
+        public void AddScore(string action)
+        {
+            slotMachine.IncreasePoints(int.Parse(action));
         }
 
         public void Reset()
