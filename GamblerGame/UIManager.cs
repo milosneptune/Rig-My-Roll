@@ -114,7 +114,11 @@ namespace GamblerGame
         {
             ShapeBatch.Begin(graphicsDevice);
             ShapeBatch.Box(0, 0, DesiredWidth, DesiredHeight, new Color(0, 0, 0, 100));
-            ShapeBatch.Box(DesiredWidth / 40, DesiredHeight / 2 - (DesiredWidth / 10), DesiredWidth / 1.65f, DesiredHeight - (DesiredHeight / 2 - (DesiredWidth / 10)), Color.Black);
+            ShapeBatch.Box(DesiredWidth / 40, DesiredHeight / 2 - (DesiredWidth / 10), DesiredWidth / 1.65f, DesiredHeight - (DesiredHeight / 2 - (DesiredWidth / 10)), new Color(20, 20, 20));
+            ShapeBatch.Box(DesiredWidth / 40 + DesiredWidth/80, DesiredHeight / 2 - (DesiredWidth / 10) + DesiredHeight / 60, DesiredWidth / 1.65f - DesiredWidth / 40,  (DesiredHeight / 10), new Color(0, 0, 0));
+            ShapeBatch.Box(DesiredWidth / 40 + DesiredWidth / 80, DesiredHeight / 2 - (DesiredWidth / 10) + (DesiredHeight / 60)*2 + (DesiredHeight / 10), DesiredWidth / 1.65f - DesiredWidth / 40, (DesiredHeight / 14), new Color(0, 0, 0));
+            ShapeBatch.Box(DesiredWidth / 40 + DesiredWidth / 80, DesiredHeight / 2 - (DesiredWidth / 10) + (DesiredHeight / 60) * 3 + (DesiredHeight / 10) + (DesiredHeight / 14), DesiredWidth / 1.65f - DesiredWidth / 40, (DesiredHeight / 14), new Color(0, 0, 0));
+            ShapeBatch.Box(DesiredWidth / 40 + DesiredWidth / 80, DesiredHeight / 2 - (DesiredWidth / 10) + (DesiredHeight / 60) * 4 + (DesiredHeight / 10) + (DesiredHeight / 14) * 2, DesiredWidth / 1.65f - DesiredWidth / 40, (DesiredHeight / 14), new Color(0, 0, 0));
             ShapeBatch.BoxOutline(DesiredWidth / 40, DesiredHeight / 2 - (DesiredWidth / 10) - 1, DesiredWidth / 1.65f + 1, DesiredHeight - (DesiredHeight / 2 - (DesiredWidth / 10)) + 1, Color.White);
             ShapeBatch.End();
         }

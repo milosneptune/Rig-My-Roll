@@ -77,6 +77,16 @@
 #begin Fonts/monogram.ttf
 /copy:Fonts/monogram.ttf
 
+#begin Fonts/monogram2.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/monogram2.spritefont
+
+#begin Fonts/monogram2.ttf
+/copy:Fonts/monogram2.ttf
+
 #begin UI/Menu/ButtonPressed.png
 /importer:TextureImporter
 /processor:TextureProcessor
