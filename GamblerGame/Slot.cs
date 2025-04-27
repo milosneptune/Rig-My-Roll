@@ -31,7 +31,6 @@ namespace GamblerGame
 
         private List<Symbol> symbols; // the unchanged list of symbols
         private List<Symbol> newSymbols; // this is the list that will change if an item is used
-
         private ScriptManager symbolFile;
 
         /// <summary>
@@ -46,18 +45,22 @@ namespace GamblerGame
         /// true if an item has been used, false otherwise
         /// </summary>
         public bool UsedItem { get; set; }
-
         public List<Symbol> Symbols { get; private set; }
+        public bool Frozen { get; private set; }
 
+        /// <summary>
+        /// Intializes symbols and new symbols list, 
+        /// also calls LoadSymbols method
+        /// </summary>
+        /// <param name="ct"></param>
         public Slot(ContentManager ct)
         {
             symbols = new List<Symbol>();
             newSymbols = new List<Symbol>();
-
+            Frozen = false;
+            UsedItem = false;
             LoadSymbols(ct);
         }
-
-        // method to use an item
 
         /// <summary>
         /// Intializes script manager, loads the names from file, and adds the symbols
@@ -66,12 +69,10 @@ namespace GamblerGame
         /// <param name="ct"></param>
         private void LoadSymbols(ContentManager ct)
         {
-
             // check the SymbolsFile.txt, the scriptmanager needs
             // to split them in the name and the texture, then the Symbol() class
             // needs to intialize each of them with it's name and appropriate texture, 
             // then it needs to be added to both the symbols list and new symbols
-
             symbolFile = new ScriptManager("SymbolsFile.txt");
 
             List<string> names = new List<string>();
@@ -97,13 +98,16 @@ namespace GamblerGame
             if (UsedItem)
             {
                 Result = newSymbols[rng.Next(1, newSymbols.Count)];
-                UsedItem = false;
+                UsedItem = false; // set it back to false
+            }
+            if (Frozen) // skips rolling 
+            {
+                return;
             }
             else
             {
                 Result = symbols[rng.Next(1, symbols.Count)];
             }
-
         }
 
         /// <summary>
@@ -122,13 +126,14 @@ namespace GamblerGame
         /// <param name="chance"></param>
         public void IncreaseSymbolChance(string name, int chance)
         {
-            // The symbol is: symbols[symbolFile.FindIndex(name)]
+            // grab the targeted symbol 
             Symbol target = symbols[symbolFile.FindIndex(name)];
 
+            // loop for however many times the chance is called
             for (int i = 0; i < chance; i++)
             {
                 newSymbols.Add(target);
-                if (newSymbols[i] != target)
+                if (newSymbols[i] != target) // remove other symbols if they aren't the target
                 {
                     newSymbols.RemoveAt(i);
                 }
@@ -137,13 +142,11 @@ namespace GamblerGame
         }
 
         /// <summary>
-        /// Freezes the slot symbol.
+        /// Toggles the Frozen bool
         /// </summary>
         public void Freeze()
         {
-
-
-            // TODO: Add freeze logic.
+            Frozen = true; 
         }
     }
 }

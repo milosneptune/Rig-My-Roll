@@ -14,17 +14,10 @@ namespace GamblerGame
         private List<Item> tempItems;
         public List<Item> storeItems;
         private int money;
-        public int Money
-        {
-            get { return money; }
-            set { money = value; }
-        }
 
-        public List<Item> StoreItems
-        {
-            get { return storeItems; }
-            private set { storeItems = value; }
-        }
+        public int Money { get { return money; } set { money = value; } }
+        public List<Item> StoreItems { get { return storeItems; } private set { storeItems = value; } }
+
         public Store(List<Item> items)
         {
             this.items = items;
