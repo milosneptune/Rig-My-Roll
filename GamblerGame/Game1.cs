@@ -485,6 +485,9 @@ namespace GamblerGame
         {
             GraphicsDevice.Clear(Color.Black);
             // TODO: Add your drawing code here
+            
+
+
             _spriteBatch.Begin();
             // Prints the background as a grid with an extra row off screen
             if (backgroundPosition != DesiredHeight / 2)
