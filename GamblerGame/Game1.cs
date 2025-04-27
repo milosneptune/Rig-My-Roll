@@ -93,8 +93,8 @@ namespace GamblerGame
         private double totalScore;
         private bool paused = false;
         private int numRolls;
-        private int totalRolls = 1; // TODO: subject to change if we decide to make rounds shorter/longer
-        private int numRound = 1; // TODO: make sure this updates everytime the player finishes rolling
+        private int totalRolls = 3; // TODO: subject to change if we decide to make rounds shorter/longer
+        private int numRound = 1; 
         private int totalRounds = 5;
         private int minScore;
         private bool hasWon;
