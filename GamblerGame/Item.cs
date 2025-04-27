@@ -16,29 +16,43 @@ namespace GamblerGame
     public delegate void UseItemDelegate(string action);
     internal class Item : Button
     {
+        private const int ButtonOffset = 10;
         private ScriptManager itemsFile = new ScriptManager("ItemsFile.txt");
         private string name;
         private string description;
         private int price;
         private char type;
         private string action;
-        private bool showDescription;
+        private bool hideDescription;
+        private bool printDescription;
         private SpriteFont descriptionFont;
         private Vector2 descriptionLoc;
         private Vector2 descriptionLocUnpressed;
         private Vector2 descriptionLocPressed;
+        private Vector2 normalSize;
+        private Vector2 withDescriptionSize;
+        private Button buyButton;
+        private Button cancelButton;
+        private Button useItemButton;
+        private Rectangle choiceBox;
+        private bool displayUseItem;
+        private bool displayBuyBox;
 
         public string Name { get { return name; } }
         public string Description { get { return description; } }
         public int Price { get { return price; } }
         public char Type { get { return type; } }
         public string Action { get { return action; } }
-        public bool ShowDescription
+
+        /// <summary>
+        /// Returns bool of if the item is bought.
+        /// </summary>
+        public bool Bought
         {
-            get { return showDescription; }
-            set { showDescription = value; }
+            get { return hideDescription; }
+            set { hideDescription = value; }
         }
-        public Rectangle Position
+        public override Rectangle Position
         {
             get { return position; }
             set
@@ -47,7 +61,7 @@ namespace GamblerGame
 
                 // Figure out where on the button to draw the text after setting the position.
                 // Runs every time the location changes.
-                SetTextLocations();
+                SetLocations();
             }
         }
         public event UseItemDelegate UseItem;
@@ -60,11 +74,26 @@ namespace GamblerGame
             price = itemsFile.GetPrice(name);
             type = itemsFile.FindItemType(name);
             action = itemsFile.GetItemAction(name);
-            showDescription = false;
+            hideDescription = false;
+            printDescription = false;
             this.descriptionFont = descriptionFont;
+
+            buyButton = new Button(device, new Rectangle(0,0,0,0), "Buy", font, Color.Black, textures);
+            cancelButton = new Button(device, new Rectangle(0, 0, 0, 0), "Cancel", font, Color.Black, textures);
+            useItemButton = new Button(device, new Rectangle(0, 0, 0, 0), "Use Item", font, Color.Black, textures);
+            choiceBox = new Rectangle(0, 0, 0, 0);
+
+            normalSize = new Vector2(200, 200);
+            withDescriptionSize = new Vector2(200, 500);
 
             // Changes display name
             text = name;
+
+            displayUseItem = false;
+            displayBuyBox = false;
+            useItemButton.OnLeftButtonClick += UseItemTrigger;
+            buyButton.OnLeftButtonClick += BuyItem;
+            cancelButton.OnLeftButtonClick += CancelItem;
         }
         /// <summary>
         /// Each frame, update its status if it's been clicked.
@@ -82,10 +111,10 @@ namespace GamblerGame
                 if (mState.LeftButton == ButtonState.Released &&
                 prevMState.LeftButton == ButtonState.Pressed)
                 {
-                    // If it isn't store, then the item will be used.
-                    if (UseItem != null && !showDescription)
+                    // If it isn't store, then the choice of using the item will be shown.
+                    if (UseItem != null && hideDescription)
                     {
-                        UseItem(action);
+                        DisplayUseItem();
                     }
                     else
                     {
@@ -94,9 +123,13 @@ namespace GamblerGame
                 }
 
                 // If it is only hovering over the button and there is no description.
-                else if (!showDescription)
+                else if (hideDescription)
                 {
                     Hover();
+                }
+                else if (!hideDescription)
+                {
+                    printDescription = false;
                 }
             }
 
@@ -129,10 +162,20 @@ namespace GamblerGame
             // Draw button text over the button
             spriteBatch.DrawString(font, text, textLoc, Color.White);
 
-            if (showDescription)
+            if (!hideDescription)
             {
                 // Draw description below the name
                 spriteBatch.DrawString(descriptionFont, description, descriptionLoc, Color.White);
+            }
+            if (displayUseItem)
+            {
+                useItemButton.Draw(spriteBatch);
+            }
+            if (displayBuyBox)
+            {
+                // TODO: Draw the rectangle of the buy box.
+                buyButton.Draw(spriteBatch);
+                cancelButton.Draw(spriteBatch);
             }
         }
         /// <summary>
@@ -142,19 +185,24 @@ namespace GamblerGame
         {
             // Changes color
             base.Hover();
-
+            printDescription = true;
             // TODO: Print description.
         }
 
         /// <summary>
-        /// Finds the text locations.
+        /// Finds the locations.
         /// </summary>
-        public void SetTextLocations()
+        public void SetLocations()
         {
             // If there is only the name
-            if (!showDescription)
+            if (hideDescription)
             {
                 Vector2 textSize = font.MeasureString(text);
+                Vector2 buttonTextSize = descriptionFont.MeasureString("Use Item");
+
+                position.Width = (int)normalSize.X;
+                position.Height = (int)normalSize.Y;
+
                 textLocPressed = new Vector2(
                     (position.X + position.Width / 2) - textSize.X / 2,
                     (position.Y + position.Height / 2) - textSize.Y / 4
@@ -163,12 +211,25 @@ namespace GamblerGame
                     (position.X + position.Width / 2) - textSize.X / 2,
                     (position.Y + position.Height / 2) - textSize.Y / 2
                 );
+
+                // Finds the postion of the use item button. It is the same width as the item.
+                // The button is directly under the item.
+                useItemButton.Position = new Rectangle(
+                    (int)position.X,
+                    (int)((position.Y + position.Height)), 
+                    position.Width,
+                    (int)(buttonTextSize.Y * 2)
+                );
                 textLoc = textLocUnpressed;
             }
             else
             {
                 Vector2 nameSize = font.MeasureString(text);
                 Vector2 descriptionSize = descriptionFont.MeasureString(description);
+                Vector2 cancelSize = descriptionFont.MeasureString("Cancel");
+
+                position.Width = (int)withDescriptionSize.X;
+                position.Height = (int)withDescriptionSize.Y;
 
                 textLocPressed = new Vector2(
                 (position.X + position.Width / 2) - nameSize.X / 2,
@@ -187,6 +248,29 @@ namespace GamblerGame
                     (position.X + position.Width / 2) - descriptionSize.X / 2,
                     (position.Y + position.Height / 2) - descriptionSize.Y / 2
                 );
+
+                // This is subjected to change. Also an actual box should be drawn.
+                // TODO: Draw the actual box.
+                choiceBox = new Rectangle(
+                    (int)position.X,
+                    (int)((position.Y + position.Height)),
+                    position.Width,
+                    (int)(descriptionSize.Y * 2)
+                    );
+
+                buyButton.Position = new Rectangle(
+                    (int)position.X + ButtonOffset,
+                    (int)(position.Y + position.Height + ButtonOffset),
+                    (position.Width / 2) - 2 * ButtonOffset,
+                    (int)(descriptionSize.Y * 2)
+                );
+
+                cancelButton.Position = new Rectangle(
+                    (int)(position.X + position.Width - ButtonOffset - cancelSize.X),
+                    (int)(position.Y + position.Height + ButtonOffset),
+                    (position.Width / 2) - 2 * ButtonOffset,
+                    (int)(descriptionSize.Y * 2)
+                );
                 textLoc = textLocUnpressed;
                 descriptionLoc = descriptionLocUnpressed;
             }
@@ -199,6 +283,55 @@ namespace GamblerGame
         {
             // TODO: Add choice of buying or cancelling. There should be one button to buy, and once that button is pressed,
             // the delegate allows it to return the purchased item.
+            displayBuyBox = true;
+        }
+
+        /// <summary>
+        /// If the use clicks the item, they can choose to use the button. If they click the item again, the button disappears.
+        /// Same goes for the buy box.
+        /// </summary>
+        public void DisplayUseItem()
+        {
+            if (displayUseItem && hideDescription)
+            {
+                displayUseItem = false;
+            }
+            else if (!displayUseItem && hideDescription)
+            {
+                displayUseItem = true;
+            }
+            else if (displayBuyBox && hideDescription)
+            {
+                displayBuyBox = false;
+            }
+            else if (!displayBuyBox && hideDescription)
+            {
+                displayBuyBox = true;
+            }
+        }
+
+        /// <summary>
+        /// Uses the Use Item button to trigger the use of the item.
+        /// </summary>
+        public void UseItemTrigger()
+        {
+            UseItem(action);
+        }
+
+        /// <summary>
+        /// The item gets bought
+        /// </summary>
+        public void BuyItem()
+        {
+            Bought = true;
+        }
+
+        /// <summary>
+        /// Cancel the buy box.
+        /// </summary>
+        public void CancelItem()
+        {
+            displayBuyBox = false;
         }
     }
 }

@@ -37,6 +37,12 @@ namespace GamblerGame
         private Color hoverColor;
         private Color normalColor;
 
+        public virtual Rectangle Position
+        {
+            get { return position; }
+            set { position = value; }  
+        }
+
         /// <summary>
         /// If the client wants to be notified when a button is clicked, it must
         /// implement a method matching OnButtonClickDelegate and then tie that method to
