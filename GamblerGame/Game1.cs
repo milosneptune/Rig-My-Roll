@@ -12,7 +12,6 @@ namespace GamblerGame
         MainMenu,
         Game,
         Store,
-        RoundOver,
         GameOver,
         Options,
         Quit
@@ -103,7 +102,7 @@ namespace GamblerGame
         private bool paused = false;
         private int numRolls;
         private int totalRolls = 3; // TODO: subject to change if we decide to make rounds shorter/longer
-        private int numRound = 1;
+        private int numRound;
         private int totalRounds = 5;
         private int minScore;
         private bool hasWon;
@@ -250,7 +249,7 @@ namespace GamblerGame
                 pixelFont,
                 new Color(30, 30, 50),
                 buttonTextures));
-            storeButtons[0].OnLeftButtonClick += GameState;
+            storeButtons[0].OnLeftButtonClick += BackToGame;
 
             // ------------ ROUND OVER BUTTONS --------------
             roundButtons.Add(new Button(
@@ -479,7 +478,6 @@ namespace GamblerGame
                                 desiredB = 75;
                             }
                         }
-                        backgroundPosition++; // moves the position of every tile down each frame
                         if (backgroundAnimationToggle)
                         {
                             backgroundPosition++;
@@ -502,22 +500,15 @@ namespace GamblerGame
                     }
                     break;
                 case State.Store:
-                    backgroundPosition += 2;
+                    if (backgroundAnimationToggle)
+                    {
+                        backgroundPosition += 2;
+                    }
                     foreach (Button button in storeButtons)
                     {
                         button.Update(gameTime);
-
-                        if (backgroundAnimationToggle)
-                        {
-                            backgroundPosition += 2;
-                        }
-
                     }
                     store.StoreInteraction(rng, gameTime);
-                    break;
-                case State.RoundOver:
-                    backgroundPosition += 2;
-
                     break;
                 case State.Options:
                     optionsButtons[0].CheckboxUpdate(gameTime, rollingAnimationToggle);
@@ -887,6 +878,16 @@ namespace GamblerGame
         public void AddScore(string action)
         {
             slotMachine.IncreasePoints(int.Parse(action));
+        }
+
+        public void BackToGame()
+        {
+            roundScore = 0;
+            numRolls = 0;
+            rollScore = 0;
+            rollScores = new List<double>();
+            inRound = true;
+            gameState = State.Game;
         }
 
         public void Back()
