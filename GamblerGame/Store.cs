@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +56,14 @@ namespace GamblerGame
             //    StoreItems.Add(tempItems[i]);
             //    tempItems.Remove(tempItems[i]);
             //}
+        }
+
+        public void Draw(SpriteBatch sb)
+        {
+            foreach (Item s in StoreItems)
+            {
+                s.Draw(sb);
+            }
         }
     }
 }

@@ -776,7 +776,7 @@ namespace GamblerGame
             totalScore = 0;
             paused = false;
             numRolls = 0;
-            minScore = 500;
+            minScore = 300;
             hasWon = false;
             money = 4;
         }
