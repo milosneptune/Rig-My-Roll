@@ -93,6 +93,20 @@ namespace GamblerGame
         {
             ShapeBatch.Begin(graphicsDevice);
             ShapeBatch.Box(0, 0, DesiredWidth, DesiredHeight, new Color (0, 0, 0, 200));
+            // Scores Background
+            ShapeBatch.Box(
+                (int)(DesiredWidth * .66)+1,
+                DesiredHeight/10+1,
+                (int)(DesiredWidth / 3.5),
+                DesiredHeight - DesiredHeight / 5-3,
+                Color.Black);
+            // Scores Background Outline
+            ShapeBatch.BoxOutline(
+                (int)(DesiredWidth * .66)+1,
+                DesiredHeight / 10+1,
+                (int)(DesiredWidth / 3.5) + 1,
+                DesiredHeight - DesiredHeight / 5-2,
+                new Color(255,255,255));
             ShapeBatch.End();
         }
 
@@ -139,7 +153,11 @@ namespace GamblerGame
             //ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .03), (int)(DesiredWidth / 3.9), DesiredHeight / 4, Color.DarkGray);
 
             // Slot box
-            ShapeBatch.Box(DesiredWidth / 20, DesiredHeight / 2 - (DesiredWidth / 10), DesiredWidth / 20 + ((DesiredWidth / 6) * 3), DesiredWidth / 5, new Color(12, 7, 15));
+            ShapeBatch.Box(DesiredWidth / 20 - DesiredWidth/60, DesiredHeight / 2 - (DesiredWidth / 9), DesiredWidth / 20 + ((DesiredWidth / 6) * 3.2f), DesiredWidth / 4.5f, new Color(12, 7, 15));
+            
+            // Item box
+            ShapeBatch.Box(DesiredWidth / 40 , (DesiredHeight / 20), DesiredWidth / 1.65f, DesiredHeight / 8.25f, new Color(12, 7, 15, 200 ));
+            ShapeBatch.BoxOutline(DesiredWidth / 40, (DesiredHeight / 20)-1, DesiredWidth / 1.65f + 1, (DesiredHeight / 8.25f) + 1, Color.White);
 
             //ShapeBatch.Box(DesiredWidth / 20, DesiredHeight / 2 - (DesiredWidth / 10)-1, DesiredWidth / 20 + ((DesiredWidth / 6) * 3)+1, DesiredWidth / 5+1, Color.Black);
             ShapeBatch.Box(DesiredWidth / 20 + DesiredWidth / 80, DesiredHeight / 2 - (DesiredWidth / 11.5f) , DesiredWidth / 5.75f , DesiredWidth / 6, Color.DarkGray);

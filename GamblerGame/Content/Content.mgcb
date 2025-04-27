@@ -101,6 +101,30 @@
 /processorParam:TextureFormat=Color
 /build:UI/Menu/ButtonUnpressed.png
 
+#begin UI/Menu/CheckedCheckBox.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/Menu/CheckedCheckBox.png
+
+#begin UI/Menu/EmptyCheckBox.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:UI/Menu/EmptyCheckBox.png
+
 #begin UI/Symbols/Apple.png
 /importer:TextureImporter
 /processor:TextureProcessor

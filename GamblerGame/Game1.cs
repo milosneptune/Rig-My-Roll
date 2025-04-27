@@ -43,6 +43,7 @@ namespace GamblerGame
         private SpriteFont titleFont;
 
         private State gameState;
+        private State previousState;
 
         // Menu
         const int menuButtonWidth = DesiredWidth / 4;
@@ -63,6 +64,7 @@ namespace GamblerGame
         private int rollingAnimationDelay = 0;
         private List<Button> gameButtons = new List<Button>();
         private List<Button> pauseButtons = new List<Button>();
+        private List<Button> optionsButtons = new List<Button>();
         private List<Button> gameOverButtons = new List<Button>();
         private List<Button> storeButtons = new List<Button>();
         private List<Button> roundButtons = new List<Button>();
@@ -85,6 +87,11 @@ namespace GamblerGame
         private int desiredG = 255;
         private int desiredB = 255;
 
+        // Options
+        private bool scanlineToggle = true;
+        private bool rollingAnimationToggle = true;
+        private bool backgroundAnimationToggle = true;
+
         // Symbols
         private Texture2D sevenTexture;
 
@@ -96,7 +103,7 @@ namespace GamblerGame
         private bool paused = false;
         private int numRolls;
         private int totalRolls = 3; // TODO: subject to change if we decide to make rounds shorter/longer
-        private int numRound = 1; 
+        private int numRound = 1;
         private int totalRounds = 5;
         private int minScore;
         private bool hasWon;
@@ -135,6 +142,7 @@ namespace GamblerGame
             scoreFont = Content.Load<SpriteFont>("Fonts/Daydream2");
             reqScoreFont = Content.Load<SpriteFont>("Fonts/Daydream3");
             List<Texture2D> buttonTextures = new List<Texture2D> { Content.Load<Texture2D>("UI/Menu/ButtonUnpressed"), Content.Load<Texture2D>("UI/Menu/ButtonPressed") };
+            List<Texture2D> checkboxTextures = new List<Texture2D> { Content.Load<Texture2D>("UI/Menu/EmptyCheckBox"), Content.Load<Texture2D>("UI/Menu/CheckedCheckBox") };
 
             ui = new UIManager(GraphicsDevice,
                  new List<SpriteFont> { pixelFont, titleFont, scoreFont },
@@ -145,7 +153,7 @@ namespace GamblerGame
             // Play Game
             menuButtons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(playButtonXPos, menuButtonYPos, menuButtonWidth, menuButtonHeight),
+                    new Rectangle(playButtonXPos - menuButtonWidth / 3, menuButtonYPos, menuButtonWidth, menuButtonHeight),
                     "Play",
                     pixelFont,
                     new Color(15, 15, 15),
@@ -155,12 +163,22 @@ namespace GamblerGame
             // Quit
             menuButtons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(quitButtonXPos, menuButtonYPos, menuButtonWidth, menuButtonHeight),
+                    new Rectangle(quitButtonXPos + menuButtonWidth / 3, menuButtonYPos, menuButtonWidth, menuButtonHeight),
                     "Quit",
                     pixelFont,
                     new Color(15, 15, 15),
                     buttonTextures));
             menuButtons[1].OnLeftButtonClick += Exit;
+
+            // Back
+            menuButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(DesiredWidth / 2 - menuButtonWidth / 2, menuButtonYPos, menuButtonWidth, menuButtonHeight),
+                    "Options",
+                    pixelFont,
+                    new Color(15, 15, 15),
+                    buttonTextures));
+            menuButtons[2].OnLeftButtonClick += Options;
 
             // ----------- GAME BUTTONS ---------------
             // Roll (reposition
@@ -267,6 +285,51 @@ namespace GamblerGame
 
             // ----------- OPTIONS MENU BUTTONS ---------------
 
+            // Background Animation
+            optionsButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(DesiredWidth / 2 + DesiredHeight / 12, (int)(DesiredHeight / 10) + DesiredHeight / 2 - (int)(DesiredHeight / 3), DesiredHeight / 12, DesiredHeight / 12),
+                    "Rolling Animation Toggle",
+                    pixelFont,
+                    Color.White,
+                    checkboxTextures,
+                    rollingAnimationToggle));
+            optionsButtons[0].OnLeftButtonClick += ToggleAnimation;
+
+            // Rolling Animation Toggle
+            optionsButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(DesiredWidth / 2 + DesiredHeight / 12, (int)(DesiredHeight / 10) + DesiredHeight / 2 - (int)(DesiredHeight / 3) + (DesiredHeight / 9)
+                    , DesiredHeight / 12, DesiredHeight / 12),
+                    "Background Animation Toggle",
+                    pixelFont,
+                    Color.White,
+                    checkboxTextures,
+                    backgroundAnimationToggle));
+            optionsButtons[1].OnLeftButtonClick += ToggleBackground;
+
+            // Scanline
+            optionsButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(DesiredWidth / 2 + DesiredHeight / 12, (int)(DesiredHeight / 10) + DesiredHeight / 2 - (int)(DesiredHeight / 3) + (int)(2 * (DesiredHeight / 9)), DesiredHeight / 12, DesiredHeight / 12),
+                    "Scanline Toggle",
+                    pixelFont,
+                    Color.White,
+                    checkboxTextures,
+                    scanlineToggle));
+            optionsButtons[2].OnLeftButtonClick += ToggleScanline;
+
+            // Back
+            optionsButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(DesiredWidth / 2 - menuButtonWidth / 2, menuButtonYPos, menuButtonWidth, menuButtonHeight),
+                    "Back",
+                    pixelFont,
+                    new Color(15, 15, 15),
+                    buttonTextures));
+            optionsButtons[3].OnLeftButtonClick += Back;
+
+
             // Adds a list of all existing items.
             for (int i = 0; i < TotNumOfItems; i++)
             {
@@ -316,6 +379,11 @@ namespace GamblerGame
             MoveBlackBar();
 
             // TODO: Add your update logic here
+
+            if (gameState != State.Options)
+            {
+                previousState = gameState;
+            }
             switch (gameState)
             {
                 case State.MainMenu:
@@ -323,7 +391,10 @@ namespace GamblerGame
                     {
                         button.Update(gameTime);
                     }
-                    backgroundPosition += 2;
+                    if (backgroundAnimationToggle)
+                    {
+                        backgroundPosition += 2;
+                    }
                     break;
                 case State.Game:
                     if (!paused && inRound)
@@ -401,14 +472,19 @@ namespace GamblerGame
                             }
                             if (numRound == totalRounds)
                             {
-                                    hasWon = true;
-                                    gameState = State.GameOver;
-                                    desiredR = 75;
-                                    desiredG = 200;
-                                    desiredB = 75;
+                                hasWon = true;
+                                gameState = State.GameOver;
+                                desiredR = 75;
+                                desiredG = 200;
+                                desiredB = 75;
                             }
                         }
                         backgroundPosition++; // moves the position of every tile down each frame
+                        if (backgroundAnimationToggle)
+                        {
+                            backgroundPosition++;
+                        }
+
                     }
                     else
                     {
@@ -430,18 +506,34 @@ namespace GamblerGame
                     foreach (Button button in storeButtons)
                     {
                         button.Update(gameTime);
+
+                        if (backgroundAnimationToggle)
+                        {
+                            backgroundPosition += 2;
+                        }
+
                     }
                     store.StoreInteraction(rng, gameTime);
                     break;
                 case State.RoundOver:
                     backgroundPosition += 2;
-                    
+
                     break;
                 case State.Options:
-                    backgroundPosition += 2;
+                    optionsButtons[0].CheckboxUpdate(gameTime, rollingAnimationToggle);
+                    optionsButtons[1].CheckboxUpdate(gameTime, backgroundAnimationToggle);
+                    optionsButtons[2].CheckboxUpdate(gameTime, scanlineToggle);
+                    optionsButtons[3].Update(gameTime);
+                    if (backgroundAnimationToggle)
+                    {
+                        backgroundPosition += 2;
+                    }
                     break;
                 case State.GameOver:
-                    backgroundPosition += 2;
+                    if (backgroundAnimationToggle)
+                    {
+                        backgroundPosition += 2;
+                    }
                     if (hasWon)
                     {
 
@@ -466,6 +558,9 @@ namespace GamblerGame
         {
             GraphicsDevice.Clear(Color.Black);
             // TODO: Add your drawing code here
+
+
+
             _spriteBatch.Begin();
             // Prints the background as a grid with an extra row off screen
             if (backgroundPosition != DesiredHeight / 2)
@@ -488,8 +583,8 @@ namespace GamblerGame
                     {
                         button.Draw(_spriteBatch);
                     }
-                     
-                    _spriteBatch.DrawString(reqScoreFont, $"{minScore}", new Vector2((int)(DesiredWidth * .725) + (reqScoreFont.MeasureString($"Score Req: {minScore}").X )/ 2, (int)(DesiredHeight * .03) + DesiredHeight / 8 - (reqScoreFont.MeasureString($"Score Req: {minScore}").Y) / 4), Color.White);
+
+                    _spriteBatch.DrawString(reqScoreFont, $"{minScore}", new Vector2((int)(DesiredWidth * .725) + (reqScoreFont.MeasureString($"Score Req: {minScore}").X) / 2, (int)(DesiredHeight * .03) + DesiredHeight / 8 - (reqScoreFont.MeasureString($"Score Req: {minScore}").Y) / 4), Color.White);
                     // Round score variable displayed
                     _spriteBatch.DrawString(scoreFont, $"{roundScore}", new Vector2((int)(DesiredWidth * .835) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2, (int)(DesiredHeight * .36)), Color.White);
 
@@ -503,18 +598,21 @@ namespace GamblerGame
                             }
                             else
                             {
+                                if (rollingAnimationToggle)
+                                {
                                     symbols[rollingNumber[i]].DrawSymbol(_spriteBatch, DesiredWidth / 20 + (int)((DesiredWidth / 5.666) * i), DesiredHeight / 2 - (DesiredWidth / 10) - DesiredHeight / 100, DesiredWidth / 5, DesiredWidth / 5);
+                                }
                             }
                         }
                     }
                     int rollCount = numRolls;
-                    if(numRolls > totalRolls)
+                    if (numRolls > totalRolls)
                     {
                         rollCount = totalRolls;
                     }
                     _spriteBatch.DrawString(scoreFont, $"Rolls: {rollCount}/{totalRolls}", new Vector2((int)(DesiredWidth * .690), (int)(DesiredHeight * .55)), Color.White);
-                    _spriteBatch.DrawString(scoreFont, $"Rounds: {numRound+1}/{totalRounds}", new Vector2((int)(DesiredWidth * .690), (int)(DesiredHeight * .60)), Color.White);
-                    
+                    _spriteBatch.DrawString(scoreFont, $"Rounds: {numRound + 1}/{totalRounds}", new Vector2((int)(DesiredWidth * .690), (int)(DesiredHeight * .60)), Color.White);
+
                     DisplayScoreList();
 
                     _spriteBatch.End();
@@ -527,13 +625,30 @@ namespace GamblerGame
                         {
                             button.Draw(_spriteBatch);
                         }
+
+                        for (int i = 0; i < symbols.Count; i++)
+                        {
+                            symbols[i].DrawSymbol(_spriteBatch, (int)(DesiredWidth * .66) + DesiredWidth / 80, DesiredHeight - DesiredHeight / 5 - (i * (DesiredHeight / 15)), DesiredHeight / 15, DesiredHeight / 15);
+
+                        }
+                        _spriteBatch.DrawString(pixelFont, "Cherry - Scores 10 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (0 * (DesiredHeight / 15)) + pixelFont.MeasureString("Cherry - Scores 10 Points").Y / 2), Color.White);
+                        _spriteBatch.DrawString(pixelFont, "Seven - Scores 100 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (1 * (DesiredHeight / 15)) + pixelFont.MeasureString("Seven - Scores 100 Points").Y / 2), Color.White);
+                        _spriteBatch.DrawString(pixelFont, "Lemon - Scores 35 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (2 * (DesiredHeight / 15)) + pixelFont.MeasureString("Lemon - Scores 35 Points").Y / 2), Color.White);
+                        _spriteBatch.DrawString(pixelFont, "Lime - Scores 55 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (3 * (DesiredHeight / 15)) + pixelFont.MeasureString("Lime - Scores 55 Points").Y / 2), Color.White);
+                        _spriteBatch.DrawString(pixelFont, "P.apple - Scores 60 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (4 * (DesiredHeight / 15)) + pixelFont.MeasureString("P.apple - Scores 60 Points").Y / 2), Color.White);
+                        _spriteBatch.DrawString(pixelFont, "Melon - Scores 25 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (5 * (DesiredHeight / 15)) + pixelFont.MeasureString("Melon - Scores 25 Points").Y / 2), Color.White);
+                        _spriteBatch.DrawString(pixelFont, "Orange - Scores 65 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (6 * (DesiredHeight / 15)) + pixelFont.MeasureString("Orange - Scores 65 Points").Y / 2), Color.White);
+                        _spriteBatch.DrawString(pixelFont, "Kiwi - Scores 50 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (7 * (DesiredHeight / 15)) + pixelFont.MeasureString("Kiwi - Scores 50 Points").Y / 2), Color.White);
+                        _spriteBatch.DrawString(pixelFont, "Apple - Scores 15 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (8 * (DesiredHeight / 15)) + pixelFont.MeasureString("Apple - Scores 15 Points").Y / 2), Color.White);
+                        _spriteBatch.DrawString(pixelFont, "S.berry - Scores 20 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (9 * (DesiredHeight / 15)) + pixelFont.MeasureString("S.berry - Scores 20 Points").Y / 2), Color.White);
+                        _spriteBatch.DrawString(pixelFont, "Banana - Scores 30 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (10 * (DesiredHeight / 15)) + pixelFont.MeasureString("Banana - Scores 30 Points").Y / 2), Color.White);
                         _spriteBatch.End();
                     }
                     if (!inRound)
                     {
                         ui.DrawRoundEnd(_spriteBatch);
                         _spriteBatch.Begin();
-                        _spriteBatch.DrawString(scoreFont, $"Round {numRound} Over", new Vector2((DesiredWidth / 40 + DesiredWidth / 1.65f)/2 - scoreFont.MeasureString($"Round {numRound + 1}").X / 2, DesiredHeight / 2 - titleFont.MeasureString($"Round {numRound - 1}").Y), Color.White);
+                        _spriteBatch.DrawString(scoreFont, $"Round {numRound} Over", new Vector2((DesiredWidth / 40 + DesiredWidth / 1.65f) / 2 - scoreFont.MeasureString($"Round {numRound + 1}").X / 2, DesiredHeight / 2 - titleFont.MeasureString($"Round {numRound - 1}").Y), Color.White);
                         foreach (Button button in roundButtons)
                         {
                             button.Draw(_spriteBatch);
@@ -549,6 +664,10 @@ namespace GamblerGame
                     _spriteBatch.End();
                     break;
                 case State.Options:
+                    foreach (Button button in optionsButtons)
+                    {
+                        button.Draw(_spriteBatch);
+                    }
                     _spriteBatch.End();
                     break;
                 case State.GameOver:
@@ -571,8 +690,11 @@ namespace GamblerGame
             }
 
             ui.DrawBlackBars(blackBarYPos);
-            ui.DrawScreenFilters(_spriteBatch);
-            _spriteBatch.End();
+            if (scanlineToggle)
+            {
+                ui.DrawScreenFilters(_spriteBatch);
+                _spriteBatch.End();
+            }
             base.Draw(gameTime);
         }
 
@@ -707,11 +829,11 @@ namespace GamblerGame
             for (int i = 0; i < slotMachine.ScoreList.Count; i++)
             {
                 string score = slotMachine.ScoreList[i].ToString();
-                if(i != slotMachine.ScoreList.Count-1)
+                if (i != slotMachine.ScoreList.Count - 1)
                 {
                     score = score + " + ";
                 }
-                    _spriteBatch.DrawString(scoreFont, score, new Vector2(((int)(DesiredWidth * .715) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
+                _spriteBatch.DrawString(scoreFont, score, new Vector2(((int)(DesiredWidth * .715) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
                 move += (int)scoreFont.MeasureString(score).X;
             }
             _spriteBatch.DrawString(scoreFont, "  )  x  " + slotMachine.Multiplier.ToString(), new Vector2(((int)(DesiredWidth * .715) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
@@ -767,6 +889,11 @@ namespace GamblerGame
             slotMachine.IncreasePoints(int.Parse(action));
         }
 
+        public void Back()
+        {
+            gameState = previousState;
+        }
+
         public void Reset()
         {
             roundScore = 0;
@@ -776,9 +903,46 @@ namespace GamblerGame
             totalScore = 0;
             paused = false;
             numRolls = 0;
-            minScore = 500;
+            minScore = 300;
             hasWon = false;
             money = 4;
+        }
+
+        public void ToggleScanline()
+        {
+            if (scanlineToggle)
+            {
+                scanlineToggle = false;
+            }
+            else
+            {
+                scanlineToggle = true;
+            }
+        }
+
+        public void ToggleAnimation()
+        {
+            if (rollingAnimationToggle)
+            {
+                rollingAnimationToggle = false;
+            }
+            else
+            {
+                rollingAnimationToggle = true;
+            }
+        }
+
+        public void ToggleBackground()
+        {
+            if (backgroundAnimationToggle)
+            {
+                backgroundAnimationToggle = false;
+                backgroundPosition = 0;
+            }
+            else
+            {
+                backgroundAnimationToggle = true;
+            }
         }
     }
 }
