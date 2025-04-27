@@ -93,6 +93,20 @@ namespace GamblerGame
         {
             ShapeBatch.Begin(graphicsDevice);
             ShapeBatch.Box(0, 0, DesiredWidth, DesiredHeight, new Color (0, 0, 0, 200));
+            // Scores Background
+            ShapeBatch.Box(
+                (int)(DesiredWidth * .66)+1,
+                DesiredHeight/10+1,
+                (int)(DesiredWidth / 3.5),
+                DesiredHeight - DesiredHeight / 5-3,
+                Color.Black);
+            // Scores Background Outline
+            ShapeBatch.BoxOutline(
+                (int)(DesiredWidth * .66)+1,
+                DesiredHeight / 10+1,
+                (int)(DesiredWidth / 3.5) + 1,
+                DesiredHeight - DesiredHeight / 5-2,
+                new Color(255,255,255));
             ShapeBatch.End();
         }
         public void DrawGame(SpriteBatch sb)
