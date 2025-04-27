@@ -86,6 +86,36 @@ namespace GamblerGame
             //buttonImg.SetData<Int32>(colorData,0,colorData.Length);
         }
 
+        public Button(GraphicsDevice device, Rectangle position, String text, SpriteFont font, Color color, List<Texture2D> textures, bool status)
+        {
+            // Save copies/references to the info we'll need later
+            this.font = font;
+            this.position = position;
+            this.text = text;
+            normalColor = color;
+            buttonColor = normalColor;
+
+            // Figure out where on the button to draw it
+            Vector2 textSize = font.MeasureString(text);
+            textLocUnpressed = new Vector2(
+                (position.X - textSize.X),
+                (position.Y - textSize.Y / 2 + position.Height / 2)
+            );
+
+            textLoc = textLocUnpressed;
+
+            // Invert the button color for the text color (because why not)
+            this.textColor = new Color(255 - color.R, 255 - color.G, 255 - color.B);
+
+            // Make a custom 2d texture for the button itself
+            buttonUnpressedImg = textures[0];
+            buttonPressedImg = textures[1];
+            buttonImg = buttonUnpressedImg;
+            //int[] colorData = new int[buttonImg.Width * buttonImg.Height];
+            //Array.Fill<int>(colorData, (int)color.PackedValue);
+            //buttonImg.SetData<Int32>(colorData,0,colorData.Length);
+        }
+
         /// <summary>
         /// Each frame, update its status if it's been clicked.
         /// </summary>
@@ -126,6 +156,47 @@ namespace GamblerGame
             {
                 buttonImg = buttonUnpressedImg;
                 textLoc = textLocUnpressed;
+            }
+
+            prevMState = mState;
+        }
+
+        /// <summary>
+        /// Each frame, update its status if it's been clicked.
+        /// </summary>
+        /// <param name="gameTime">Unused, but required to implement abstract class</param>
+        public virtual void CheckboxUpdate(GameTime gameTime, bool status)
+        {
+            // Check/capture the mouse state regardless of whether this button
+            // if active so that it's up to date next time!
+            MouseState mState = Mouse.GetState();
+
+            buttonColor = normalColor;
+            if (this.position.Contains(mState.Position))
+            {
+                // If it is pressed
+                if (mState.LeftButton == ButtonState.Released &&
+                prevMState.LeftButton == ButtonState.Pressed)
+                {
+                    if (OnLeftButtonClick != null)
+                    {
+                        OnLeftButtonClick();
+                    }
+                }
+
+                // If it is only hovering over the button
+                else
+                {
+                    Hover();
+                }
+            }
+            if (status)
+            {
+                buttonImg = buttonPressedImg;
+            }
+            else
+            {
+                buttonImg = buttonUnpressedImg;
             }
 
             prevMState = mState;

@@ -41,6 +41,7 @@ namespace GamblerGame
         private SpriteFont titleFont;
 
         private State gameState;
+        private State previousState;
 
         // Menu
         const int menuButtonWidth = DesiredWidth / 4;
@@ -61,6 +62,7 @@ namespace GamblerGame
         private int rollingAnimationDelay = 0;
         private List<Button> gameButtons = new List<Button>();
         private List<Button> pauseButtons = new List<Button>();
+        private List<Button> optionsButtons = new List<Button>();
         private List<Button> gameOverButtons = new List<Button>();
         private List<Item> allItems = new List<Item>();
         private List<Symbol> symbols = new List<Symbol>();
@@ -79,6 +81,11 @@ namespace GamblerGame
         private int desiredR = 255;
         private int desiredG = 255;
         private int desiredB = 255;
+
+        // Options
+        private bool scanlineToggle = true;
+        private bool rollingAnimationToggle = true;
+        private bool backgroundAnimationToggle = true;
 
         // Symbols
         private Texture2D sevenTexture;
@@ -130,6 +137,7 @@ namespace GamblerGame
             titleFont = Content.Load<SpriteFont>("Fonts/Daydream");
             scoreFont = Content.Load<SpriteFont>("Fonts/Daydream2");
             List<Texture2D> buttonTextures = new List<Texture2D> { Content.Load<Texture2D>("UI/Menu/ButtonUnpressed"), Content.Load<Texture2D>("UI/Menu/ButtonPressed") };
+            List<Texture2D> checkboxTextures = new List<Texture2D> { Content.Load<Texture2D>("UI/Menu/EmptyCheckBox"), Content.Load<Texture2D>("UI/Menu/CheckedCheckBox") };
 
             ui = new UIManager(GraphicsDevice,
                 new List<SpriteFont> { pixelFont, titleFont, scoreFont },
@@ -140,7 +148,7 @@ namespace GamblerGame
             // Play Game
             menuButtons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(playButtonXPos, menuButtonYPos, menuButtonWidth, menuButtonHeight),
+                    new Rectangle(playButtonXPos - menuButtonWidth / 3, menuButtonYPos, menuButtonWidth, menuButtonHeight),
                     "Play",
                     pixelFont,
                     new Color(15, 15, 15),
@@ -150,12 +158,22 @@ namespace GamblerGame
             // Quit
             menuButtons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(quitButtonXPos, menuButtonYPos, menuButtonWidth, menuButtonHeight),
+                    new Rectangle(quitButtonXPos + menuButtonWidth/3, menuButtonYPos, menuButtonWidth, menuButtonHeight),
                     "Quit",
                     pixelFont,
                     new Color(15, 15, 15),
                     buttonTextures));
             menuButtons[1].OnLeftButtonClick += Exit;
+
+            // Back
+            menuButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(DesiredWidth / 2 - menuButtonWidth / 2, menuButtonYPos, menuButtonWidth, menuButtonHeight),
+                    "Options",
+                    pixelFont,
+                    new Color(15, 15, 15),
+                    buttonTextures));
+            menuButtons[2].OnLeftButtonClick += Options;
 
             // ----------- GAME BUTTONS ---------------
             // Roll (reposition
@@ -241,6 +259,51 @@ namespace GamblerGame
             gameOverButtons[1].OnLeftButtonClick += Menu;
 
             // ----------- OPTIONS MENU BUTTONS ---------------
+            
+            // Background Animation
+            optionsButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(DesiredWidth / 2 + DesiredHeight / 12, (int)(DesiredHeight / 10) + DesiredHeight / 2 - (int)(DesiredHeight / 3) , DesiredHeight / 12, DesiredHeight / 12),
+                    "Rolling Animation Toggle",
+                    pixelFont,
+                    Color.White,
+                    checkboxTextures,
+                    rollingAnimationToggle));
+            optionsButtons[0].OnLeftButtonClick += ToggleAnimation;
+
+            // Rolling Animation Toggle
+            optionsButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(DesiredWidth / 2 + DesiredHeight / 12, (int)(DesiredHeight / 10) + DesiredHeight / 2 - (int)(DesiredHeight / 3) + (DesiredHeight / 9)
+                    , DesiredHeight / 12, DesiredHeight / 12),
+                    "Background Animation Toggle",
+                    pixelFont,
+                    Color.White,
+                    checkboxTextures,
+                    backgroundAnimationToggle));
+            optionsButtons[1].OnLeftButtonClick += ToggleBackground;
+
+            // Scanline
+            optionsButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(DesiredWidth / 2 + DesiredHeight / 12, (int)(DesiredHeight / 10) + DesiredHeight / 2 - (int)(DesiredHeight / 3) + (int)(2*(DesiredHeight / 9)), DesiredHeight / 12, DesiredHeight / 12),
+                    "Scanline Toggle",
+                    pixelFont,
+                    Color.White,
+                    checkboxTextures,
+                    scanlineToggle));
+            optionsButtons[2].OnLeftButtonClick += ToggleScanline;
+
+            // Back
+            optionsButtons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(DesiredWidth/2 - menuButtonWidth/2, menuButtonYPos, menuButtonWidth, menuButtonHeight),
+                    "Back",
+                    pixelFont,
+                    new Color(15, 15, 15),
+                    buttonTextures));
+            optionsButtons[3].OnLeftButtonClick += Back;
+
 
             // Adds a list of all existing items.
             for (int i = 0; i < TotNumOfItems; i++)
@@ -288,6 +351,11 @@ namespace GamblerGame
             MoveBlackBar();
 
             // TODO: Add your update logic here
+
+            if (gameState != State.Options)
+            {
+                previousState = gameState;
+            }
             switch (gameState)
             {
                 case State.MainMenu:
@@ -295,7 +363,10 @@ namespace GamblerGame
                     {
                         button.Update(gameTime);
                     }
-                    backgroundPosition += 2;
+                    if (backgroundAnimationToggle)
+                    {
+                        backgroundPosition += 2;
+                    }
                     break;
                 case State.Game:
                     if (!paused)
@@ -355,7 +426,10 @@ namespace GamblerGame
                                 rollingNumber[2] = rng.Next(symbols.Count);
                             }
                         }
-                        backgroundPosition++; // moves the position of every tile down each frame
+                        if (backgroundAnimationToggle)
+                        {
+                            backgroundPosition++;
+                        }
                     }
                     else
                     {
@@ -366,14 +440,27 @@ namespace GamblerGame
                     }
                     break;
                 case State.Store:
-                    backgroundPosition += 2;
+                    if (backgroundAnimationToggle)
+                    {
+                        backgroundPosition += 2;
+                    }
                     store.StoreInteraction(rng, gameTime);
                     break;
-                case State.Options:
-                    backgroundPosition += 2;
+                case State.Options: 
+                    optionsButtons[0].CheckboxUpdate(gameTime, rollingAnimationToggle);
+                    optionsButtons[1].CheckboxUpdate(gameTime, backgroundAnimationToggle);
+                    optionsButtons[2].CheckboxUpdate(gameTime, scanlineToggle);
+                    optionsButtons[3].Update(gameTime);
+                    if (backgroundAnimationToggle)
+                    {
+                        backgroundPosition += 2;
+                    }
                     break;
                 case State.GameOver:
-                    backgroundPosition += 2;
+                    if (backgroundAnimationToggle)
+                    {
+                        backgroundPosition += 2;
+                    }
                     if (hasWon)
                     {
 
@@ -433,7 +520,10 @@ namespace GamblerGame
                             }
                             else
                             {
+                                if (rollingAnimationToggle)
+                                {
                                     symbols[rollingNumber[i]].DrawSymbol(_spriteBatch, DesiredWidth / 20 + (int)((DesiredWidth / 5.666) * i), DesiredHeight / 2 - (DesiredWidth / 10) - DesiredHeight / 100, DesiredWidth / 5, DesiredWidth / 5);
+                                }
                             }
                         }
                     }
@@ -454,6 +544,10 @@ namespace GamblerGame
                     }
                     break;
                 case State.Options:
+                    foreach (Button button in optionsButtons)
+                    {
+                        button.Draw(_spriteBatch);
+                    }
                     _spriteBatch.End();
                     break;
                 case State.GameOver:
@@ -476,8 +570,11 @@ namespace GamblerGame
             }
 
             ui.DrawBlackBars(blackBarYPos);
-            ui.DrawScreenFilters(_spriteBatch);
-            _spriteBatch.End();
+            if (scanlineToggle)
+            {
+                ui.DrawScreenFilters(_spriteBatch);
+                _spriteBatch.End();
+            }
             base.Draw(gameTime);
         }
 
@@ -576,7 +673,7 @@ namespace GamblerGame
             if (numRolls < 10)
             {
                 rollButtonDelay = 300;
-                displaySymbol = new bool[3] { false, false, false};
+                displaySymbol = new bool[3] { false, false, false };
                 slotMachine.ScoreList.Clear();
                 slotMachine.Roll(rng);
                 rollScores = new List<double>();
@@ -661,7 +758,12 @@ namespace GamblerGame
             // TODO: Add multiplier logic.
         }
 
-        public void Reset()
+        public void Back()
+        {
+            gameState = previousState;
+        }
+
+            public void Reset()
         {
             roundScore = 0;
             rollScore = 0;
@@ -672,6 +774,43 @@ namespace GamblerGame
             minScore = 2000;
             hasWon = false;
             money = 4;
+        }
+
+        public void ToggleScanline()
+        {
+            if (scanlineToggle)
+            {
+                scanlineToggle = false;
+            }
+            else
+            {
+                scanlineToggle = true;
+            }
+        }
+
+        public void ToggleAnimation()
+        {
+            if (rollingAnimationToggle)
+            {
+                rollingAnimationToggle = false;
+            }
+            else
+            {
+                rollingAnimationToggle = true;
+            }
+        }
+
+        public void ToggleBackground()
+        {
+            if (backgroundAnimationToggle)
+            {
+                backgroundAnimationToggle = false;
+                backgroundPosition = 0;
+            }
+            else
+            {
+                backgroundAnimationToggle = true;
+            }
         }
     }
 }
