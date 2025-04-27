@@ -64,6 +64,7 @@ namespace GamblerGame
         private List<Button> pauseButtons = new List<Button>();
         private List<Button> gameOverButtons = new List<Button>();
         private List<Button> storeButtons = new List<Button>();
+        private List<Button> roundButtons = new List<Button>();
         private List<Item> allItems = new List<Item>();
         private List<Symbol> symbols = new List<Symbol>();
         private bool[] displaySymbol;
@@ -225,16 +226,24 @@ namespace GamblerGame
             pauseButtons[3].OnLeftButtonClick += Exit;
 
             // ----------- STORE BUTTONS -------------------
-            //storeButtons.Add(new Button(
-            //    _graphics.GraphicsDevice,
-            //    new Rectangle()
-            //    "Return",
-            //    pixelFont,
-            //    new Color(30, 30, 50),
-            //    buttonTextures));
+            storeButtons.Add(new Button(
+                _graphics.GraphicsDevice,
+                new Rectangle(playButtonXPos, menuButtonYPos + 55, menuButtonWidth, menuButtonHeight), // TODO: this bs logic 
+                "Return to Game",
+                pixelFont,
+                new Color(30, 30, 50),
+                buttonTextures));
+            storeButtons[0].OnLeftButtonClick += GameState;
 
-
-
+            // ------------ ROUND OVER BUTTONS --------------
+            roundButtons.Add(new Button(
+                _graphics.GraphicsDevice,
+                new Rectangle(playButtonXPos, menuButtonYPos + 55, menuButtonWidth, menuButtonHeight), // Yeah good enough for now. TODO: change if you like gabe 
+                "Store",
+                pixelFont,
+                new Color(80, 30, 30),
+                buttonTextures));
+            roundButtons[0].OnLeftButtonClick += Store;
 
             // ----------- GAME OVER BUTTONS ---------------
             // Play Game
@@ -385,10 +394,18 @@ namespace GamblerGame
                     break;
                 case State.Store:
                     backgroundPosition += 2;
+                    foreach (Button button in storeButtons)
+                    {
+                        button.Update(gameTime);
+                    }
                     store.StoreInteraction(rng, gameTime);
                     break;
                 case State.RoundOver:
                     backgroundPosition += 2;
+                    foreach (Button button in roundButtons)
+                    {
+                        button.Update(gameTime);
+                    }
                     break;
                 case State.Options:
                     backgroundPosition += 2;
@@ -479,6 +496,18 @@ namespace GamblerGame
                 case State.RoundOver:
                     _spriteBatch.DrawString(titleFont, $"Round {numRound - 1}", new Vector2(DesiredWidth / 2 - titleFont.MeasureString($"Round {numRound - 1}").X / 2, DesiredHeight / 2 - titleFont.MeasureString($"Round {numRound - 1}").Y), Color.White);
                     _spriteBatch.DrawString(titleFont, $"Over", new Vector2(DesiredWidth / 2 - titleFont.MeasureString($"Over").X / 2, DesiredHeight / 2 + titleFont.MeasureString($"Over").Y / 2), Color.White);
+
+                    foreach (Button button in roundButtons)
+                    {
+                        button.Draw(_spriteBatch);
+                    }
+                    _spriteBatch.End();
+                    break;
+                case State.Store:
+                    foreach (Button button in storeButtons)
+                    {
+                        button.Draw(_spriteBatch);
+                    }
                     _spriteBatch.End();
                     break;
                 case State.Options:
@@ -598,8 +627,8 @@ namespace GamblerGame
         private void Store()
         {
             desiredR = 255;
-            desiredG = 92;
-            desiredB = 171;
+            desiredG = 156;
+            desiredB = 204;
             gameState = State.Store;
         }
 

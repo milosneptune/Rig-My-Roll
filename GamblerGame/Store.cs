@@ -48,12 +48,13 @@ namespace GamblerGame
         /// <param name="rng"></param>
         private void StockStore(Random rng)
         {
-            for (int i = 0; i < 4; i++)
-            {
-                rng.Next(tempItems.Count);
-                StoreItems.Add(tempItems[i]);
-                tempItems.Remove(tempItems[i]);
-            }
+            // TODO: theres a runtime error caused by this 
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    rng.Next(tempItems.Count);
+            //    StoreItems.Add(tempItems[i]);
+            //    tempItems.Remove(tempItems[i]);
+            //}
         }
     }
 }
