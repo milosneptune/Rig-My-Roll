@@ -11,14 +11,11 @@ namespace GamblerGame
 {
     internal class SlotMachine
     {
-
         private List<Slot> slots;
         private double rollScore;
         private int matchedSymbols;
-        //private Random rng = new Random();
-        private double multiplier;
 
-        public double Multiplier { get { return multiplier; } }
+        public double Multiplier { get; set; }
         public double RollTotal { get; private set; }
         public double RollScore { get; private set; }
         public List<double> ScoreList { get; private set; }
@@ -35,7 +32,7 @@ namespace GamblerGame
             };
             SlotList = slots;
             ScoreList = new List<double>();
-            multiplier = 1;
+            Multiplier = 1;
         }
 
         /// <summary>
@@ -45,7 +42,7 @@ namespace GamblerGame
         internal void Roll(Random rng)
         {
 
-           // ScoreList = new List<double>();
+            // ScoreList = new List<double>();
             SymbolList = new List<Symbol>();
             rollScore = 0;
             for (int i = 0; i < slots.Count; i++)
@@ -67,7 +64,7 @@ namespace GamblerGame
         private double CheckMultiply()
         {
             matchedSymbols = 0;
-            multiplier = 1;
+            Multiplier = 1;
 
             if (slots[0].ResultName.ToString() == slots[1].ResultName.ToString())
             {
@@ -89,20 +86,20 @@ namespace GamblerGame
 
             if (matchedSymbols == 0)
             {
-                return multiplier;
+                return Multiplier;
             }
             else if (matchedSymbols == 1)
             {
-                return multiplier = 1.5;
+                return Multiplier = 1.5;
             }
             else if (matchedSymbols == 2)
             {
-                return multiplier = 2;
+                return Multiplier = 2;
             }
             // This shouldn't happen
             else
             {
-                return multiplier = 50;
+                return Multiplier = 50;
             }
         }
 
@@ -129,7 +126,6 @@ namespace GamblerGame
         /// <param name="action"></param>
         public void RollSpecificSymbol(string action)
         {
-            // TODO: Add roll logic with this set slot symbol.
             string[] info = action.Split(',');
             slots[int.Parse(info[0])].RollSpecificSymbol(info[1]);
         }
@@ -140,7 +136,6 @@ namespace GamblerGame
         /// <param name="action"></param>
         public void IncreaseSymbolChance(string action)
         {
-            // TODO: Add increase chance logic.
             string[] info = action.Split(',');
             slots[int.Parse(info[0])].IncreaseSymbolChance(info[1], int.Parse(info[2]));
         }
@@ -159,9 +154,28 @@ namespace GamblerGame
         /// </summary>
         public void Reset()
         {
-            if (SymbolList != null) { 
-            SymbolList.Clear();
+            if (SymbolList != null)
+            {
+                SymbolList.Clear();
+            }
         }
+
+        /// <summary>
+        /// Increases multiplier by multiplying it with an integer parameter
+        /// </summary>
+        /// <param name="inc"></param>
+        public void IncreaseMultipler(int inc)
+        {
+            Multiplier = Multiplier * inc;
+        }
+
+        /// <summary>
+        /// Increases the Roll score by adding an integer
+        /// </summary>
+        /// <param name="inc"></param>
+        public void IncreasePoints(int inc)
+        {
+            RollTotal += inc;
         }
     }
 }

@@ -12,6 +12,7 @@ namespace GamblerGame
         MainMenu,
         Game,
         Store,
+        RoundOver,
         GameOver,
         Options,
         Quit
@@ -62,6 +63,7 @@ namespace GamblerGame
         private List<Button> gameButtons = new List<Button>();
         private List<Button> pauseButtons = new List<Button>();
         private List<Button> gameOverButtons = new List<Button>();
+        private List<Button> storeButtons = new List<Button>();
         private List<Item> allItems = new List<Item>();
         private List<Symbol> symbols = new List<Symbol>();
         private bool[] displaySymbol;
@@ -90,6 +92,9 @@ namespace GamblerGame
         private double totalScore;
         private bool paused = false;
         private int numRolls;
+        private int totalRolls = 1; // TODO: subject to change if we decide to make rounds shorter/longer
+        private int numRound = 1; // TODO: make sure this updates everytime the player finishes rolling
+        private int totalRounds = 5;
         private int minScore;
         private bool hasWon;
         private int money;
@@ -115,7 +120,7 @@ namespace GamblerGame
             slotMachine = new SlotMachine(Content);
             symbols = slotMachine.SlotList[0].Symbols;
 
-            //This is subject to change
+            // TODO: This is subject to change
             minScore = 2000;
 
             base.Initialize();
@@ -132,8 +137,8 @@ namespace GamblerGame
             List<Texture2D> buttonTextures = new List<Texture2D> { Content.Load<Texture2D>("UI/Menu/ButtonUnpressed"), Content.Load<Texture2D>("UI/Menu/ButtonPressed") };
 
             ui = new UIManager(GraphicsDevice,
-                new List<SpriteFont> { pixelFont, titleFont, scoreFont },
-                new List<Texture2D> { backgroundTexture, scanlineTexture, sevenTexture });
+                 new List<SpriteFont> { pixelFont, titleFont, scoreFont },
+                 new List<Texture2D> { backgroundTexture, scanlineTexture, sevenTexture });
 
 
             // ----------- MENU BUTTONS ---------------
@@ -219,6 +224,18 @@ namespace GamblerGame
                     buttonTextures));
             pauseButtons[3].OnLeftButtonClick += Exit;
 
+            // ----------- STORE BUTTONS -------------------
+            //storeButtons.Add(new Button(
+            //    _graphics.GraphicsDevice,
+            //    new Rectangle()
+            //    "Return",
+            //    pixelFont,
+            //    new Color(30, 30, 50),
+            //    buttonTextures));
+
+
+
+
             // ----------- GAME OVER BUTTONS ---------------
             // Play Game
             gameOverButtons.Add(new Button(
@@ -276,6 +293,7 @@ namespace GamblerGame
                     case '*':
                         item.UseItem += Multiplier;
                         break;
+                        // TODO: add the two other new methods (found inside SlotMachine, IncreasePoints and IncreaseMultipler)
                 }
             }
         }
@@ -369,6 +387,9 @@ namespace GamblerGame
                     backgroundPosition += 2;
                     store.StoreInteraction(rng, gameTime);
                     break;
+                case State.RoundOver:
+                    backgroundPosition += 2;
+                    break;
                 case State.Options:
                     backgroundPosition += 2;
                     break;
@@ -437,7 +458,9 @@ namespace GamblerGame
                             }
                         }
                     }
-
+                    _spriteBatch.DrawString(scoreFont, $"Rolls: {numRolls}/{totalRolls}", new Vector2((int)(DesiredWidth * .690), (int)(DesiredHeight * .55)), Color.White);
+                    _spriteBatch.DrawString(scoreFont, $"Rounds: {numRound}/{totalRounds}", new Vector2((int)(DesiredWidth * .690), (int)(DesiredHeight * .60)), Color.White);
+                    
                     DisplayScoreList();
 
                     _spriteBatch.End();
@@ -452,6 +475,11 @@ namespace GamblerGame
                         }
                         _spriteBatch.End();
                     }
+                    break;
+                case State.RoundOver:
+                    _spriteBatch.DrawString(titleFont, $"Round {numRound - 1}", new Vector2(DesiredWidth / 2 - titleFont.MeasureString($"Round {numRound - 1}").X / 2, DesiredHeight / 2 - titleFont.MeasureString($"Round {numRound - 1}").Y), Color.White);
+                    _spriteBatch.DrawString(titleFont, $"Over", new Vector2(DesiredWidth / 2 - titleFont.MeasureString($"Over").X / 2, DesiredHeight / 2 + titleFont.MeasureString($"Over").Y / 2), Color.White);
+                    _spriteBatch.End();
                     break;
                 case State.Options:
                     _spriteBatch.End();
@@ -567,13 +595,29 @@ namespace GamblerGame
             gameState = State.MainMenu;
         }
 
+        private void Store()
+        {
+            desiredR = 255;
+            desiredG = 92;
+            desiredB = 171;
+            gameState = State.Store;
+        }
+
+        private void RoundOver()
+        {
+            desiredR = 255;
+            desiredG = 92;
+            desiredB = 171;
+            gameState = State.RoundOver;
+        }
+
         /// <summary>
         /// Rolls slots
         /// </summary>
         /// <param name="circle"></param>
         private void Roll()
         {
-            if (numRolls < 10)
+            if (numRolls < totalRolls)
             {
                 rollButtonDelay = 300;
                 displaySymbol = new bool[3] { false, false, false};
@@ -587,21 +631,44 @@ namespace GamblerGame
             }
             else
             {
-                if (roundScore >= minScore)
+                numRound += 1;
+
+                //if (roundScore >= minScore)
+                //{
+                //    hasWon = true;
+                //    gameState = State.GameOver;
+                //    desiredR = 75;
+                //    desiredG = 200;
+                //    desiredB = 75;
+                //}
+                //else
+                //{
+                //    hasWon = false;
+                //    gameState = State.GameOver;
+                //    desiredR = 200;
+                //    desiredG = 75;
+                //    desiredB = 75;
+                //}
+
+                RoundOver();
+                if (numRound == totalRounds)
                 {
-                    hasWon = true;
-                    gameState = State.GameOver;
-                    desiredR = 75;
-                    desiredG = 200;
-                    desiredB = 75;
-                }
-                else
-                {
-                    hasWon = false;
-                    gameState = State.GameOver;
-                    desiredR = 200;
-                    desiredG = 75;
-                    desiredB = 75;
+                    if (roundScore >= minScore)
+                    {
+                        hasWon = true;
+                        gameState = State.GameOver;
+                        desiredR = 75;
+                        desiredG = 200;
+                        desiredB = 75;
+                    }
+                    else
+                    {
+                        hasWon = false;
+                        gameState = State.GameOver;
+                        desiredR = 200;
+                        desiredG = 75;
+                        desiredB = 75;
+                    }
                 }
             }
         }
