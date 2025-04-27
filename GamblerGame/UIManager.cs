@@ -95,6 +95,15 @@ namespace GamblerGame
             ShapeBatch.Box(0, 0, DesiredWidth, DesiredHeight, new Color (0, 0, 0, 200));
             ShapeBatch.End();
         }
+
+        public void DrawRoundEnd(SpriteBatch sb)
+        {
+            ShapeBatch.Begin(graphicsDevice);
+            ShapeBatch.Box(0, 0, DesiredWidth, DesiredHeight, new Color(0, 0, 0, 100));
+
+            ShapeBatch.Box(DesiredWidth / 80, DesiredHeight / 2 - (DesiredWidth / 10), DesiredWidth / 1.25f, DesiredHeight - (DesiredHeight / 2 - (DesiredWidth / 10)), Color.Black);
+            ShapeBatch.End();
+        }
         public void DrawGame(SpriteBatch sb)
         {
 

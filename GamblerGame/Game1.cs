@@ -69,6 +69,7 @@ namespace GamblerGame
         private List<Symbol> symbols = new List<Symbol>();
         private bool[] displaySymbol;
         private int[] rollingNumber;
+        private bool inRound;
 
         private int blackBarYPos = 0;
         private int desiredBlackBarYPos = DesiredHeight / 2 - DesiredHeight / 10;
@@ -325,7 +326,7 @@ namespace GamblerGame
                     backgroundPosition += 2;
                     break;
                 case State.Game:
-                    if (!paused)
+                    if (!paused && inRound)
                     {
                         gameButtons[1].Update(gameTime);
                         if (rollButtonDelay == 0)
@@ -382,11 +383,43 @@ namespace GamblerGame
                                 rollingNumber[2] = rng.Next(symbols.Count);
                             }
                         }
+                        if (numRolls == totalRolls && rollButtonDelay == 0)
+                        {
+                            numRolls++;
+                            RoundOver();
+                            numRound += 1;
+                            if (numRound == totalRounds)
+                            {
+                                if (roundScore >= minScore)
+                                {
+                                    hasWon = true;
+                                    gameState = State.GameOver;
+                                    desiredR = 75;
+                                    desiredG = 200;
+                                    desiredB = 75;
+                                }
+                                else
+                                {
+                                    hasWon = false;
+                                    gameState = State.GameOver;
+                                    desiredR = 200;
+                                    desiredG = 75;
+                                    desiredB = 75;
+                                }
+                            }
+                        }
                         backgroundPosition++; // moves the position of every tile down each frame
                     }
                     else
                     {
                         foreach (Button button in pauseButtons)
+                        {
+                            button.Update(gameTime);
+                        }
+                    }
+                    if (!inRound)
+                    {
+                        foreach (Button button in roundButtons)
                         {
                             button.Update(gameTime);
                         }
@@ -402,10 +435,7 @@ namespace GamblerGame
                     break;
                 case State.RoundOver:
                     backgroundPosition += 2;
-                    foreach (Button button in roundButtons)
-                    {
-                        button.Update(gameTime);
-                    }
+                    
                     break;
                 case State.Options:
                     backgroundPosition += 2;
@@ -475,7 +505,12 @@ namespace GamblerGame
                             }
                         }
                     }
-                    _spriteBatch.DrawString(scoreFont, $"Rolls: {numRolls}/{totalRolls}", new Vector2((int)(DesiredWidth * .690), (int)(DesiredHeight * .55)), Color.White);
+                    int rollCount = numRolls;
+                    if(numRolls > totalRolls)
+                    {
+                        rollCount = totalRolls;
+                    }
+                    _spriteBatch.DrawString(scoreFont, $"Rolls: {rollCount}/{totalRolls}", new Vector2((int)(DesiredWidth * .690), (int)(DesiredHeight * .55)), Color.White);
                     _spriteBatch.DrawString(scoreFont, $"Rounds: {numRound}/{totalRounds}", new Vector2((int)(DesiredWidth * .690), (int)(DesiredHeight * .60)), Color.White);
                     
                     DisplayScoreList();
@@ -492,16 +527,19 @@ namespace GamblerGame
                         }
                         _spriteBatch.End();
                     }
-                    break;
-                case State.RoundOver:
-                    _spriteBatch.DrawString(titleFont, $"Round {numRound - 1}", new Vector2(DesiredWidth / 2 - titleFont.MeasureString($"Round {numRound - 1}").X / 2, DesiredHeight / 2 - titleFont.MeasureString($"Round {numRound - 1}").Y), Color.White);
-                    _spriteBatch.DrawString(titleFont, $"Over", new Vector2(DesiredWidth / 2 - titleFont.MeasureString($"Over").X / 2, DesiredHeight / 2 + titleFont.MeasureString($"Over").Y / 2), Color.White);
-
-                    foreach (Button button in roundButtons)
+                    if (!inRound)
                     {
-                        button.Draw(_spriteBatch);
+                        ui.DrawRoundEnd(_spriteBatch);
+                        _spriteBatch.Begin();
+                        _spriteBatch.DrawString(titleFont, $"Round {numRound - 1}", new Vector2(DesiredWidth / 2 - titleFont.MeasureString($"Round {numRound - 1}").X / 2, DesiredHeight / 2 - titleFont.MeasureString($"Round {numRound - 1}").Y), Color.White);
+                        _spriteBatch.DrawString(titleFont, $"Over", new Vector2(DesiredWidth / 2 - titleFont.MeasureString($"Over").X / 2, DesiredHeight / 2 + titleFont.MeasureString($"Over").Y / 2), Color.White);
+
+                        foreach (Button button in roundButtons)
+                        {
+                            button.Draw(_spriteBatch);
+                        }
+                        _spriteBatch.End();
                     }
-                    _spriteBatch.End();
                     break;
                 case State.Store:
                     foreach (Button button in storeButtons)
@@ -576,6 +614,7 @@ namespace GamblerGame
             desiredB = 175;
             desiredBlackBarYPos = DesiredHeight / 2;
             gameState = State.Game;
+            inRound = true;
         }
 
         /// <summary>
@@ -637,7 +676,7 @@ namespace GamblerGame
             desiredR = 255;
             desiredG = 92;
             desiredB = 171;
-            gameState = State.RoundOver;
+            inRound = false;
         }
 
         /// <summary>
@@ -649,7 +688,7 @@ namespace GamblerGame
             if (numRolls < totalRolls)
             {
                 rollButtonDelay = 300;
-                displaySymbol = new bool[3] { false, false, false};
+                displaySymbol = new bool[3] { false, false, false };
                 slotMachine.ScoreList.Clear();
                 slotMachine.Roll(rng);
                 rollScores = new List<double>();
@@ -657,48 +696,6 @@ namespace GamblerGame
                 rollScore = slotMachine.RollTotal;
                 roundScore += slotMachine.RollTotal;
                 numRolls++;
-            }
-            else
-            {
-                numRound += 1;
-
-                //if (roundScore >= minScore)
-                //{
-                //    hasWon = true;
-                //    gameState = State.GameOver;
-                //    desiredR = 75;
-                //    desiredG = 200;
-                //    desiredB = 75;
-                //}
-                //else
-                //{
-                //    hasWon = false;
-                //    gameState = State.GameOver;
-                //    desiredR = 200;
-                //    desiredG = 75;
-                //    desiredB = 75;
-                //}
-
-                RoundOver();
-                if (numRound == totalRounds)
-                {
-                    if (roundScore >= minScore)
-                    {
-                        hasWon = true;
-                        gameState = State.GameOver;
-                        desiredR = 75;
-                        desiredG = 200;
-                        desiredB = 75;
-                    }
-                    else
-                    {
-                        hasWon = false;
-                        gameState = State.GameOver;
-                        desiredR = 200;
-                        desiredG = 75;
-                        desiredB = 75;
-                    }
-                }
             }
         }
 
@@ -760,6 +757,7 @@ namespace GamblerGame
         public void Reset()
         {
             roundScore = 0;
+            numRound = 0;
             rollScore = 0;
             rollScores = new List<double>();
             totalScore = 0;
