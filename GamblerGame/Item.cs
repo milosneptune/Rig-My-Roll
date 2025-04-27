@@ -113,7 +113,6 @@ namespace GamblerGame
                 textLoc = textLocUnpressed;
                 descriptionLoc = descriptionLocUnpressed;
             }
-
             prevMState = mState;
         }
         /// <summary>
