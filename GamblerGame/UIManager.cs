@@ -100,8 +100,8 @@ namespace GamblerGame
         {
             ShapeBatch.Begin(graphicsDevice);
             ShapeBatch.Box(0, 0, DesiredWidth, DesiredHeight, new Color(0, 0, 0, 100));
-
-            ShapeBatch.Box(DesiredWidth / 80, DesiredHeight / 2 - (DesiredWidth / 10), DesiredWidth / 1.25f, DesiredHeight - (DesiredHeight / 2 - (DesiredWidth / 10)), Color.Black);
+            ShapeBatch.Box(DesiredWidth / 40, DesiredHeight / 2 - (DesiredWidth / 10), DesiredWidth / 1.65f, DesiredHeight - (DesiredHeight / 2 - (DesiredWidth / 10)), Color.Black);
+            ShapeBatch.BoxOutline(DesiredWidth / 40, DesiredHeight / 2 - (DesiredWidth / 10) - 1, DesiredWidth / 1.65f + 1, DesiredHeight - (DesiredHeight / 2 - (DesiredWidth / 10)) + 1, Color.White);
             ShapeBatch.End();
         }
         public void DrawGame(SpriteBatch sb)
@@ -124,6 +124,10 @@ namespace GamblerGame
                 Color.White);
             // Score requirement box
             ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .03), (int)(DesiredWidth / 3.9), DesiredHeight / 4, Color.DarkGray);
+            
+            // Score requirement display box
+            ShapeBatch.Box((int)(DesiredWidth * .785), (int)(DesiredHeight * .03) + DesiredHeight / 16, (DesiredWidth / 7.25f), DesiredHeight / 8, Color.Black);
+
             // Round score container box
             ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .31), (int)(DesiredWidth / 3.9), DesiredHeight / 8, Color.DarkGray);
             // Round score display box
@@ -145,6 +149,9 @@ namespace GamblerGame
             ShapeBatch.End();
             sb.Begin();
             // Round score text
+
+            sb.DrawString(scoreFont, "Score", new Vector2((int)(DesiredWidth * .735) - scoreFont.MeasureString("Score").X / 2, ((DesiredHeight * .03f) + DesiredHeight / 8) - (scoreFont.MeasureString("Score").Y /2)), Color.White);
+            sb.DrawString(scoreFont, "Required", new Vector2((int)(DesiredWidth * .735) - scoreFont.MeasureString("Required").X / 2, ((DesiredHeight * .03f) + DesiredHeight / 8) + (scoreFont.MeasureString("Required").Y / 2)), Color.White);
             sb.DrawString(scoreFont, "Round", new Vector2((int)(DesiredWidth * .715) - scoreFont.MeasureString("Round").X / 2, (int)(DesiredHeight * .345)), Color.White);
             sb.DrawString(scoreFont, "Score", new Vector2((int)(DesiredWidth * .715) - scoreFont.MeasureString("Score").X / 2, (int)(DesiredHeight * .375)), Color.White);
             sb.End();
