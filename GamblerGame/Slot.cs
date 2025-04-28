@@ -14,17 +14,18 @@ namespace GamblerGame
 {
     enum SymbolName
     {
-        Cherries = 10,
+        
         Seven = 100,
-        Lemon = 35,
-        Lime = 55,
-        Pineapple = 60,
-        Melon = 25,
         Orange = 65,
+        Pineapple = 60,
+        Lime = 55,
         Kiwi = 50,
-        Apple = 15,
-        Strawberry = 20,
+        Lemon = 35,
         Bananas = 30,
+        Melon = 25,
+        Strawberry = 20,
+        Apple = 15,
+        Cherries = 10
     }
     internal class Slot
     {

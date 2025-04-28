@@ -72,7 +72,7 @@ namespace GamblerGame
             matchedSymbols = 0;
             Multiplier = 1;
 
-            if (slots[0].ResultName.ToString() == slots[1].ResultName.ToString())
+            if (slots[0].ResultName == slots[1].ResultName)
             {
                 matchedSymbols++;
                 if (slots[0].ResultName.ToString() == slots[2].ResultName.ToString())
