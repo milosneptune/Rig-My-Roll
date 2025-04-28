@@ -29,6 +29,7 @@ namespace GamblerGame
         private bool hideDescription;
         private bool printDescription;
         private SpriteFont descriptionFont;
+        private Vector2 mousePos;
         private Vector2 descriptionLoc;
         private Vector2 descriptionLocUnpressed;
         private Vector2 descriptionLocPressed;
@@ -83,7 +84,7 @@ namespace GamblerGame
             printDescription = false;
             this.descriptionFont = descriptionFont;
             LoadTextures(ct);
-
+            mousePos = new Vector2();
             buyButton = new Button(device, new Rectangle(0,0,0,0), "Buy", font, Color.Black, textures);
             cancelButton = new Button(device, new Rectangle(0, 0, 0, 0), "Cancel", font, Color.Black, textures);// TODO: Change color
             useItemButton = new Button(device, new Rectangle(0, 0, 0, 0), "Use Item", font, Color.Black, textures);// TODO: Change color
@@ -110,7 +111,9 @@ namespace GamblerGame
             // Check/capture the mouse state regardless of whether this button
             // if active so that it's up to date next time!
             MouseState mState = Mouse.GetState();
-            
+            mousePos.X = mState.Position.X;
+            mousePos.Y = mState.Position.Y - (int)descriptionFont.MeasureString(description).Y;
+
             buyButton.Update(gameTime);
             cancelButton.Update(gameTime);
             useItemButton.Update(gameTime);
@@ -131,25 +134,22 @@ namespace GamblerGame
                         BuyItemChoice();
                     }
                 }
-
+                
                 // If it is only hovering over the button and there is no description.
-                else if (hideDescription)
-                {
-                    Hover();
-                }
-                else if (!hideDescription)
-                {
-                    printDescription = false;
-                }
+                Hover();
+            }
+            else
+            {
+                printDescription = false;
             }
 
             if (mState.LeftButton == ButtonState.Pressed &&
                 this.position.Contains(mState.Position))
             {
-                buttonImg = buttonPressedImg;
-                textLoc = textLocPressed;
-                descriptionLoc = descriptionLocPressed;
-                priceLoc = priceLocPressed;
+                buttonImg = buttonUnpressedImg;
+                textLoc = textLocUnpressed;
+                descriptionLoc = descriptionLocUnpressed;
+                priceLoc = priceLocUnpressed;
             }
             else
             {
@@ -178,7 +178,7 @@ namespace GamblerGame
             if (!hideDescription)
             {
                 // Draw description below the name
-                spriteBatch.DrawString(descriptionFont, description, descriptionLoc, Color.White);
+               // spriteBatch.DrawString(descriptionFont, description, descriptionLoc, Color.White);
                 spriteBatch.DrawString(descriptionFont, "Price: " + price, priceLoc, Color.White);
             }
             if (displayUseItem)
@@ -192,6 +192,17 @@ namespace GamblerGame
                 ShapeBatch.End();
                 buyButton.Draw(spriteBatch);
                 cancelButton.Draw(spriteBatch);
+            }
+            if (printDescription)
+            {
+                spriteBatch.End();
+                ShapeBatch.Begin(device);
+                ShapeBatch.Box(new Rectangle((int)mousePos.X, (int)mousePos.Y, (int)descriptionFont.MeasureString(description).X, (int)descriptionFont.MeasureString(description).Y), new Color(1, 15, 15, 150));
+                ShapeBatch.BoxOutline(new Rectangle((int)mousePos.X, (int)mousePos.Y-1, (int)descriptionFont.MeasureString(description).X+1, (int)descriptionFont.MeasureString(description).Y + 2), Color.White);
+                ShapeBatch.End();
+                spriteBatch.Begin();
+                spriteBatch.DrawString(descriptionFont, description, mousePos, Color.White);
+
             }
         }
         /// <summary>
@@ -255,9 +266,10 @@ namespace GamblerGame
                 (position.X + position.Width / 2) - nameSize.X / 2,
                 (position.Y + position.Height / 2) - (nameSize.Y + descriptionSize.Y) / 4
                 );
+
                 textLocUnpressed = new Vector2(
                     (position.X + position.Width / 2) - nameSize.X / 2,
-                    (position.Y + position.Height / 2) - (nameSize.Y + descriptionSize.Y) / 2
+                    (position.Y) + (nameSize.Y)
                 );
 
                 descriptionLocPressed = new Vector2(
@@ -266,8 +278,9 @@ namespace GamblerGame
                 );
                 descriptionLocUnpressed = new Vector2(
                     (position.X + position.Width / 2) - descriptionSize.X / 2,
-                    (position.Y + position.Height / 2) - descriptionSize.Y / 2 + ButtonOffset
+                    (position.Y + position.Height) - descriptionSize.Y - ButtonOffset
                 );
+
                 priceLocPressed = new Vector2(
                     (position.X + position.Width / 2) - priceSize.X / 2,
                     (descriptionLocPressed.Y) + (int)(2.5 * ButtonOffset)

@@ -70,9 +70,9 @@ namespace GamblerGame
         {
             if (storeItems != null)
             {
-                foreach (Item item in storeItems)
+                for(int i = storeItems.Count - 1; i >= 0;i--) 
                 {
-                    item.Draw(spriteBatch);
+                        storeItems[i].Draw(spriteBatch);
                 }
             }
         }

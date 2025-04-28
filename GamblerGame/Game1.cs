@@ -995,7 +995,7 @@ namespace GamblerGame
             totalScore = 0;
             paused = false;
             numRolls = 0;
-            minScore = 300;
+            minScore = 10;
             hasWon = false;
             money = 4;
             inventory.Items = new List<Item>();
