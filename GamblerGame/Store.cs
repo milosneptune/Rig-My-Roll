@@ -51,24 +51,27 @@ namespace GamblerGame
 
             boxOne = new Vector2(100, 50);
             boxTwo = new Vector2(800, 50);
-            boxThree = new Vector2(100, 600);
-            boxFour = new Vector2(800, 600);
+            boxThree = new Vector2(100, 500);
+            boxFour = new Vector2(800, 500);
         }
         public void Update(GameTime gameTime)
         {
             if (storeItems != null)
             {
-                foreach (Item item in StoreItems)
+                for (int i = 0; i < storeItems.Count; i++)
                 {
-                    item.Update(gameTime);
+                    storeItems[i].Update(gameTime);
                 }
             }
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (Item item in storeItems)
+            if (storeItems != null)
             {
-                item.Draw(spriteBatch);
+                foreach (Item item in storeItems)
+                {
+                    item.Draw(spriteBatch);
+                }
             }
         }
         /// <summary>
@@ -130,14 +133,6 @@ namespace GamblerGame
             foreach (Item item in items)
             {
                 item.Bought = false;
-            }
-        }
-
-        public void Draw(SpriteBatch sb)
-        {
-            foreach (Item s in StoreItems)
-            {
-                s.Draw(sb);
             }
         }
     }
