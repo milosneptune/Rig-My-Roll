@@ -266,11 +266,11 @@ namespace GamblerGame
                 );
                 priceLocPressed = new Vector2(
                     (position.X + position.Width / 2) - priceSize.X / 2,
-                    (descriptionLocPressed.Y) + ButtonOffset
+                    (descriptionLocPressed.Y) + (int)(2.5 * ButtonOffset)
                 );
-                priceLocPressed = new Vector2(
+                priceLocUnpressed = new Vector2(
                     (position.X + position.Width / 2) - priceSize.X / 2,
-                    (descriptionLocUnpressed.Y) + ButtonOffset
+                    (descriptionLocUnpressed.Y) + (int)(2.5 * ButtonOffset)
                 );
 
                 /*choiceBox = new Rectangle(
