@@ -19,7 +19,11 @@ namespace GamblerGame
         private Vector2 boxFive;
         private List<Item> items;
 
-        public List<Item> Items { get; private set; }
+        public List<Item> Items
+        {
+            get { return items; }
+            set { items = value; }
+        }
 
         public Inventory()
         {
