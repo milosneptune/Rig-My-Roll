@@ -29,6 +29,7 @@ namespace GamblerGame
         const int TotNumOfItems = 5;
 
         // Background Values
+        #region
         const int xAxisTiles = 16; // Number of background texture grids along the x axis
         const int yAxisTiles = xAxisTiles / 2 + 1; // Number of background texture grids along the y axis
         const int backgroundTileSize = DesiredWidth / xAxisTiles; // Size of the background tile texture (height and width because it is a square)
@@ -44,16 +45,20 @@ namespace GamblerGame
 
         private State gameState;
         private State previousState;
+        #endregion
 
         // Menu
+        #region
         const int menuButtonWidth = DesiredWidth / 4;
         const int menuButtonHeight = DesiredHeight / 8;
         const int menuButtonYPos = (int)(DesiredHeight / 1.55);
         const int playButtonXPos = DesiredWidth / 2 - (int)(menuButtonWidth * 1.25);
         const int quitButtonXPos = DesiredWidth / 2 + (int)(menuButtonWidth * .25);
         private List<Button> menuButtons = new List<Button>();
+        #endregion
 
         // Game
+        #region
         const int pauseButtonWidth = (int)(DesiredWidth / 3.9);
         const int pauseButtonHeight = DesiredHeight / 10;
         const int rollButtonYPos = (int)(DesiredHeight * .874);
@@ -73,6 +78,7 @@ namespace GamblerGame
         private bool[] displaySymbol;
         private int[] rollingNumber;
         private bool inRound;
+        #endregion
 
         private int blackBarYPos = 0;
         private int desiredBlackBarYPos = DesiredHeight / 2 - DesiredHeight / 10;
@@ -97,6 +103,7 @@ namespace GamblerGame
         private bool backgroundAnimationToggle = true;
 
         // Scoring
+        #region
         private double roundScore = 0;
         private double rollScore = 0;
         private List<double> rollScores;
@@ -110,6 +117,7 @@ namespace GamblerGame
         private bool hasWon;
         private int money;
         private List<Item> inventory;
+        #endregion
 
         public Game1()
         {
@@ -349,7 +357,7 @@ namespace GamblerGame
             {
                 // TODO: Change the textures for the item buttons.
                 // TODO: Change the second font for the description.
-                allItems.Add(new Item(i, _graphics.GraphicsDevice, pixelFont, pixelFont, buttonTextures));
+                allItems.Add(new Item(i, _graphics.GraphicsDevice, pixelFont, pixelFont, buttonTextures, Content));
             }
 
             // Adds events based on the type of item.
