@@ -135,7 +135,7 @@ namespace GamblerGame
             // TODO: Add your initialization logic here
             _graphics.PreferredBackBufferWidth = DesiredWidth;
             _graphics.PreferredBackBufferHeight = DesiredHeight;
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
             gameState = State.MainMenu;
             rng = new Random();
@@ -1039,8 +1039,8 @@ namespace GamblerGame
                 numRolls = 0;
                 minScore = 10;
                 hasWon = false;
-                totalRolls = int.MaxValue;
-                money = int.MaxValue;
+                totalRolls = 10000;
+                money = 10000;
                 inventory.Items = new List<Item>();
                 slotMachine.Reset();
                 store.Reset();
