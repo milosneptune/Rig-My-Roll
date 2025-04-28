@@ -188,17 +188,17 @@ namespace GamblerGame
                 DesiredHeight,
                 Color.White);
             // Score requirement box
-            ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .03), (int)(DesiredWidth / 3.9), DesiredHeight / 4, new Color(50, 50, 50));
+            ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .03), (int)(DesiredWidth / 3.9), DesiredHeight / 4, new Color(85, 70, 83));
 
             // Score requirement display box
             ShapeBatch.Box((int)(DesiredWidth * .785), (int)(DesiredHeight * .03) + DesiredHeight / 16, (DesiredWidth / 7.25f), DesiredHeight / 8, Color.Black);
 
             // Round score container box
-            ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .31), (int)(DesiredWidth / 3.9), DesiredHeight / 8, new Color(50, 50, 50));
+            ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .31), (int)(DesiredWidth / 3.9), DesiredHeight / 8, new Color(85, 70, 83));
             // Round score display box
             ShapeBatch.Box((int)(DesiredWidth * .755), (int)(DesiredHeight * .323), (int)(DesiredWidth / 5.9), DesiredHeight / 10, Color.Black);
             // Current score box
-            ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .465), (int)(DesiredWidth / 3.9), DesiredHeight / 4, new Color(50, 50, 50));
+            ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .465), (int)(DesiredWidth / 3.9), DesiredHeight / 4, new Color(85, 70, 83));
 
             // Item box
             //ShapeBatch.Box(DesiredWidth / 40, (DesiredHeight / 20), DesiredWidth / 1.65f, DesiredHeight / 8.25f, new Color(12, 7, 15, 200));
@@ -207,12 +207,12 @@ namespace GamblerGame
             {
                 ShapeBatch.Box((DesiredWidth / 40) + xpos, (DesiredHeight / 20), ItemWidth, ItemHeight, new Color(12, 7, 15, 200));
                 ShapeBatch.BoxOutline((DesiredWidth / 40) + xpos, (DesiredHeight / 20) - 1, ItemWidth + 1, ItemHeight + 1, Color.White);
-                xpos += ItemWidth + 50;
+                xpos += ItemWidth + (int)(DesiredWidth / 39.5);
             }
             sb.End();
             ShapeBatch.End();
             ShapeBatch.Begin(graphicsDevice);
-            ShapeBatch.BoxOutline(DesiredWidth / 40, (DesiredHeight / 20) - 1, DesiredWidth / 1.65f + 1, (DesiredHeight / 8.25f) + 1, Color.White);
+            //ShapeBatch.BoxOutline(DesiredWidth / 40, (DesiredHeight / 20) - 1, DesiredWidth / 1.65f + 1, (DesiredHeight / 8.25f) + 1, Color.White);
             ShapeBatch.BoxOutline((int)(DesiredWidth * .675), (int)(DesiredHeight * .03), (int)(DesiredWidth / 3.9), DesiredHeight / 4, new Color(150, 150, 150));
 
             // Score requirement display box outline

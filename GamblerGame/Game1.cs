@@ -117,7 +117,6 @@ namespace GamblerGame
         private int minScore;
         private bool hasWon;
         private int money;
-        private List<Item> inventory;
         private List<Item> playerInventory;
         const int InventoryMaximum = 5;
         #endregion
