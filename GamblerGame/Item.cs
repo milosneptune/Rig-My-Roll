@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -43,6 +44,7 @@ namespace GamblerGame
         public int Price { get { return price; } }
         public char Type { get { return type; } }
         public string Action { get { return action; } }
+        public Texture2D ItemTexture { get; private set; }
 
         /// <summary>
         /// Returns bool of if the item is bought.
@@ -64,7 +66,7 @@ namespace GamblerGame
         }
         public event UseItemDelegate UseItem;
 
-        public Item(int itemIndex, GraphicsDevice device, SpriteFont font, SpriteFont descriptionFont, List<Texture2D> textures)
+        public Item(int itemIndex, GraphicsDevice device, SpriteFont font, SpriteFont descriptionFont, List<Texture2D> textures, ContentManager ct)
             : base(device, new Rectangle(0, 0, 0, 0), "name_here", font, Color.White, textures) // TODO: Change color
         {
             name = itemsFile.GetName(itemIndex);
@@ -75,6 +77,7 @@ namespace GamblerGame
             hideDescription = false;
             printDescription = false;
             this.descriptionFont = descriptionFont;
+            LoadTextures(ct);
 
             buyButton = new Button(device, new Rectangle(0,0,0,0), "Buy", font, Color.Black, textures);
             cancelButton = new Button(device, new Rectangle(0, 0, 0, 0), "Cancel", font, Color.Black, textures);// TODO: Change color
@@ -160,6 +163,7 @@ namespace GamblerGame
         {
             // Draw the button itself
             spriteBatch.Draw(buttonImg, position, new Color(15, 15, 15));
+            spriteBatch.Draw(ItemTexture, position, Color.White);
 
             // Draw button text over the button
             spriteBatch.DrawString(font, text, textLoc, Color.White);
@@ -334,6 +338,32 @@ namespace GamblerGame
         public void CancelItem()
         {
             displayBuyBox = false;
+        }
+
+        /// <summary>
+        /// Loads a texture for the item based on the type of the item
+        /// </summary>
+        /// <param name="ct"></param>
+        private void LoadTextures(ContentManager ct)
+        {
+            switch (type)
+            {
+                case '#':
+                    ItemTexture = ct.Load<Texture2D>("UI/Items/RollSpecific");
+                    break;
+                case '^':
+                    ItemTexture = ct.Load<Texture2D>("UI/Items/ChanceSymbol");
+                    break;
+                case '&':
+                    ItemTexture = ct.Load<Texture2D>("UI/Items/Freeze");
+                    break;
+                case '*':
+                    ItemTexture = ct.Load<Texture2D>("UI/Items/IncreaseMult");
+                    break;
+                case '$':
+                    ItemTexture = ct.Load<Texture2D>("UI/Items/IncreasePoints");
+                    break;
+            }
         }
     }
 }

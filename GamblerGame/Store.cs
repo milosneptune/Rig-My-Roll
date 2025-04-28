@@ -135,13 +135,5 @@ namespace GamblerGame
                 item.Bought = false;
             }
         }
-
-        //public void Draw(SpriteBatch sb)
-        //{
-        //    foreach (Item s in StoreItems)
-        //    {
-        //        s.Draw(sb);
-        //    }
-        //}
     }
 }
