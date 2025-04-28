@@ -66,9 +66,12 @@ namespace GamblerGame
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (Item item in storeItems)
+            if (StoreItems != null)
             {
-                item.Draw(spriteBatch);
+                foreach (Item item in StoreItems)
+                {
+                    item.Draw(spriteBatch);
+                }
             }
         }
         /// <summary>
@@ -133,12 +136,12 @@ namespace GamblerGame
             }
         }
 
-        public void Draw(SpriteBatch sb)
-        {
-            foreach (Item s in StoreItems)
-            {
-                s.Draw(sb);
-            }
-        }
+        //public void Draw(SpriteBatch sb)
+        //{
+        //    foreach (Item s in StoreItems)
+        //    {
+        //        s.Draw(sb);
+        //    }
+        //}
     }
 }
