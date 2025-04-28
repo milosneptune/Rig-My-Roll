@@ -220,7 +220,7 @@ namespace GamblerGame
         /// </summary>
         public virtual void Hover()
         {
-            hoverColor = new Color (normalColor.R + 5, normalColor.G + 5, normalColor.B + 5);
+            hoverColor = new Color (normalColor.R + 15, normalColor.G + 15, normalColor.B + 15);
             buttonColor = hoverColor;
         }
         /// <summary>
