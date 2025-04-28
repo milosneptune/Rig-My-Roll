@@ -31,6 +31,9 @@ namespace GamblerGame
         private Vector2 descriptionLoc;
         private Vector2 descriptionLocUnpressed;
         private Vector2 descriptionLocPressed;
+        private Vector2 priceLoc;
+        private Vector2 priceLocUnpressed;
+        private Vector2 priceLocPressed;
         private Vector2 normalSize;
         private Vector2 withDescriptionSize;
         private Button buyButton;
@@ -143,12 +146,14 @@ namespace GamblerGame
                 buttonImg = buttonPressedImg;
                 textLoc = textLocPressed;
                 descriptionLoc = descriptionLocPressed;
+                priceLoc = priceLocPressed;
             }
             else
             {
                 buttonImg = buttonUnpressedImg;
                 textLoc = textLocUnpressed;
                 descriptionLoc = descriptionLocUnpressed;
+                priceLoc = priceLocUnpressed;
             }
             prevMState = mState;
         }
@@ -170,6 +175,7 @@ namespace GamblerGame
             {
                 // Draw description below the name
                 spriteBatch.DrawString(descriptionFont, description, descriptionLoc, Color.White);
+                spriteBatch.DrawString(descriptionFont, "Price: " + price, priceLoc, Color.White);
             }
             if (displayUseItem)
             {
@@ -236,6 +242,7 @@ namespace GamblerGame
                 Vector2 nameSize = font.MeasureString(text);
                 Vector2 descriptionSize = descriptionFont.MeasureString(description);
                 Vector2 cancelSize = descriptionFont.MeasureString("Cancel");
+                Vector2 priceSize = descriptionFont.MeasureString("Price: " + price);
 
                 position.Width = (int)withDescriptionSize.X;
                 position.Height = (int)withDescriptionSize.Y;
@@ -257,6 +264,16 @@ namespace GamblerGame
                     (position.X + position.Width / 2) - descriptionSize.X / 2,
                     (position.Y + position.Height / 2) - descriptionSize.Y / 2 + ButtonOffset
                 );
+
+                priceLocPressed = new Vector2(
+                    (position.X + position.Width / 2) - priceSize.X / 2,
+                    (descriptionLocPressed.Y) + ButtonOffset
+                );
+                priceLocPressed = new Vector2(
+                    (position.X + position.Width / 2) - priceSize.X / 2,
+                    (descriptionLocUnpressed.Y) + ButtonOffset
+                );
+
 
                 choiceBox = new Rectangle(
                     (int)position.X,
@@ -280,6 +297,7 @@ namespace GamblerGame
                 );
                 textLoc = textLocUnpressed;
                 descriptionLoc = descriptionLocUnpressed;
+                priceLoc = priceLocUnpressed;
             }
         }
 
