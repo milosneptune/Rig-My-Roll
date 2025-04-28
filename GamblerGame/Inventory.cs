@@ -12,6 +12,8 @@ namespace GamblerGame
 {
     internal class Inventory
     {
+        const int DesiredWidth = 1920;
+        const int DesiredHeight = 1080;
         private Vector2 boxOne;
         private Vector2 boxTwo;
         private Vector2 boxThree;
@@ -27,7 +29,10 @@ namespace GamblerGame
 
         public Inventory()
         {
-
+            boxOne = new Vector2(DesiredWidth / 40 + (DesiredHeight * .31f) / 2, (DesiredHeight / 5));
+            boxTwo = new Vector2(DesiredWidth / 40 + DesiredWidth / 1.65f - (DesiredHeight * .31f) * 1.5f, (DesiredHeight / 5));
+            boxThree = new Vector2(DesiredWidth / 40 + (DesiredHeight * .31f) / 2, (DesiredHeight * .57f));
+            boxFour = new Vector2(DesiredWidth / 40 + DesiredWidth / 1.65f - (DesiredHeight * .31f) * 1.5f, (DesiredHeight * .57f));
         }
 
         /// <summary>

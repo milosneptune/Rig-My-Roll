@@ -390,6 +390,7 @@ namespace GamblerGame
                 }
             }
 
+            inventory = new Inventory();
             store = new Store(allItems, money, inventory);
         }
 
@@ -539,7 +540,7 @@ namespace GamblerGame
                 case State.Store:
                     if (!paused)
                     {
-                        if (store.Inventory == null)
+                        if (store.StoreItems == null)
                         {
                             store.UpdateStore(money, inventory);
                             store.StoreInteraction(rng, gameTime);
@@ -998,6 +999,7 @@ namespace GamblerGame
             hasWon = false;
             money = 4;
             inventory.Items = new List<Item>();
+            store.Reset();
         }
 
         public void ToggleScanline()
