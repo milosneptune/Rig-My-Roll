@@ -117,7 +117,6 @@ namespace GamblerGame
         private int minScore;
         private bool hasWon;
         private int money;
-        private List<Item> inventory;
         private List<Item> playerInventory;
         const int InventoryMaximum = 5;
         #endregion
@@ -1047,14 +1046,14 @@ namespace GamblerGame
         public void DrawPlayerInventory()
         {
             int pos = DesiredWidth / 20 - DesiredWidth / 60; 
-            if (playerInventory != null)
+            if (inventory.Items != null)
             {
                 // this line is for testing if it would display. 
-                //playerInventory.Add(allItems[0]);
-                for (int i = 0; i < playerInventory.Count; i++)
+                inventory.Items.Add(allItems[0]);
+                for (int i = 0; i < inventory.Items.Count; i++)
                 {
-                    _spriteBatch.Draw(playerInventory[i].ItemTexture, new Vector2((DesiredWidth / 40) + pos, (DesiredHeight / 21)), Color.White);
-                    pos += playerInventory[i].ItemTexture.Width + 50;
+                    _spriteBatch.Draw(inventory.Items[i].ItemTexture, new Vector2((DesiredWidth / 40) + pos, (DesiredHeight / 21)), Color.White);
+                    pos += inventory.Items[i].ItemTexture.Width + 50;
                 }
             }
         }

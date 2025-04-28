@@ -1,5 +1,5 @@
-Slot 1 Guarantee Cherries/Guarantees cherries in slot 1/50/#1,Cherries@
-Slot 2 Increase Chance of Bananas/Increases chance of bananas in slot 2 by 25%/25/^2,Bananas,25@
-Freeze Slot 3/Freezes symbol in slot 3/30/&3@
-20% Multiplier/Adds a 20% multiplier to the score/50/*20@
-Add 100 score/Adds 100 to the score/40/$100
+Slot 1 Guarantee Cherries/Guarantees cherries in slot 1/5/#1,Cherries@
+Slot 2 Increase Chance of Bananas/Increases chance of bananas in slot 2 by 25%/5/^2,Bananas,25@
+Freeze Slot 3/Freezes symbol in slot 3/5/&3@
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
