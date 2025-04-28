@@ -541,7 +541,7 @@ namespace GamblerGame
                     {
                         if (store.Inventory == null)
                         {
-                            store.Inventory = inventory;
+                            store.UpdateStore(money, inventory);
                             store.StoreInteraction(rng, gameTime);
                         }
                         if (backgroundAnimationToggle)

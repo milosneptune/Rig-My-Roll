@@ -15,7 +15,7 @@ namespace GamblerGame
         const int DesiredWidth = 1920;
         const int DesiredHeight = 1080;
         private List<Item> items; // list of all items
-        private List<Item> inventory;
+        private Inventory inventory;
         private List<Item> storeItems;
         private Vector2 boxOne;
         private Vector2 boxTwo;
@@ -28,7 +28,7 @@ namespace GamblerGame
             get { return storeItems; }
             set { storeItems = value; }
         }
-        public List<Item> Inventory
+        public Inventory Inventory
         {
             get { return inventory; }
             set { inventory = value; }
@@ -44,7 +44,7 @@ namespace GamblerGame
         /// sets temp items and StoreItems to a new list
         /// </summary>
         /// <param name="items"></param>
-        public Store(List<Item> items, int money, List<Item> inventory)
+        public Store(List<Item> items, int money, Inventory inventory)
         {
             this.items = items;
             storeItems = new List<Item>();
@@ -150,6 +150,13 @@ namespace GamblerGame
             {
                 item.Bought = false;
             }
+        }
+
+        public void UpdateStore(int money, Inventory inventory)
+        {
+            storeItems = new List<Item>();
+            this.inventory = inventory;
+            this.money = money;
         }
     }
 }
