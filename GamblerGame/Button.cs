@@ -92,9 +92,6 @@ namespace GamblerGame
             this.text = text;
             normalColor = color;
             buttonColor = normalColor;
-
-            
-
             textLoc = textLocUnpressed;
 
             // Invert the button color for the text color (because why not)

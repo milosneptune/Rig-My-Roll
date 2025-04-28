@@ -973,7 +973,7 @@ namespace GamblerGame
             totalScore = 0;
             paused = false;
             numRolls = 0;
-            minScore = 10;
+            minScore = 300;
             hasWon = false;
             money = 4;
             inventory = new List<Item>();
