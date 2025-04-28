@@ -26,7 +26,7 @@ namespace GamblerGame
 
         const int DesiredWidth = 1920;
         const int DesiredHeight = 1080;
-        const int TotNumOfItems = 5;
+        const int TotNumOfItems = 180;
 
         // Background Values
         #region
