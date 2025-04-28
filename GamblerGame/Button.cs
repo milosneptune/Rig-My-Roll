@@ -93,7 +93,11 @@ namespace GamblerGame
             normalColor = color;
             buttonColor = normalColor;
 
-            
+            Vector2 textSize = font.MeasureString(text);
+            textLocUnpressed = new Vector2(
+                (position.X - textSize.X),
+                (position.Y - textSize.Y / 2 + position.Height / 2)
+            );
 
             textLoc = textLocUnpressed;
 
