@@ -156,7 +156,7 @@ namespace GamblerGame
 
             ui = new UIManager(GraphicsDevice,
                  new List<SpriteFont> { pixelFont, titleFont, scoreFont },
-                 new List<Texture2D> { backgroundTexture, scanlineTexture});
+                 new List<Texture2D> { backgroundTexture, scanlineTexture });
 
 
             // ----------- MENU BUTTONS ---------------
@@ -617,7 +617,7 @@ namespace GamblerGame
                     ui.DrawGameBar(_spriteBatch);
                     ui.DrawGameSlot(_spriteBatch);
                     _spriteBatch.Begin();
-                    
+
                     foreach (Button button in gameButtons)
                     {
                         button.Draw(_spriteBatch);
@@ -1029,18 +1029,15 @@ namespace GamblerGame
 
         public void DrawPlayerInventory()
         {
-            int pos = 0;
+            int pos = DesiredWidth / 20 - DesiredWidth / 60; 
             if (playerInventory != null)
             {
                 // this line is for testing if it would display. 
                 playerInventory.Add(allItems[0]);
-                if (playerInventory.Count < 5)
+                for (int i = 0; i < playerInventory.Count; i++)
                 {
-                    for (int i = 0; i < playerInventory.Count; i++)
-                    {
-                        _spriteBatch.Draw(playerInventory[i].ItemTexture, new Vector2((DesiredWidth / 40) + pos, (DesiredHeight / 30)), Color.White);
-                        pos += playerInventory[i].ItemTexture.Width;
-                    }
+                    _spriteBatch.Draw(playerInventory[i].ItemTexture, new Vector2((DesiredWidth / 40) + pos, (DesiredHeight / 21)), Color.White);
+                    pos += playerInventory[i].ItemTexture.Width + 50;
                 }
             }
         }

@@ -50,7 +50,9 @@ namespace GamblerGame
         const int rollButtonXPos = (int)(DesiredWidth / 5.9);
         const int pauseButtonXPos = (int)(DesiredWidth * .675);
 
-
+        const int ItemWidth = 160;
+        const int ItemHeight = 160;
+        const int InventoryMax = 5;
 
         public UIManager(GraphicsDevice graphicsDevice, List<SpriteFont> fonts, List<Texture2D> textures)
         {
@@ -188,8 +190,13 @@ namespace GamblerGame
             ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .465), (int)(DesiredWidth / 3.9), DesiredHeight / 4, Color.DarkGray);
 
             // Item box
-            ShapeBatch.Box(DesiredWidth / 40, (DesiredHeight / 20), DesiredWidth / 1.65f, DesiredHeight / 8.25f, new Color(12, 7, 15, 200));
-            ShapeBatch.BoxOutline(DesiredWidth / 40, (DesiredHeight / 20) - 1, DesiredWidth / 1.65f + 1, (DesiredHeight / 8.25f) + 1, Color.White);
+            int xpos = DesiredWidth / 20 - DesiredWidth / 60;
+            for (int i = 0; i < InventoryMax; i++)
+            {
+                ShapeBatch.Box((DesiredWidth / 40) + xpos, (DesiredHeight / 20), ItemWidth, ItemHeight, new Color(12, 7, 15, 200));
+                ShapeBatch.BoxOutline((DesiredWidth / 40) + xpos, (DesiredHeight / 20) - 1, ItemWidth + 1, ItemHeight + 1, Color.White);
+                xpos += ItemWidth + 50;
+            }
 
             sb.End();
             ShapeBatch.End();
