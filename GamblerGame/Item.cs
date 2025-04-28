@@ -271,7 +271,7 @@ namespace GamblerGame
                 );
 
                 cancelButton.Position = new Rectangle(
-                    (int)(position.X + position.Width - ButtonOffset - cancelSize.X),
+                    (int)(position.X + position.Width - ButtonOffset),
                     (int)(position.Y + position.Height + ButtonOffset),
                     (position.Width / 2) - 2 * ButtonOffset,
                     (int)(descriptionSize.Y * 2)

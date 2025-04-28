@@ -12,6 +12,8 @@ namespace GamblerGame
 {
     internal class Store
     {
+        const int DesiredWidth = 1920;
+        const int DesiredHeight = 1080;
         private List<Item> items; // list of all items
         private List<Item> inventory;
         private List<Item> storeItems;
@@ -49,10 +51,10 @@ namespace GamblerGame
             this.inventory = inventory;
             this.money = money;
 
-            boxOne = new Vector2(100, 50);
-            boxTwo = new Vector2(800, 50);
-            boxThree = new Vector2(100, 500);
-            boxFour = new Vector2(800, 500);
+            boxOne = new Vector2(DesiredWidth / 40, 50);
+            boxTwo = new Vector2(DesiredWidth / 40 + DesiredWidth / 1.65f, 50);
+            boxThree = new Vector2(DesiredWidth / 40, 500);
+            boxFour = new Vector2(DesiredWidth / 40 + DesiredWidth / 1.65f, 500);
         }
         public void Update(GameTime gameTime)
         {
