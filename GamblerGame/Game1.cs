@@ -113,6 +113,8 @@ namespace GamblerGame
         private bool hasWon;
         private int money;
         private List<Item> inventory;
+        private List<Item> playerInventory;
+        const int InventoryMaximum = 5;
         #endregion
 
         public Game1()
@@ -134,6 +136,7 @@ namespace GamblerGame
             rng = new Random();
             rollingNumber = new int[3];
             slotMachine = new SlotMachine(Content);
+            playerInventory = new List<Item>();
             symbols = slotMachine.SlotList[0].Symbols;
             base.Initialize();
         }
@@ -595,8 +598,6 @@ namespace GamblerGame
             GraphicsDevice.Clear(Color.Black);
             // TODO: Add your drawing code here
 
-
-
             _spriteBatch.Begin();
             // Prints the background as a grid with an extra row off screen
             if (backgroundPosition != DesiredHeight / 2)
@@ -616,6 +617,7 @@ namespace GamblerGame
                     ui.DrawGameBar(_spriteBatch);
                     ui.DrawGameSlot(_spriteBatch);
                     _spriteBatch.Begin();
+                    
                     foreach (Button button in gameButtons)
                     {
                         button.Draw(_spriteBatch);
@@ -653,6 +655,7 @@ namespace GamblerGame
                     _spriteBatch.DrawString(scoreFont, $"Money: {money}", new Vector2((int)(DesiredWidth * .690), (int)(DesiredHeight * .65)), Color.White);
 
                     DisplayScoreList();
+                    DrawPlayerInventory();
 
                     _spriteBatch.End();
                     if (paused)
@@ -1021,6 +1024,24 @@ namespace GamblerGame
             else
             {
                 backgroundAnimationToggle = true;
+            }
+        }
+
+        public void DrawPlayerInventory()
+        {
+            int pos = 0;
+            if (playerInventory != null)
+            {
+                // this line is for testing if it would display. 
+                playerInventory.Add(allItems[0]);
+                if (playerInventory.Count < 5)
+                {
+                    for (int i = 0; i < playerInventory.Count; i++)
+                    {
+                        _spriteBatch.Draw(playerInventory[i].ItemTexture, new Vector2((DesiredWidth / 40) + pos, (DesiredHeight / 30)), Color.White);
+                        pos += playerInventory[i].ItemTexture.Width;
+                    }
+                }
             }
         }
     }
