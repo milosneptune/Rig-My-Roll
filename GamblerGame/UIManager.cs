@@ -74,6 +74,9 @@ namespace GamblerGame
                 titleWidth,
                 titleHeight,
                 Color.Black);
+            sb.End();
+            ShapeBatch.End();
+            ShapeBatch.Begin(graphicsDevice);
             // Title Outline
             ShapeBatch.BoxOutline(
                 titleXPos,
@@ -81,7 +84,6 @@ namespace GamblerGame
                 titleWidth + 1,
                 titleHeight + 1,
                 Color.White);
-            sb.End();
             ShapeBatch.End();
 
             // Title Text
@@ -102,7 +104,9 @@ namespace GamblerGame
                 (int)(DesiredWidth / 3.5),
                 DesiredHeight - DesiredHeight / 5-3,
                 Color.Black);
+            ShapeBatch.End();
             // Scores Background Outline
+            ShapeBatch.Begin(graphicsDevice);
             ShapeBatch.BoxOutline(
                 (int)(DesiredWidth * .66)+1,
                 DesiredHeight / 10+1,
