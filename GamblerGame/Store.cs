@@ -103,11 +103,21 @@ namespace GamblerGame
         /// <param name="rng"></param>
         private void StockStore(Random rng)
         {
+            List<int> indexes = new List<int>();
             storeItems = new List<Item>();
             for (int i = 0; i < 4; i++)
             {
-                Item item = items[rng.Next(0, items.Count)];
-                storeItems.Add(item);
+                int nextIndex = rng.Next(0, items.Count);
+                if (!indexes.Contains(nextIndex))
+                {
+                    Item item = items[nextIndex];
+                    storeItems.Add(item);
+                    indexes.Add(nextIndex);
+                }
+                else
+                {
+                    i--;
+                }
             }
         }
 
@@ -124,6 +134,10 @@ namespace GamblerGame
                     money -= item.Price;
                     storeItems.Remove(item);
                     break;
+                }
+                else
+                {
+                    item.Bought = false;
                 }
             }
         }
