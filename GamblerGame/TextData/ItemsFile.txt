@@ -1,23 +1,180 @@
-Slot 1 Guarantee Cherries/Guarantees cherries in slot 1/2/#1,Cherries@
-Slot 2 Guarantee Cherries/Guarantees cherries in slot 2/2/#2,Cherries@
-Slot 3 Guarantee Cherries/Guarantees cherries in slot 3/2/#3,Cherries@
-Slot 2 Guarantee Lemon/Guarantees lemon in slot 2/3/#2,Lemon@
-Slot 1 Guarantee Lemon/Guarantees lemon in slot 1/3/#1,Lemon@
-Slot 3 Guarantee Lemon/Guarantees lemon in slot 3/3/#3,Lemon@
-Slot 3 Guarantee Melon/Guarantees melon in slot 3/2/#3,Melon@
-Slot 2 Guarantee Melon/Guarantees melon in slot 2/2/#2,Melon@
-Slot 1 Guarantee Melon/Guarantees melon in slot 1/2/#1,Melon@
-Slot 1 Guarantee Kiwi/Guarantees kiwi in slot 1/2/#1,Kiwi@
-Slot 2 Guarantee Kiwi/Guarantees kiwi in slot 2/2/#2,Kiwi@
-Slot 3 Guarantee Kiwi/Guarantees kiwi in slot 3/2/#3,Kiwi@
 Slot 1 Guarantee Apple/Guarantees apple in slot 1/2/#1,Apple@
+Slot 1 Guarantee Bananas/Guarantees bananas in slot 1/2/#1,Bananas@
+Slot 1 Guarantee Cherries/Guarantees cherries in slot 1/2/#1,Cherries@
+Slot 1 Guarantee Kiwi/Guarantees kiwi in slot 1/2/#1,Kiwi@
+Slot 1 Guarantee Lemon/Guarantees lemon in slot 1/2/#1,Lemon@
+Slot 1 Guarantee Lime/Guarantees lime in slot 1/2/#1,Lime@
+Slot 1 Guarantee Melon/Guarantees melon in slot 1/2/#1,Melon@
+Slot 1 Guarantee Orange/Guarantees orange in slot 1/2/#1,Orange@
+Slot 1 Guarantee Pineapple/Guarantees pineapple in slot 1/2/#1,Pineapple@
+Slot 1 Guarantee Seven/Guarantees seven in slot 1/2/#1,Seven@
+Slot 1 Guarantee Strawberry/Guarantees strawberry in slot 1/2/#1,Strawberry@
 Slot 2 Guarantee Apple/Guarantees apple in slot 2/2/#2,Apple@
+Slot 2 Guarantee Bananas/Guarantees bananas in slot 2/2/#2,Bananas@
+Slot 2 Guarantee Cherries/Guarantees cherries in slot 2/2/#2,Cherries@
+Slot 2 Guarantee Kiwi/Guarantees kiwi in slot 2/2/#2,Kiwi@
+Slot 2 Guarantee Lemon/Guarantees lemon in slot 2/2/#2,Lemon@
+Slot 2 Guarantee Lime/Guarantees lime in slot 2/2/#2,Lime@
+Slot 2 Guarantee Melon/Guarantees melon in slot 2/2/#2,Melon@
+Slot 2 Guarantee Orange/Guarantees orange in slot 2/2/#2,Orange@
+Slot 2 Guarantee Pineapple/Guarantees pineapple in slot 2/2/#2,Pineapple@
+Slot 2 Guarantee Seven/Guarantees seven in slot 2/2/#2,Seven@
+Slot 2 Guarantee Strawberry/Guarantees strawberry in slot 2/2/#2,Strawberry@
 Slot 3 Guarantee Apple/Guarantees apple in slot 3/2/#3,Apple@
-Slot 2 Increase Chance of Bananas/Increases chance of bananas in slot 2 by 50% for 1 roll/4/^2,Bananas,50@
-Slot 3 Increase Chance of Sevens/Increases chance of seven in slot 3 by 25% for 1 roll/4/^3,Seven,25@
+Slot 3 Guarantee Bananas/Guarantees bananas in slot 3/2/#3,Bananas@
+Slot 3 Guarantee Cherries/Guarantees cherries in slot 3/2/#3,Cherries@
+Slot 3 Guarantee Kiwi/Guarantees kiwi in slot 3/2/#3,Kiwi@
+Slot 3 Guarantee Lemon/Guarantees lemon in slot 3/2/#3,Lemon@
+Slot 3 Guarantee Lime/Guarantees lime in slot 3/2/#3,Lime@
+Slot 3 Guarantee Melon/Guarantees melon in slot 3/2/#3,Melon@
+Slot 3 Guarantee Orange/Guarantees orange in slot 3/2/#3,Orange@
+Slot 3 Guarantee Pineapple/Guarantees pineapple in slot 3/2/#3,Pineapple@
+Slot 3 Guarantee Seven/Guarantees seven in slot 3/2/#3,Seven@
+Slot 3 Guarantee Strawberry/Guarantees strawberry in slot 3/2/#3,Strawberry@
+Slot 1 Increase Chance of Apple/Increases chances of apple in slot by 25% for 1 roll/4/^1,Apple,25@
+Slot 1 Increase Chance of Bananas/Increases chances of bananas in slot by 25% for 1 roll/4/^1,Bananas,25@
+Slot 1 Increase Chance of Cherries/Increases chances of cherries in slot by 25% for 1 roll/4/^1,Cherries,25@
+Slot 1 Increase Chance of Kiwi/Increases chances of kiwi in slot by 25% for 1 roll/4/^1,Kiwi,25@
+Slot 1 Increase Chance of Lemon/Increases chances of lemon in slot by 25% for 1 roll/4/^1,Lemon,25@
+Slot 1 Increase Chance of Lime/Increases chances of lime in slot by 25% for 1 roll/4/^1,Lime,25@
+Slot 1 Increase Chance of Melon/Increases chances of melon in slot by 25% for 1 roll/4/^1,Melon,25@
+Slot 1 Increase Chance of Orange/Increases chances of orange in slot by 25% for 1 roll/4/^1,Orange,25@
+Slot 1 Increase Chance of Pineapple/Increases chances of pineapple in slot by 25% for 1 roll/4/^1,Pineapple,25@
+Slot 1 Increase Chance of Seven/Increases chances of seven in slot by 25% for 1 roll/4/^1,Seven,25@
+Slot 1 Increase Chance of Strawberry/Increases chances of strawberry in slot by 25% for 1 roll/4/^1,Strawberry,25@
+Slot 2 Increase Chance of Apple/Increases chances of apple in slot by 25% for 1 roll/4/^2,Apple,25@
+Slot 2 Increase Chance of Bananas/Increases chances of bananas in slot by 25% for 1 roll/4/^2,Bananas,25@
+Slot 2 Increase Chance of Cherries/Increases chances of cherries in slot by 25% for 1 roll/4/^2,Cherries,25@
+Slot 2 Increase Chance of Kiwi/Increases chances of kiwi in slot by 25% for 1 roll/4/^2,Kiwi,25@
+Slot 2 Increase Chance of Lemon/Increases chances of lemon in slot by 25% for 1 roll/4/^2,Lemon,25@
+Slot 2 Increase Chance of Lime/Increases chances of lime in slot by 25% for 1 roll/4/^2,Lime,25@
+Slot 2 Increase Chance of Melon/Increases chances of melon in slot by 25% for 1 roll/4/^2,Melon,25@
+Slot 2 Increase Chance of Orange/Increases chances of orange in slot by 25% for 1 roll/4/^2,Orange,25@
+Slot 2 Increase Chance of Pineapple/Increases chances of pineapple in slot by 25% for 1 roll/4/^2,Pineapple,25@
+Slot 2 Increase Chance of Seven/Increases chances of seven in slot by 25% for 1 roll/4/^2,Seven,25@
+Slot 2 Increase Chance of Strawberry/Increases chances of strawberry in slot by 25% for 1 roll/4/^2,Strawberry,25@
+Slot 3 Increase Chance of Apple/Increases chances of apple in slot by 25% for 1 roll/4/^3,Apple,25@
+Slot 3 Increase Chance of Bananas/Increases chances of bananas in slot by 25% for 1 roll/4/^3,Bananas,25@
+Slot 3 Increase Chance of Cherries/Increases chances of cherries in slot by 25% for 1 roll/4/^3,Cherries,25@
+Slot 3 Increase Chance of Kiwi/Increases chances of kiwi in slot by 25% for 1 roll/4/^3,Kiwi,25@
+Slot 3 Increase Chance of Lemon/Increases chances of lemon in slot by 25% for 1 roll/4/^3,Lemon,25@
+Slot 3 Increase Chance of Lime/Increases chances of lime in slot by 25% for 1 roll/4/^3,Lime,25@
+Slot 3 Increase Chance of Melon/Increases chances of melon in slot by 25% for 1 roll/4/^3,Melon,25@
+Slot 3 Increase Chance of Orange/Increases chances of orange in slot by 25% for 1 roll/4/^3,Orange,25@
+Slot 3 Increase Chance of Pineapple/Increases chances of pineapple in slot by 25% for 1 roll/4/^3,Pineapple,25@
+Slot 3 Increase Chance of Seven/Increases chances of seven in slot by 25% for 1 roll/4/^3,Seven,25@
+Slot 3 Increase Chance of Strawberry/Increases chances of strawberry in slot by 25% for 1 roll/4/^3,Strawberry,25@
 Freeze Slot 3/Freezes symbol in slot 3/7/&3@
 Freeze Slot 2/Freezes symbol in slot 2/7/&2@
 Freeze Slot 1/Freezes symbol in slot 1/7/&1@
+Freeze Slot 3/Freezes symbol in slot 3/7/&3@
+Freeze Slot 2/Freezes symbol in slot 2/7/&2@
+Freeze Slot 1/Freezes symbol in slot 1/7/&1@
+Freeze Slot 3/Freezes symbol in slot 3/7/&3@
+Freeze Slot 2/Freezes symbol in slot 2/7/&2@
+Freeze Slot 1/Freezes symbol in slot 1/7/&1@
+Freeze Slot 3/Freezes symbol in slot 3/7/&3@
+Freeze Slot 2/Freezes symbol in slot 2/7/&2@
+Freeze Slot 1/Freezes symbol in slot 1/7/&1@
+Freeze Slot 3/Freezes symbol in slot 3/7/&3@
+Freeze Slot 2/Freezes symbol in slot 2/7/&2@
+Freeze Slot 1/Freezes symbol in slot 1/7/&1@
+Freeze Slot 3/Freezes symbol in slot 3/7/&3@
+Freeze Slot 2/Freezes symbol in slot 2/7/&2@
+Freeze Slot 1/Freezes symbol in slot 1/7/&1@
+Freeze Slot 3/Freezes symbol in slot 3/7/&3@
+Freeze Slot 2/Freezes symbol in slot 2/7/&2@
+Freeze Slot 1/Freezes symbol in slot 1/7/&1@
+Freeze Slot 3/Freezes symbol in slot 3/7/&3@
+Freeze Slot 2/Freezes symbol in slot 2/7/&2@
+Freeze Slot 1/Freezes symbol in slot 1/7/&1@
+Freeze Slot 3/Freezes symbol in slot 3/7/&3@
+Freeze Slot 2/Freezes symbol in slot 2/7/&2@
+Freeze Slot 1/Freezes symbol in slot 1/7/&1@
+Freeze Slot 3/Freezes symbol in slot 3/7/&3@
+Freeze Slot 2/Freezes symbol in slot 2/7/&2@
+Freeze Slot 1/Freezes symbol in slot 1/7/&1@
+Freeze Slot 3/Freezes symbol in slot 3/7/&3@
+Freeze Slot 2/Freezes symbol in slot 2/7/&2@
+Freeze Slot 1/Freezes symbol in slot 1/7/&1@
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
+20% Multiplier/Adds a 20% multiplier to the score/5/*20@
+Add 100 score/Adds 100 to the score/5/$100
+Add 200 score/Adds 200 to the score/9/$200
 20% Multiplier/Adds a 20% multiplier to the score/5/*20@
 Add 100 score/Adds 100 to the score/5/$100
 Add 200 score/Adds 200 to the score/9/$200
