@@ -970,6 +970,7 @@ namespace GamblerGame
             numRolls = 0;
             rollScore = 0;
             rollScores = new List<double>();
+            minScore = (int)(minScore * 1.5);
             inRound = true;
             gameState = State.Game;
             money = store.Money;
@@ -995,7 +996,7 @@ namespace GamblerGame
             totalScore = 0;
             paused = false;
             numRolls = 0;
-            minScore = 10;
+            minScore = 300;
             hasWon = false;
             money = 4;
             inventory.Items = new List<Item>();
