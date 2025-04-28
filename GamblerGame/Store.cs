@@ -116,7 +116,7 @@ namespace GamblerGame
         {
             foreach (Item item in storeItems)
             {
-                if (item.Bought)
+                if (item.Bought && money >= item.Price)
                 {
                     inventory.Add(item);
                     money -= item.Price;
