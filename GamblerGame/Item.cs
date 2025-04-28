@@ -81,8 +81,8 @@ namespace GamblerGame
             useItemButton = new Button(device, new Rectangle(0, 0, 0, 0), "Use Item", font, Color.Black, textures);// TODO: Change color
             choiceBox = new Rectangle(0, 0, 0, 0);
 
-            normalSize = new Vector2(500, 200);
-            withDescriptionSize = new Vector2(500, 500);
+            normalSize = new Vector2(500, 100);
+            withDescriptionSize = new Vector2(500, 350);
 
             // Changes display name
             text = name;
