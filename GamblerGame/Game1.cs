@@ -78,6 +78,7 @@ namespace GamblerGame
         private bool[] displaySymbol;
         private int[] rollingNumber;
         private bool inRound;
+        private Inventory inventory;
         #endregion
 
         private int blackBarYPos = 0;
@@ -116,7 +117,6 @@ namespace GamblerGame
         private int minScore;
         private bool hasWon;
         private int money;
-        private List<Item> inventory;
         #endregion
 
         public Game1()
@@ -997,7 +997,7 @@ namespace GamblerGame
             minScore = 300;
             hasWon = false;
             money = 4;
-            inventory = new List<Item>();
+            inventory.Items = new List<Item>();
         }
 
         public void ToggleScanline()
