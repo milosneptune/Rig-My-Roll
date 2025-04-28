@@ -28,6 +28,11 @@ namespace GamblerGame
             get { return storeItems; }
             set { storeItems = value; }
         }
+        public List<Item> PlayerInv
+        {
+            get;
+            set;
+        }
         public Inventory Inventory
         {
             get { return inventory; }
@@ -44,7 +49,7 @@ namespace GamblerGame
         /// sets temp items and StoreItems to a new list
         /// </summary>
         /// <param name="items"></param>
-        public Store(List<Item> items, int money, Inventory inventory)
+        public Store(List<Item> items, int money, Inventory inventory, List<Item> playerInventory)
         {
             this.items = items;
             storeItems = new List<Item>();
@@ -55,6 +60,7 @@ namespace GamblerGame
             boxTwo = new Vector2(DesiredWidth / 40 + DesiredWidth / 1.65f - (DesiredHeight * .31f) * 1.5f, (DesiredHeight / 5));
             boxThree = new Vector2(DesiredWidth / 40 + (DesiredHeight * .31f) / 2, (DesiredHeight * .57f));
             boxFour = new Vector2(DesiredWidth / 40 + DesiredWidth / 1.65f - (DesiredHeight * .31f)*1.5f, (DesiredHeight * .57f));
+            PlayerInv = playerInventory;
         }
         public void Update(GameTime gameTime)
         {
@@ -128,9 +134,9 @@ namespace GamblerGame
         {
             foreach (Item item in storeItems)
             {
-                if (item.Bought && money >= item.Price)
+                if (item.Bought && money >= item.Price && PlayerInv.Count != 5)
                 {
-                    inventory.Add(item);
+                    PlayerInv.Add(item);
                     money -= item.Price;
                     storeItems.Remove(item);
                     break;

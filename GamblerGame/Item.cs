@@ -37,6 +37,7 @@ namespace GamblerGame
         private Vector2 priceLocUnpressed;
         private Vector2 priceLocPressed;
         private Vector2 normalSize;
+        private Vector2 purchasedSize;
         private Vector2 withDescriptionSize;
         private Button buyButton;
         private Button cancelButton;
@@ -44,7 +45,11 @@ namespace GamblerGame
         //private Rectangle choiceBox;
         private bool displayUseItem;
         private bool displayBuyBox;
-
+        public List<Item> PlayerInv
+        {
+            get;
+            set;
+        }
         public string Name { get { return name; } }
         public string Description { get { return description; } }
         public int Price { get { return price; } }
@@ -91,6 +96,7 @@ namespace GamblerGame
             //choiceBox = new Rectangle(0, 0, 0, 0);
 
             normalSize = new Vector2((DesiredHeight * .31f), (DesiredHeight * .31f));
+            purchasedSize = new Vector2((int)(DesiredHeight / 6.75), (int)(DesiredHeight / 6.75));
             withDescriptionSize = new Vector2((DesiredHeight * .31f), (DesiredHeight * .31f));
 
             // Changes display name
@@ -113,11 +119,15 @@ namespace GamblerGame
             MouseState mState = Mouse.GetState();
             mousePos.X = mState.Position.X;
             mousePos.Y = mState.Position.Y - (int)descriptionFont.MeasureString(description).Y;
-
-            buyButton.Update(gameTime);
-            cancelButton.Update(gameTime);
-            useItemButton.Update(gameTime);
-
+            if (!Bought)
+            {
+                buyButton.Update(gameTime);
+                cancelButton.Update(gameTime);
+            }
+            else
+            {
+                useItemButton.Update(gameTime);
+            }
             if (this.position.Contains(mState.Position))
             {
                 // If it is pressed
@@ -168,13 +178,15 @@ namespace GamblerGame
         /// assumes that Begin() has already been called and End() will be called later.</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (!Bought) { 
             // Draw the button itself
             spriteBatch.Draw(buttonImg, position, new Color(15, 15, 15));
-            spriteBatch.Draw(ItemTexture, position, Color.White);
+            
 
             // Draw button text over the button
             spriteBatch.DrawString(font, text, textLoc, Color.White);
-
+            }
+            spriteBatch.Draw(ItemTexture, position, Color.White);
             if (!hideDescription)
             {
                 // Draw description below the name
@@ -185,7 +197,7 @@ namespace GamblerGame
             {
                 useItemButton.Draw(spriteBatch);
             }
-            if (displayBuyBox)
+            if (displayBuyBox && !Bought)
             {
                 ShapeBatch.Begin(device);
                 //ShapeBatch.Box(choiceBox, Color.Pink);
@@ -202,7 +214,7 @@ namespace GamblerGame
                 ShapeBatch.End();
                 spriteBatch.Begin();
                 spriteBatch.DrawString(descriptionFont, description, mousePos, Color.White);
-
+                spriteBatch.DrawString(descriptionFont, description, mousePos, Color.White);
             }
         }
         /// <summary>
@@ -232,6 +244,11 @@ namespace GamblerGame
 
                 position.Width = (int)normalSize.X;
                 position.Height = (int)normalSize.Y;
+                if (Bought)
+                {
+                    position.Width = (int)purchasedSize.X;
+                    position.Height = (int)purchasedSize.Y;
+                }
 
                 textLocPressed = new Vector2(
                     (position.X + position.Width / 2) - textSize.X / 2,
@@ -354,6 +371,11 @@ namespace GamblerGame
         public void UseItemTrigger()
         {
             UseItem(action);
+            this.Bought = false;
+            this.displayUseItem = false;
+            this.displayBuyBox = false;
+            PlayerInv.Remove(this);
+            
         }
 
         /// <summary>

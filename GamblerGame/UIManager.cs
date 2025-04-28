@@ -50,8 +50,8 @@ namespace GamblerGame
         const int rollButtonXPos = (int)(DesiredWidth / 5.9);
         const int pauseButtonXPos = (int)(DesiredWidth * .675);
 
-        const int ItemWidth = 160;
-        const int ItemHeight = 160;
+        const int ItemWidth = (int)(DesiredHeight / 6.75);
+        const int ItemHeight = (int)(DesiredHeight / 6.75);
         const int InventoryMax = 5;
 
         public UIManager(GraphicsDevice graphicsDevice, List<SpriteFont> fonts, List<Texture2D> textures)

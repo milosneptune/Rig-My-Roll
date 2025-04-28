@@ -32,7 +32,7 @@ namespace GamblerGame
         private List<Symbol> symbols; // the unchanged list of symbols
         private List<Symbol> newSymbols; // this is the list that will change if an item is used
         private ScriptManager symbolFile;
-
+        private Symbol specificResult;
         /// <summary>
         /// for getting the Symbol result of a roll from the slot 
         /// </summary>
@@ -47,7 +47,7 @@ namespace GamblerGame
         public bool UsedItem { get; set; }
         public List<Symbol> Symbols { get; private set; }
         public bool Frozen { get; private set; }
-
+        
         /// <summary>
         /// Intializes symbols and new symbols list, 
         /// also calls LoadSymbols method
@@ -59,6 +59,7 @@ namespace GamblerGame
             newSymbols = new List<Symbol>();
             Frozen = false;
             UsedItem = false;
+            specificResult = null;
             LoadSymbols(ct);
         }
 
@@ -107,7 +108,12 @@ namespace GamblerGame
             else
             {
                 Result = symbols[rng.Next(1, symbols.Count)];
+                if(specificResult != null)
+                {
+                    Result = specificResult;
+                }
             }
+            specificResult = null;
         }
 
         /// <summary>
@@ -116,7 +122,7 @@ namespace GamblerGame
         /// <param name="name"></param>
         public void RollSpecificSymbol(string name)
         {
-            Result = symbols[symbolFile.FindIndex(name)];
+            specificResult = symbols[symbolFile.FindIndex(name)];
         }
 
         /// <summary>
@@ -130,7 +136,7 @@ namespace GamblerGame
             Symbol target = symbols[symbolFile.FindIndex(name)];
 
             // loop for however many times the chance is called
-            for (int i = 0; i < chance; i++)
+            for (int i = 0; i < (int)(symbols.Count * ((double)chance / 100)); i++)
             {
                 newSymbols.Add(target);
                 if (newSymbols[i] != target) // remove other symbols if they aren't the target
@@ -139,6 +145,7 @@ namespace GamblerGame
                 }
             }
             UsedItem = true;
+            Symbols = newSymbols;
         }
 
         /// <summary>
@@ -147,6 +154,20 @@ namespace GamblerGame
         public void Freeze()
         {
             Frozen = true; 
+        }
+        /// <summary>
+        /// Toggles the Frozen bool
+        /// </summary>
+        public void Unfreeze()
+        {
+            Frozen = false;
+        }
+
+        public void Reset()
+        {
+            Frozen = false;
+            UsedItem = false;
+            specificResult = null;
         }
     }
 }
