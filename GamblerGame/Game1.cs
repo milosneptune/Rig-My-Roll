@@ -87,6 +87,10 @@ namespace GamblerGame
         private int desiredG = 255;
         private int desiredB = 255;
 
+        private int prevR = 255;
+        private int prevG = 255;
+        private int prevB = 255;
+
         // Options
         private bool scanlineToggle = true;
         private bool rollingAnimationToggle = true;
@@ -393,6 +397,9 @@ namespace GamblerGame
             if (gameState != State.Options)
             {
                 previousState = gameState;
+                prevR = desiredR;
+                prevG = desiredG;
+                prevB = desiredG;
             }
             switch (gameState)
             {
@@ -947,6 +954,9 @@ namespace GamblerGame
 
         public void BackToGame()
         {
+            desiredR = 100;
+            desiredG = 230;
+            desiredB = 175;
             roundScore = 0;
             numRolls = 0;
             rollScore = 0;
@@ -961,6 +971,9 @@ namespace GamblerGame
         public void Back()
         {
             gameState = previousState;
+            desiredR = prevR;
+            desiredG = prevG;
+            desiredB = prevB;
         }
 
         public void Reset()
