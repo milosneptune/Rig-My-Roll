@@ -275,7 +275,7 @@ namespace GamblerGame
                 allItems.Add(new Item(i, _graphics.GraphicsDevice, pixelFont, pixelFont, buttonTextures));
             }
 
-            store = new Store(allItems);
+            store = new Store(allItems, TotNumOfItems);
 
             // Adds events based on the type of item.
             foreach (Item item in allItems)
@@ -776,7 +776,7 @@ namespace GamblerGame
             totalScore = 0;
             paused = false;
             numRolls = 0;
-            minScore = 500;
+            minScore = 300;
             hasWon = false;
             money = 4;
         }
