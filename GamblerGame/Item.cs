@@ -16,6 +16,8 @@ namespace GamblerGame
     public delegate void UseItemDelegate(string action);
     internal class Item : Button
     {
+        const int DesiredWidth = 1920;
+        const int DesiredHeight = 1080;
         private const int ButtonOffset = 10;
         private ScriptManager itemsFile = new ScriptManager("ItemsFile.txt");
         private string name;
@@ -81,8 +83,8 @@ namespace GamblerGame
             useItemButton = new Button(device, new Rectangle(0, 0, 0, 0), "Use Item", font, Color.Black, textures);// TODO: Change color
             choiceBox = new Rectangle(0, 0, 0, 0);
 
-            normalSize = new Vector2(500, 100);
-            withDescriptionSize = new Vector2(500, 350);
+            normalSize = new Vector2((DesiredHeight * .31f), (DesiredHeight * .31f));
+            withDescriptionSize = new Vector2((DesiredHeight * .31f), (DesiredHeight * .31f));
 
             // Changes display name
             text = name;
