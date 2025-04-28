@@ -70,17 +70,6 @@ namespace GamblerGame
             normalColor = color;
             buttonColor = normalColor;
 
-            // Figure out where on the button to draw it
-            Vector2 textSize = font.MeasureString(text);
-            textLocPressed = new Vector2(
-                (position.X + position.Width / 2) - textSize.X / 2,
-                (position.Y + position.Height / 2) - textSize.Y / 4 
-            );
-            textLocUnpressed = new Vector2(
-                (position.X + position.Width / 2) - textSize.X / 2,
-                (position.Y + position.Height / 2) - textSize.Y / 2
-            );
-            textLoc = textLocUnpressed;
 
             // Invert the button color for the text color (because why not)
             this.textColor = new Color(255 - color.R, 255 - color.G, 255 - color.B);
@@ -104,12 +93,7 @@ namespace GamblerGame
             normalColor = color;
             buttonColor = normalColor;
 
-            // Figure out where on the button to draw it
-            Vector2 textSize = font.MeasureString(text);
-            textLocUnpressed = new Vector2(
-                (position.X - textSize.X),
-                (position.Y - textSize.Y / 2 + position.Height / 2)
-            );
+            
 
             textLoc = textLocUnpressed;
 
@@ -135,6 +119,7 @@ namespace GamblerGame
             // if active so that it's up to date next time!
             MouseState mState = Mouse.GetState();
 
+            ChangeTextLoc();
             buttonColor = normalColor;
             if (this.position.Contains(mState.Position))
             {
@@ -233,6 +218,22 @@ namespace GamblerGame
         {
             hoverColor = new Color (normalColor.R + 5, normalColor.G + 5, normalColor.B + 5);
             buttonColor = hoverColor;
+        }
+        /// <summary>
+        /// Figure out where on the button to draw it.
+        /// </summary>
+        public void ChangeTextLoc()
+        {
+            Vector2 textSize = font.MeasureString(text);
+            textLocPressed = new Vector2(
+                (position.X + position.Width / 2) - textSize.X / 2,
+                (position.Y + position.Height / 2) - textSize.Y / 4
+            );
+            textLocUnpressed = new Vector2(
+                (position.X + position.Width / 2) - textSize.X / 2,
+                (position.Y + position.Height / 2) - textSize.Y / 2
+            );
+            textLoc = textLocUnpressed;
         }
     }
 }
