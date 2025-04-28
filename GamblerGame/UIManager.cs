@@ -233,7 +233,7 @@ namespace GamblerGame
         public void DrawScreenFilters(SpriteBatch sb)
         {
             sb.Begin();
-            sb.Draw(scanlineTexture, new Rectangle(0, 0, DesiredWidth, DesiredHeight), new Color(25, 25, 25, 1));
+            sb.Draw(scanlineTexture, new Rectangle(0, 0, DesiredWidth, DesiredHeight), new Color(12, 12, 12, 1));
         }
 
         public void DrawBlackBars(int blackBarYPosition)

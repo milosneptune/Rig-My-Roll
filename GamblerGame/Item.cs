@@ -18,7 +18,7 @@ namespace GamblerGame
     {
         const int DesiredWidth = 1920;
         const int DesiredHeight = 1080;
-        private const int ButtonOffset = 10;
+        private const int ButtonOffset = DesiredHeight/80;
         private ScriptManager itemsFile = new ScriptManager("ItemsFile.txt");
         private string name;
         private string description;
@@ -36,7 +36,7 @@ namespace GamblerGame
         private Button buyButton;
         private Button cancelButton;
         private Button useItemButton;
-        private Rectangle choiceBox;
+        //private Rectangle choiceBox;
         private bool displayUseItem;
         private bool displayBuyBox;
 
@@ -81,7 +81,7 @@ namespace GamblerGame
             buyButton = new Button(device, new Rectangle(0,0,0,0), "Buy", font, Color.Black, textures);
             cancelButton = new Button(device, new Rectangle(0, 0, 0, 0), "Cancel", font, Color.Black, textures);// TODO: Change color
             useItemButton = new Button(device, new Rectangle(0, 0, 0, 0), "Use Item", font, Color.Black, textures);// TODO: Change color
-            choiceBox = new Rectangle(0, 0, 0, 0);
+            //choiceBox = new Rectangle(0, 0, 0, 0);
 
             normalSize = new Vector2((DesiredHeight * .31f), (DesiredHeight * .31f));
             withDescriptionSize = new Vector2((DesiredHeight * .31f), (DesiredHeight * .31f));
@@ -178,7 +178,7 @@ namespace GamblerGame
             if (displayBuyBox)
             {
                 ShapeBatch.Begin(device);
-                ShapeBatch.Box(choiceBox, Color.Pink);
+                //ShapeBatch.Box(choiceBox, Color.Pink);
                 ShapeBatch.End();
                 buyButton.Draw(spriteBatch);
                 cancelButton.Draw(spriteBatch);
@@ -258,23 +258,24 @@ namespace GamblerGame
                     (position.Y + position.Height / 2) - descriptionSize.Y / 2 + ButtonOffset
                 );
 
-                choiceBox = new Rectangle(
+                /*choiceBox = new Rectangle(
                     (int)position.X,
                     (int)((position.Y + position.Height)),
                     position.Width,
                     (int)(descriptionSize.Y * 2)
                     );
+                */
 
                 buyButton.Position = new Rectangle(
                     (int)position.X + ButtonOffset,
-                    (int)(position.Y + position.Height + ButtonOffset),
+                    (int)(position.Y + position.Height + ButtonOffset/2),
                     (position.Width / 2) - 2 * ButtonOffset,
                     (int)(descriptionSize.Y * 2)
                 );
 
                 cancelButton.Position = new Rectangle(
-                    (int)(position.X + position.Width - ButtonOffset),
-                    (int)(position.Y + position.Height + ButtonOffset),
+                    (int)(position.X + position.Width /2 + ButtonOffset) ,
+                    (int)(position.Y + position.Height + ButtonOffset / 2),
                     (position.Width / 2) - 2 * ButtonOffset,
                     (int)(descriptionSize.Y * 2)
                 );

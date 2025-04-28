@@ -53,8 +53,8 @@ namespace GamblerGame
 
             boxOne = new Vector2(DesiredWidth / 40 + (DesiredHeight * .31f)/2, (DesiredHeight / 5));
             boxTwo = new Vector2(DesiredWidth / 40 + DesiredWidth / 1.65f - (DesiredHeight * .31f) * 1.5f, (DesiredHeight / 5));
-            boxThree = new Vector2(DesiredWidth / 40 + (DesiredHeight * .31f) / 2, (DesiredHeight * .55f));
-            boxFour = new Vector2(DesiredWidth / 40 + DesiredWidth / 1.65f - (DesiredHeight * .31f)*1.5f, (DesiredHeight * .55f));
+            boxThree = new Vector2(DesiredWidth / 40 + (DesiredHeight * .31f) / 2, (DesiredHeight * .57f));
+            boxFour = new Vector2(DesiredWidth / 40 + DesiredWidth / 1.65f - (DesiredHeight * .31f)*1.5f, (DesiredHeight * .57f));
         }
         public void Update(GameTime gameTime)
         {
