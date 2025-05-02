@@ -1231,13 +1231,12 @@ namespace GamblerGame
             int pos;
             if (playerInventory != null)
             {
-                /*pos = DesiredWidth / 20 - DesiredWidth / 60;
+                pos = DesiredWidth / 20 - DesiredWidth / 60;
                 for (int i = 0; i < playerInventory.Count; i++)
                 {
                     _spriteBatch.Draw(playerInventory[i].ItemTexture, new Vector2((DesiredWidth / 40) + pos, DesiredHeight / 21), Color.White);
                     pos += playerInventory[i].ItemTexture.Width + (int)(DesiredWidth / 39.5);
                 }
-                */
                 pos = DesiredWidth / 20 - DesiredWidth / 60;
                 for (int i = 0; i < playerInventory.Count; i++)
                 {
