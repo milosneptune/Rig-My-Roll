@@ -4,6 +4,7 @@ using System.Runtime.Intrinsics.Arm;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace GamblerGame
 {
@@ -1020,14 +1021,24 @@ namespace GamblerGame
                     {
                         score = score + " + ";
                     }
+                    if (i == slotMachine.ScoreList.Count - 1 && slotMachine.ScoreToAdd != 0)
+                    {
+                        score = score + " + ";
+                    }
                     if (display[i])
                     {
                         _spriteBatch.DrawString(scoreFont, score, new Vector2(((int)(DesiredWidth * .715) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
                         move += (int)scoreFont.MeasureString(score).X;
                     }
                 }
-                if (display[2])
+                if (display[2] && slotMachine.ScoreToAdd == 0)
                 {
+                    _spriteBatch.DrawString(scoreFont, "  )  x  " + slotMachine.Multiplier.ToString(), new Vector2(((int)(DesiredWidth * .715) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
+                }
+                else if (display[2] && slotMachine.ScoreToAdd != 0)
+                {
+                    _spriteBatch.DrawString(scoreFont, slotMachine.ScoreToAdd.ToString(), new Vector2(((int)(DesiredWidth * .715) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
+                    move += (int)scoreFont.MeasureString(slotMachine.ScoreToAdd.ToString()).X;
                     _spriteBatch.DrawString(scoreFont, "  )  x  " + slotMachine.Multiplier.ToString(), new Vector2(((int)(DesiredWidth * .715) - (scoreFont.MeasureString("1").X * roundScore.ToString().Length) / 2) + move, (int)(DesiredHeight * .500)), Color.White);
                 }
             }
@@ -1131,7 +1142,7 @@ namespace GamblerGame
             totalScore = 0;
             paused = false;
             numRolls = 0;
-            minScore = 300;
+            minScore = 10;
             hasWon = false;
             inventory = new Inventory();
             inventory.Items = new List<Item>();
@@ -1220,12 +1231,13 @@ namespace GamblerGame
             int pos;
             if (playerInventory != null)
             {
-                pos = DesiredWidth / 20 - DesiredWidth / 60;
+                /*pos = DesiredWidth / 20 - DesiredWidth / 60;
                 for (int i = 0; i < playerInventory.Count; i++)
                 {
                     _spriteBatch.Draw(playerInventory[i].ItemTexture, new Vector2((DesiredWidth / 40) + pos, DesiredHeight / 21), Color.White);
                     pos += playerInventory[i].ItemTexture.Width + (int)(DesiredWidth / 39.5);
                 }
+                */
                 pos = DesiredWidth / 20 - DesiredWidth / 60;
                 for (int i = 0; i < playerInventory.Count; i++)
                 {

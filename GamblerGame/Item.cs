@@ -56,6 +56,7 @@ namespace GamblerGame
         public char Type { get { return type; } }
         public string Action { get { return action; } }
         public Texture2D ItemTexture { get; private set; }
+        public bool ItemUsed { get; private set; }
 
         /// <summary>
         /// Returns bool of if the item is bought.
@@ -132,6 +133,7 @@ namespace GamblerGame
             MouseState mState = Mouse.GetState();
             mousePos.X = mState.Position.X;
             mousePos.Y = mState.Position.Y - (int)descriptionFont.MeasureString(description).Y;
+            ItemUsed = false;
             if (!Bought)
             {
                 buyButton.Update(gameTime);
@@ -139,7 +141,7 @@ namespace GamblerGame
             }
             else
             {
-                useItemButton.Update(gameTime);
+                this.useItemButton.Update(gameTime);
             }
             if (this.position.Contains(mState.Position))
             {
@@ -150,7 +152,7 @@ namespace GamblerGame
                     // If it isn't store, then the choice of using the item will be shown.
                     if (UseItem != null && hideDescription)
                     {
-                        DisplayUseItem();
+                        this.DisplayUseItem();
                     }
                     else
                     {
@@ -388,12 +390,12 @@ namespace GamblerGame
         /// </summary>
         public void UseItemTrigger()
         {
-            UseItem(action);
+            this.ItemUsed = true;
+            this.UseItem(action);
             this.Bought = false;
             this.displayUseItem = false;
             this.displayBuyBox = false;
             PlayerInv.Remove(this);
-
         }
 
         /// <summary>

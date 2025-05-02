@@ -18,6 +18,7 @@ namespace GamblerGame
         private double scoreToAdd;
 
         public double Multiplier { get; set; }
+        public double ScoreToAdd { get; private set; }
         public double RollTotal { get; private set; }
         public double RollScore { get; private set; }
         public List<double> ScoreList { get; private set; }
@@ -56,7 +57,7 @@ namespace GamblerGame
                 ScoreList.Add((int)slots[i].ResultName);
                 SymbolList.Add(slots[i].Result);
             }
-
+            ScoreToAdd = scoreToAdd;
             RollTotal = (rollScore + scoreToAdd) * CheckMultiply();
             scoreToAdd = 0;
             multiplierToAdd = 0;
@@ -70,7 +71,7 @@ namespace GamblerGame
         private double CheckMultiply()
         {
             matchedSymbols = 0;
-            Multiplier = 1;
+            // Multiplier = 1;
 
             if (slots[0].ResultName == slots[1].ResultName)
             {
@@ -92,13 +93,13 @@ namespace GamblerGame
 
             if (matchedSymbols == 0)
             {
-                return Multiplier += multiplierToAdd;
+                return Multiplier = 1 + multiplierToAdd;
             }
             else if (matchedSymbols == 1)
             {
                 return Multiplier = 1.5 + multiplierToAdd;
             }
-            else if (matchedSymbols == 2 + multiplierToAdd)
+            else if (matchedSymbols == 2)
             {
                 return Multiplier = 2 + multiplierToAdd;
             }
@@ -180,7 +181,7 @@ namespace GamblerGame
         /// <param name="inc"></param>
         public void IncreaseMultipler(int inc)
         {
-            multiplierToAdd = Multiplier * ((double)inc /100);
+            multiplierToAdd += Multiplier * (inc /100);
         }
 
         /// <summary>
@@ -189,7 +190,7 @@ namespace GamblerGame
         /// <param name="inc"></param>
         public void IncreasePoints(int inc)
         {
-            scoreToAdd = inc;
+            scoreToAdd += inc;
         }
     }
 }
