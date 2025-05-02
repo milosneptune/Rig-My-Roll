@@ -135,7 +135,7 @@ namespace GamblerGame
             // TODO: Add your initialization logic here
             _graphics.PreferredBackBufferWidth = DesiredWidth;
             _graphics.PreferredBackBufferHeight = DesiredHeight;
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
             gameState = State.MainMenu;
             rng = new Random();
@@ -197,11 +197,11 @@ namespace GamblerGame
             menuButtons[2].OnLeftButtonClick += Options;
 
             // ----------- GAME BUTTONS ---------------
-            // Roll (reposition
+            // Roll 
             gameButtons.Add(new Button(
                     _graphics.GraphicsDevice,
                     new Rectangle(pauseButtonXPos, rollButtonYPos, pauseButtonWidth, pauseButtonHeight),
-                    "Roll",
+                    "Stop",
                     pixelFont,
                     new Color(120, 30, 30),
                     buttonTextures));
@@ -419,6 +419,7 @@ namespace GamblerGame
 
             // TODO: Add your update logic here
 
+            // Update logic for back button
             if (gameState != State.Options)
             {
                 previousState = gameState;
@@ -426,8 +427,10 @@ namespace GamblerGame
                 prevG = desiredG;
                 prevB = desiredG;
             }
+            // FSM
             switch (gameState)
             {
+                //---------- Main Menu ----------
                 case State.MainMenu:
                     foreach (Button button in menuButtons)
                     {
@@ -438,20 +441,28 @@ namespace GamblerGame
                         backgroundPosition += 2;
                     }
                     break;
+                //---------- Game State ----------
                 case State.Game:
                     if (!paused && inRound)
                     {
+                        // Pause button
                         gameButtons[1].Update(gameTime);
+                        
+                        // Item buttons
                         for(int i = 0; i < playerInventory.Count; i++)
                         {
                             playerInventory[i].Update(gameTime);
                         }
+
+                        // Roll Button Logic
+                        // Cooldown for animation (frame based)
                         if (rollButtonDelay == 0)
                         {
                             gameButtons[0].Update(gameTime);
                         }
                         else
                         {
+                            // Stops the rolling animation when a certain frame is reached
                             if (rollButtonDelay > 0)
                             {
                                 rollButtonDelay--;
@@ -468,6 +479,7 @@ namespace GamblerGame
                             {
                                 displaySymbol[2] = true;
                             }
+                            // Once the animation is finished, symbols go back to spinning
                             if (rollButtonDelay == 1)
                             {
                                 for (int i = 0; i < 3; i++)
@@ -477,6 +489,7 @@ namespace GamblerGame
 
                             }
                         }
+
                         if (rollingAnimationDelay == 0)
                         {
                             rollingAnimationDelay = 3;
@@ -557,6 +570,7 @@ namespace GamblerGame
                         }
                     }
                     break;
+                //---------- Store State ----------
                 case State.Store:
                     if (!paused)
                     {
@@ -584,6 +598,7 @@ namespace GamblerGame
                         }
                     }
                     break;
+                //---------- Options ----------
                 case State.Options:
                     optionsButtons[0].CheckboxUpdate(gameTime, rollingAnimationToggle);
                     optionsButtons[1].CheckboxUpdate(gameTime, backgroundAnimationToggle);
@@ -598,6 +613,7 @@ namespace GamblerGame
                         backgroundPosition += 2;
                     }
                     break;
+                //---------- Game Over ----------
                 case State.GameOver:
                     if (backgroundAnimationToggle)
                     {
