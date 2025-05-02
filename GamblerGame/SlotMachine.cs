@@ -63,8 +63,8 @@ namespace GamblerGame
         }
 
         /// <summary>
-        /// Checks the number of matching symbols 
-        /// and returns a value for the score to get multiplied by
+        /// Checks the number of matching symbols and returns a value for the score to get multiplied by
+        /// Also adds a value if an item is used
         /// </summary>
         /// <returns></returns>
         private double CheckMultiply()

@@ -264,7 +264,7 @@ namespace GamblerGame
             // ----------- STORE BUTTONS -------------------
             storeButtons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(pauseButtonXPos, rollButtonYPos, pauseButtonWidth, pauseButtonHeight),
+                    new Rectangle(pauseButtonXPos, pauseButtonYPos, pauseButtonWidth, pauseButtonHeight),
                     "Exit Shop",
                     pixelFont,
                     new Color(30, 120, 30),
@@ -274,7 +274,7 @@ namespace GamblerGame
             // Pause button
             storeButtons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(pauseButtonXPos, pauseButtonYPos, pauseButtonWidth, pauseButtonHeight),
+                    new Rectangle(pauseButtonXPos, rollButtonYPos, pauseButtonWidth, pauseButtonHeight),
                     "Pause",
                     pixelFont,
                     new Color(30, 30, 50),
@@ -407,9 +407,6 @@ namespace GamblerGame
                         break;
                 }
             }
-
-            inventory = new Inventory();
-            store = new Store(allItems, money, inventory, playerInventory);
         }
 
         protected override void Update(GameTime gameTime)
@@ -1136,8 +1133,10 @@ namespace GamblerGame
             numRolls = 0;
             minScore = 300;
             hasWon = false;
+            inventory = new Inventory();
             inventory.Items = new List<Item>();
             playerInventory = new List<Item>();
+            store = new Store(allItems, money, inventory, playerInventory);
             slotMachine.Reset();
             store.Reset();
             if (godMode)
@@ -1218,12 +1217,17 @@ namespace GamblerGame
         /// </summary>
         public void DrawPlayerInventory()
         {
-            int pos = DesiredWidth / 20 - DesiredWidth / 60;
+            int pos;
             if (playerInventory != null)
             {
-                // this line is for testing if it would display. 
-                //inventory.Items.Add(allItems[0]);
-                for (int i = playerInventory.Count - 1; i >= 0; i--)
+                pos = DesiredWidth / 20 - DesiredWidth / 60;
+                for (int i = 0; i < playerInventory.Count; i++)
+                {
+                    _spriteBatch.Draw(playerInventory[i].ItemTexture, new Vector2((DesiredWidth / 40) + pos, DesiredHeight / 21), Color.White);
+                    pos += playerInventory[i].ItemTexture.Width + (int)(DesiredWidth / 39.5);
+                }
+                pos = DesiredWidth / 20 - DesiredWidth / 60;
+                for (int i = 0; i < playerInventory.Count; i++)
                 {
                     playerInventory[i].PlayerInv = playerInventory;
                     playerInventory[i].Bought = true;

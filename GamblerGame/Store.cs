@@ -23,11 +23,17 @@ namespace GamblerGame
         private Vector2 boxFour;
         private int money;
 
+        /// <summary>
+        /// Sets and returns each item in the store
+        /// </summary>
         public List<Item> StoreItems
         {
             get { return storeItems; }
             set { storeItems = value; }
         }
+        /// <summary>
+        /// Sets and returns the player's inventory
+        /// </summary>
         public List<Item> PlayerInv
         {
             get;
@@ -38,6 +44,9 @@ namespace GamblerGame
             get { return inventory; }
             set { inventory = value; }
         }
+        /// <summary>
+        /// Returns and sets the money
+        /// </summary>
         public int Money
         {
             get { return money; }
@@ -62,6 +71,10 @@ namespace GamblerGame
             boxFour = new Vector2(DesiredWidth / 40 + DesiredWidth / 1.65f - (DesiredHeight * .31f)*1.5f, (DesiredHeight * .57f));
             PlayerInv = playerInventory;
         }
+        /// <summary>
+        /// Updates each item in the store
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
             if (storeItems != null)
@@ -72,6 +85,10 @@ namespace GamblerGame
                 }
             }
         }
+        /// <summary>
+        /// Draws each item in the store
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
             if (storeItems != null)
@@ -147,6 +164,9 @@ namespace GamblerGame
                 }
             }
         }
+        /// <summary>
+        /// Resets the store
+        /// </summary>
         public void Reset()
         {
             inventory = null;
@@ -158,6 +178,11 @@ namespace GamblerGame
             }
         }
 
+        /// <summary>
+        /// Updates the store with new info
+        /// </summary>
+        /// <param name="money"></param>
+        /// <param name="inventory"></param>
         public void UpdateStore(int money, Inventory inventory)
         {
             storeItems = new List<Item>();

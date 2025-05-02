@@ -14,10 +14,7 @@ namespace GamblerGame
     /// <param name="clickedButton">The delegate will be called with a reference to the clicked button</param>
     public delegate void OnButtonClickDelegate();
 
-    /// <summary>
-    /// The Button class adds button specific information and behavior to the
-    /// generic GameObject class - including checking for mouse clicks.
-    /// </summary>
+    
     public class Button
     {
         // Button specific fields
@@ -59,7 +56,9 @@ namespace GamblerGame
         /// <param name="position">Where to draw the button's top left corner</param>
         /// <param name="text">The text to draw on the button</param>
         /// <param name="font">The font to use when drawing the button text.</param>
-        /// <param name="color">The color to tint the button when it is active. Buttons are always grayed out when disabled.</param>
+        /// <param name="color">The color to tint the button.</param>
+        /// <param name="device">The game's graphic device</param>
+        /// <param name="textures">The list of textures for if a button is pressed or not</param>
         public Button(GraphicsDevice device, Rectangle position, String text, SpriteFont font, Color color, List<Texture2D> textures)
         {
             // Save copies/references to the info we'll need later
@@ -70,19 +69,21 @@ namespace GamblerGame
             normalColor = color;
             buttonColor = normalColor;
 
-
-            // Invert the button color for the text color (because why not)
-            this.textColor = new Color(255 - color.R, 255 - color.G, 255 - color.B);
-
-            // Make a custom 2d texture for the button itself
+            // Sets the textures of each state of the button
             buttonUnpressedImg = textures[0];
             buttonPressedImg = textures[1];
             buttonImg = buttonUnpressedImg;
-            //int[] colorData = new int[buttonImg.Width * buttonImg.Height];
-            //Array.Fill<int>(colorData, (int)color.PackedValue);
-            //buttonImg.SetData<Int32>(colorData,0,colorData.Length);
         }
 
+        /// <summary>
+        /// Create a new custom checkbox button
+        /// </summary>
+        /// <param name="position">Where to draw the button's top left corner</param>
+        /// <param name="text">The text to draw on the button</param>
+        /// <param name="font">The font to use when drawing the button text.</param>
+        /// <param name="color">The color to tint the button.</param>
+        /// <param name="device">The game's graphic device</param>
+        /// <param name="textures">The list of textures for if a button is checked or not</param>
         public Button(GraphicsDevice device, Rectangle position, String text, SpriteFont font, Color color, List<Texture2D> textures, bool status)
         {
             // Save copies/references to the info we'll need later
@@ -93,6 +94,7 @@ namespace GamblerGame
             normalColor = color;
             buttonColor = normalColor;
 
+            // Sets the location of the text to the left of the button
             Vector2 textSize = font.MeasureString(text);
             textLocUnpressed = new Vector2(
                 (position.X - textSize.X),
@@ -101,16 +103,10 @@ namespace GamblerGame
 
             textLoc = textLocUnpressed;
 
-            // Invert the button color for the text color (because why not)
-            this.textColor = new Color(255 - color.R, 255 - color.G, 255 - color.B);
-
-            // Make a custom 2d texture for the button itself
+            // Sets the textures of each state of the button
             buttonUnpressedImg = textures[0];
             buttonPressedImg = textures[1];
             buttonImg = buttonUnpressedImg;
-            //int[] colorData = new int[buttonImg.Width * buttonImg.Height];
-            //Array.Fill<int>(colorData, (int)color.PackedValue);
-            //buttonImg.SetData<Int32>(colorData,0,colorData.Length);
         }
 
         /// <summary>
@@ -182,12 +178,13 @@ namespace GamblerGame
                     }
                 }
 
-                // If it is only hovering over the button
+                // If it is only hovering over the button, change color
                 else
                 {
                     Hover();
                 }
             }
+            //Changes button image based on status
             if (status)
             {
                 buttonImg = buttonPressedImg;
@@ -216,7 +213,7 @@ namespace GamblerGame
         }
 
         /// <summary>
-        /// Runs when the mouse is hovered over the button.
+        /// Runs when the mouse is hovered over the button. Updates color
         /// </summary>
         public virtual void Hover()
         {
@@ -224,7 +221,7 @@ namespace GamblerGame
             buttonColor = hoverColor;
         }
         /// <summary>
-        /// Figure out where on the button to draw it.
+        /// Figure out where on the button to draw the text based on its position.
         /// </summary>
         public void ChangeTextLoc()
         {

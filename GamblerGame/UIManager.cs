@@ -114,19 +114,21 @@ namespace GamblerGame
                 DesiredHeight - DesiredHeight / 5-2,
                 new Color(255,255,255));
             ShapeBatch.End();
+            // Displays each symbols score value in pause menu
             sb.Begin();
-            sb.DrawString(pixelFont, "Cherry - Scores 10 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (0 * (DesiredHeight / 15)) + pixelFont.MeasureString("Cherry - Scores 10 Points").Y / 2), Color.White);
-            sb.DrawString(pixelFont, "Apple - Scores 15 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (8 * (DesiredHeight / 15)) + pixelFont.MeasureString("Apple - Scores 15 Points").Y / 2), Color.White);
-            sb.DrawString(pixelFont, "S.berry - Scores 20 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (9 * (DesiredHeight / 15)) + pixelFont.MeasureString("S.berry - Scores 20 Points").Y / 2), Color.White);
-            sb.DrawString(pixelFont, "Melon - Scores 25 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (5 * (DesiredHeight / 15)) + pixelFont.MeasureString("Melon - Scores 25 Points").Y / 2), Color.White);
-            sb.DrawString(pixelFont, "Banana - Scores 30 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (10 * (DesiredHeight / 15)) + pixelFont.MeasureString("Banana - Scores 30 Points").Y / 2), Color.White);
-            sb.DrawString(pixelFont, "Lemon - Scores 35 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (2 * (DesiredHeight / 15)) + pixelFont.MeasureString("Lemon - Scores 35 Points").Y / 2), Color.White);
-            sb.DrawString(pixelFont, "Kiwi - Scores 50 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (7 * (DesiredHeight / 15)) + pixelFont.MeasureString("Kiwi - Scores 50 Points").Y / 2), Color.White);
+            sb.DrawString(pixelFont, "Cherry - Scores 10 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (10 * (DesiredHeight / 15)) + pixelFont.MeasureString("Cherry - Scores 10 Points").Y / 2), Color.White);
+            sb.DrawString(pixelFont, "Apple - Scores 15 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (9 * (DesiredHeight / 15)) + pixelFont.MeasureString("Apple - Scores 15 Points").Y / 2), Color.White);
+            sb.DrawString(pixelFont, "S.berry - Scores 20 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (8 * (DesiredHeight / 15)) + pixelFont.MeasureString("S.berry - Scores 20 Points").Y / 2), Color.White);
+            sb.DrawString(pixelFont, "Melon - Scores 25 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (7 * (DesiredHeight / 15)) + pixelFont.MeasureString("Melon - Scores 25 Points").Y / 2), Color.White);
+            sb.DrawString(pixelFont, "Banana - Scores 30 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (6 * (DesiredHeight / 15)) + pixelFont.MeasureString("Banana - Scores 30 Points").Y / 2), Color.White);
+            sb.DrawString(pixelFont, "Lemon - Scores 35 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (5 * (DesiredHeight / 15)) + pixelFont.MeasureString("Lemon - Scores 35 Points").Y / 2), Color.White);
+            sb.DrawString(pixelFont, "Kiwi - Scores 50 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (4 * (DesiredHeight / 15)) + pixelFont.MeasureString("Kiwi - Scores 50 Points").Y / 2), Color.White);
             sb.DrawString(pixelFont, "Lime - Scores 55 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (3 * (DesiredHeight / 15)) + pixelFont.MeasureString("Lime - Scores 55 Points").Y / 2), Color.White);
-            sb.DrawString(pixelFont, "P.apple - Scores 60 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (4 * (DesiredHeight / 15)) + pixelFont.MeasureString("P.apple - Scores 60 Points").Y / 2), Color.White);
-            sb.DrawString(pixelFont, "Orange - Scores 65 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (6 * (DesiredHeight / 15)) + pixelFont.MeasureString("Orange - Scores 65 Points").Y / 2), Color.White);
-            sb.DrawString(pixelFont, "Seven - Scores 100 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (1 * (DesiredHeight / 15)) + pixelFont.MeasureString("Seven - Scores 100 Points").Y / 2), Color.White);
+            sb.DrawString(pixelFont, "P.apple - Scores 60 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (2 * (DesiredHeight / 15)) + pixelFont.MeasureString("P.apple - Scores 60 Points").Y / 2), Color.White);
+            sb.DrawString(pixelFont, "Orange - Scores 65 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (1 * (DesiredHeight / 15)) + pixelFont.MeasureString("Orange - Scores 65 Points").Y / 2), Color.White);
+            sb.DrawString(pixelFont, "Seven - Scores 100 Points", new Vector2((int)(DesiredWidth * .66) + DesiredWidth / 80 + DesiredHeight / 15, DesiredHeight - DesiredHeight / 5 - (0 * (DesiredHeight / 15)) + pixelFont.MeasureString("Seven - Scores 100 Points").Y / 2), Color.White);
 
+            // Draws each symbol in pause menu
             for (int i = 0; i < symbols.Count; i++)
             {
                 symbols[i].DrawSymbol(sb, (int)(DesiredWidth * .66) + DesiredWidth / 80, DesiredHeight - DesiredHeight / 5 - (i * (DesiredHeight / 15)), DesiredHeight / 15, DesiredHeight / 15);
@@ -138,18 +140,29 @@ namespace GamblerGame
         public void DrawRoundEnd(SpriteBatch sb)
         {
             ShapeBatch.Begin(graphicsDevice);
+            // Tints background
             ShapeBatch.Box(0, 0, DesiredWidth, DesiredHeight, new Color(0, 0, 0, 100));
+            // Big round over container box
             ShapeBatch.Box(DesiredWidth / 40, DesiredHeight / 2 - (DesiredWidth / 10), DesiredWidth / 1.65f, DesiredHeight - (DesiredHeight / 2 - (DesiredWidth / 10)), new Color(20, 20, 20));
+            // Round over text container
             ShapeBatch.Box(DesiredWidth / 40 + DesiredWidth/80, DesiredHeight / 2 - (DesiredWidth / 10) + DesiredHeight / 60, DesiredWidth / 1.65f - DesiredWidth / 40,  (DesiredHeight / 10), new Color(0, 0, 0));
+            // Score requirement box
             ShapeBatch.Box(DesiredWidth / 40 + DesiredWidth / 80, DesiredHeight / 2 - (DesiredWidth / 10) + (DesiredHeight / 60)*2 + (DesiredHeight / 10), DesiredWidth / 1.65f - DesiredWidth / 40, (DesiredHeight / 14), new Color(0, 0, 0));
+            // Round score box 
             ShapeBatch.Box(DesiredWidth / 40 + DesiredWidth / 80, DesiredHeight / 2 - (DesiredWidth / 10) + (DesiredHeight / 60) * 3 + (DesiredHeight / 10) + (DesiredHeight / 14), DesiredWidth / 1.65f - DesiredWidth / 40, (DesiredHeight / 14), new Color(0, 0, 0));
+            // Money box
             ShapeBatch.Box(DesiredWidth / 40 + DesiredWidth / 80, DesiredHeight / 2 - (DesiredWidth / 10) + (DesiredHeight / 60) * 4 + (DesiredHeight / 10) + (DesiredHeight / 14) * 2, DesiredWidth / 1.65f - DesiredWidth / 40, (DesiredHeight / 14), new Color(0, 0, 0));
             ShapeBatch.End();
             ShapeBatch.Begin(graphicsDevice);
+            // Big round over container box outline
             ShapeBatch.BoxOutline(DesiredWidth / 40 -1, DesiredHeight / 2 - (DesiredWidth / 10) - 1, DesiredWidth / 1.65f + 1, DesiredHeight - (DesiredHeight / 2 - (DesiredWidth / 10)) + 1, Color.White);
+            // Round over text container outline
             ShapeBatch.BoxOutline(DesiredWidth / 40 + DesiredWidth / 80 - 1, DesiredHeight / 2 - (DesiredWidth / 10) + DesiredHeight / 60+ 1, DesiredWidth / 1.65f - DesiredWidth / 40, (DesiredHeight / 10) + 1, new Color(100, 100, 100));
+            // Score requirement box outline
             ShapeBatch.BoxOutline(DesiredWidth / 40 + DesiredWidth / 80 - 1, DesiredHeight / 2 - (DesiredWidth / 10) + (DesiredHeight / 60) * 2 + (DesiredHeight / 10) + 1, DesiredWidth / 1.65f - DesiredWidth / 40 + 1, (DesiredHeight / 14) + 1, new Color(100, 100, 100));
+            // Round Score box outline
             ShapeBatch.BoxOutline(DesiredWidth / 40 + DesiredWidth / 80 - 1, DesiredHeight / 2 - (DesiredWidth / 10) + (DesiredHeight / 60) * 3 + (DesiredHeight / 10) + (DesiredHeight / 14) + 1, DesiredWidth / 1.65f - DesiredWidth / 40 + 1, (DesiredHeight / 14) + 1, new Color(100, 100, 100));
+            // Money box outline
             ShapeBatch.BoxOutline(DesiredWidth / 40 + DesiredWidth / 80 - 1, DesiredHeight / 2 - (DesiredWidth / 10) + (DesiredHeight / 60) * 4 + (DesiredHeight / 10) + (DesiredHeight / 14) * 2 + 1, DesiredWidth / 1.65f - DesiredWidth / 40 + 1, (DesiredHeight / 14) + 1, new Color(100, 100, 100));
             ShapeBatch.End();
         }
@@ -161,14 +174,19 @@ namespace GamblerGame
             // Slot box
             ShapeBatch.Box(DesiredWidth / 20 - DesiredWidth/60, DesiredHeight / 2 - (DesiredWidth / 9), DesiredWidth / 20 + ((DesiredWidth / 6) * 3.2f), DesiredWidth / 4.5f, new Color(12, 7, 15));
 
-            //ShapeBatch.Box(DesiredWidth / 20, DesiredHeight / 2 - (DesiredWidth / 10)-1, DesiredWidth / 20 + ((DesiredWidth / 6) * 3)+1, DesiredWidth / 5+1, Color.Black);
+            // Slot 1
             ShapeBatch.Box(DesiredWidth / 20 + DesiredWidth / 80, DesiredHeight / 2 - (DesiredWidth / 11.5f) , DesiredWidth / 5.75f , DesiredWidth / 6, Color.DarkGray);
+            // Slot 2
             ShapeBatch.Box(DesiredWidth / 20 + (DesiredWidth / 5.75f) + DesiredWidth/68, DesiredHeight / 2 - (DesiredWidth / 11.5f) , DesiredWidth / 5.75f, DesiredWidth / 6 , Color.DarkGray);
+            // Slot 3
             ShapeBatch.Box(DesiredWidth / 20 + ((DesiredWidth / 5.75f) * 2) + DesiredWidth / 60, DesiredHeight / 2 - (DesiredWidth / 11.5f), DesiredWidth / 5.75f, DesiredWidth / 6, Color.DarkGray);
             ShapeBatch.End();
             ShapeBatch.Begin(graphicsDevice);
+            // Slot 1 outline
             ShapeBatch.BoxOutline(DesiredWidth / 20 + DesiredWidth / 80, DesiredHeight / 2 - (DesiredWidth / 11.5f), DesiredWidth / 5.75f, DesiredWidth / 6, Color.DarkGray);
+            // Slot 2 outline
             ShapeBatch.BoxOutline(DesiredWidth / 20 + (DesiredWidth / 5.75f) + DesiredWidth / 68, DesiredHeight / 2 - (DesiredWidth / 11.5f), DesiredWidth / 5.75f, DesiredWidth / 6, Color.DarkGray);
+            // Slot 3 outline
             ShapeBatch.BoxOutline(DesiredWidth / 20 + ((DesiredWidth / 5.75f) * 2) + DesiredWidth / 60, DesiredHeight / 2 - (DesiredWidth / 11.5f), DesiredWidth / 5.75f, DesiredWidth / 6, Color.DarkGray);
             ShapeBatch.End();
         }
@@ -204,8 +222,7 @@ namespace GamblerGame
             // Current score box
             ShapeBatch.Box((int)(DesiredWidth * .675), (int)(DesiredHeight * .465), (int)(DesiredWidth / 3.9), DesiredHeight / 4, new Color(85, 70, 83));
 
-            // Item box
-            //ShapeBatch.Box(DesiredWidth / 40, (DesiredHeight / 20), DesiredWidth / 1.65f, DesiredHeight / 8.25f, new Color(12, 7, 15, 200));
+            // Item box containers
             int xpos = DesiredWidth / 20 - DesiredWidth / 60;
             for (int i = 0; i < InventoryMax; i++)
             {
@@ -214,9 +231,10 @@ namespace GamblerGame
                 xpos += ItemWidth + (int)(DesiredWidth / 39.5);
             }
             sb.End();
+
             ShapeBatch.End();
             ShapeBatch.Begin(graphicsDevice);
-            //ShapeBatch.BoxOutline(DesiredWidth / 40, (DesiredHeight / 20) - 1, DesiredWidth / 1.65f + 1, (DesiredHeight / 8.25f) + 1, Color.White);
+            // Score requirement box outline
             ShapeBatch.BoxOutline((int)(DesiredWidth * .675), (int)(DesiredHeight * .03), (int)(DesiredWidth / 3.9), DesiredHeight / 4, new Color(150, 150, 150));
 
             // Score requirement display box outline
@@ -231,10 +249,11 @@ namespace GamblerGame
             
             ShapeBatch.End();
             sb.Begin();
-            // Round score text
 
+            // Score required text
             sb.DrawString(scoreFont, "Score", new Vector2((int)(DesiredWidth * .735) - scoreFont.MeasureString("Score").X / 2, ((DesiredHeight * .03f) + DesiredHeight / 8) - (scoreFont.MeasureString("Score").Y / 2)), Color.White);
             sb.DrawString(scoreFont, "Required", new Vector2((int)(DesiredWidth * .735) - scoreFont.MeasureString("Required").X / 2, ((DesiredHeight * .03f) + DesiredHeight / 8) + (scoreFont.MeasureString("Required").Y / 2)), Color.White);
+            // Round score text
             sb.DrawString(scoreFont, "Round", new Vector2((int)(DesiredWidth * .715) - scoreFont.MeasureString("Round").X / 2, (int)(DesiredHeight * .345)), Color.White);
             sb.DrawString(scoreFont, "Score", new Vector2((int)(DesiredWidth * .715) - scoreFont.MeasureString("Score").X / 2, (int)(DesiredHeight * .375)), Color.White);
             sb.End();
@@ -273,6 +292,10 @@ namespace GamblerGame
             sb.Draw(scanlineTexture, new Rectangle(0, 0, DesiredWidth, DesiredHeight), new Color(12, 12, 12, 1));
         }
 
+        /// <summary>
+        /// Draws black bars at the specified positions
+        /// </summary>
+        /// <param name="blackBarYPosition"></param>
         public void DrawBlackBars(int blackBarYPosition)
         {
             ShapeBatch.Begin(graphicsDevice);

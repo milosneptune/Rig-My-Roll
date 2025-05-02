@@ -164,6 +164,9 @@ namespace GamblerGame
             Frozen = false;
         }
 
+        /// <summary>
+        /// Resets the state of the slot
+        /// </summary>
         public void Reset()
         {
             Frozen = false;

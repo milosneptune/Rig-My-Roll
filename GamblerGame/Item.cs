@@ -19,7 +19,7 @@ namespace GamblerGame
     {
         const int DesiredWidth = 1920;
         const int DesiredHeight = 1080;
-        private const int ButtonOffset = DesiredHeight/80;
+        private const int ButtonOffset = DesiredHeight / 80;
         private ScriptManager itemsFile = new ScriptManager("ItemsFile.txt");
         private string name;
         private string description;
@@ -65,11 +65,19 @@ namespace GamblerGame
             get { return hideDescription; }
             set { hideDescription = value; }
         }
+
+        /// <summary>
+        /// Returns the position of a button
+        /// </summary>
         public override Rectangle Position
         {
             get { return position; }
-            set {  position = value; }
+            set { position = value; }
         }
+
+        /// <summary>
+        /// Returns the button
+        /// </summary>
         public Button BuyButton
         {
             get { return buyButton; }
@@ -80,21 +88,26 @@ namespace GamblerGame
         public Item(int itemIndex, GraphicsDevice device, SpriteFont font, SpriteFont descriptionFont, List<Texture2D> textures, ContentManager ct)
             : base(device, new Rectangle(0, 0, 0, 0), "name_here", font, Color.White, textures) // TODO: Change color
         {
+            // Draws item stats from item file
             name = itemsFile.GetName(itemIndex);
             description = itemsFile.GetDescription(name);
             price = itemsFile.GetPrice(name);
             type = itemsFile.FindItemType(name);
             action = itemsFile.GetItemAction(name);
+
             hideDescription = false;
             printDescription = false;
             this.descriptionFont = descriptionFont;
+
+            // Loads texture from item file
             LoadTextures(ct);
             mousePos = new Vector2();
-            buyButton = new Button(device, new Rectangle(0,0,0,0), "Buy", font, Color.Black, textures);
+            buyButton = new Button(device, new Rectangle(0, 0, 0, 0), "Buy", font, Color.Black, textures);
             cancelButton = new Button(device, new Rectangle(0, 0, 0, 0), "Cancel", font, Color.Black, textures);// TODO: Change color
             useItemButton = new Button(device, new Rectangle(0, 0, 0, 0), "Use Item", font, Color.Black, textures);// TODO: Change color
             //choiceBox = new Rectangle(0, 0, 0, 0);
 
+            // Sets the sizes of the buttons
             normalSize = new Vector2((DesiredHeight * .31f), (DesiredHeight * .31f));
             purchasedSize = new Vector2((int)(DesiredHeight / 6.75), (int)(DesiredHeight / 6.75));
             withDescriptionSize = new Vector2((DesiredHeight * .31f), (DesiredHeight * .31f));
@@ -144,7 +157,7 @@ namespace GamblerGame
                         BuyItemChoice();
                     }
                 }
-                
+
                 // If it is only hovering over the button and there is no description.
                 Hover();
             }
@@ -178,25 +191,27 @@ namespace GamblerGame
         /// assumes that Begin() has already been called and End() will be called later.</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (!Bought) { 
-            // Draw the button itself
-            spriteBatch.Draw(buttonImg, position, new Color(15, 15, 15));
-            
-
-            // Draw button text over the button
-            spriteBatch.DrawString(font, text, textLoc, Color.White);
+            if (!Bought)
+            {
+                // Draw the button itself
+                spriteBatch.Draw(buttonImg, position, new Color(15, 15, 15));
+                // Draws the button's item texture
+                spriteBatch.Draw(ItemTexture, position, Color.White);
+                // Draw button text over the button
+                spriteBatch.DrawString(font, text, textLoc, Color.White);
             }
-            spriteBatch.Draw(ItemTexture, position, Color.White);
+            
             if (!hideDescription)
             {
-                // Draw description below the name
-               // spriteBatch.DrawString(descriptionFont, description, descriptionLoc, Color.White);
+                // Draws the price
                 spriteBatch.DrawString(descriptionFont, "Price: " + price, priceLoc, Color.White);
             }
+            // Draws the use item button if its supposed to be
             if (displayUseItem)
             {
                 useItemButton.Draw(spriteBatch);
             }
+            // Draws the buy and cancel buttons if they are supposed to be
             if (displayBuyBox && !Bought)
             {
                 ShapeBatch.Begin(device);
@@ -205,12 +220,13 @@ namespace GamblerGame
                 buyButton.Draw(spriteBatch);
                 cancelButton.Draw(spriteBatch);
             }
+            // Prints the description on the mouse
             if (printDescription)
             {
                 spriteBatch.End();
                 ShapeBatch.Begin(device);
                 ShapeBatch.Box(new Rectangle((int)mousePos.X, (int)mousePos.Y, (int)descriptionFont.MeasureString(description).X, (int)descriptionFont.MeasureString(description).Y), new Color(1, 15, 15, 150));
-                ShapeBatch.BoxOutline(new Rectangle((int)mousePos.X, (int)mousePos.Y-1, (int)descriptionFont.MeasureString(description).X+1, (int)descriptionFont.MeasureString(description).Y + 2), Color.White);
+                ShapeBatch.BoxOutline(new Rectangle((int)mousePos.X, (int)mousePos.Y - 1, (int)descriptionFont.MeasureString(description).X + 1, (int)descriptionFont.MeasureString(description).Y + 2), Color.White);
                 ShapeBatch.End();
                 spriteBatch.Begin();
                 spriteBatch.DrawString(descriptionFont, description, mousePos, Color.White);
@@ -224,8 +240,8 @@ namespace GamblerGame
         {
             // Changes color
             base.Hover();
+            // Prints the description
             printDescription = true;
-            // TODO: Print description.
         }
 
         /// <summary>
@@ -233,7 +249,7 @@ namespace GamblerGame
         /// </summary>
         public void SetLocations(int xLoc, int yLoc)
         {
-            position.X = xLoc; 
+            position.X = xLoc;
             position.Y = yLoc;
 
             // If there is only the name
@@ -263,7 +279,7 @@ namespace GamblerGame
                 // The button is directly under the item.
                 useItemButton.Position = new Rectangle(
                     (int)position.X,
-                    (int)((position.Y + position.Height)), 
+                    (int)((position.Y + position.Height)),
                     position.Width,
                     (int)(buttonTextSize.Y * 2)
                 );
@@ -315,15 +331,17 @@ namespace GamblerGame
                     );
                 */
 
+                // Sets buy button location
                 buyButton.Position = new Rectangle(
                     (int)position.X + ButtonOffset,
-                    (int)(position.Y + position.Height + ButtonOffset/2),
+                    (int)(position.Y + position.Height + ButtonOffset / 2),
                     (position.Width / 2) - 2 * ButtonOffset,
                     (int)(descriptionSize.Y * 2)
                 );
 
+                // Sets cancel button location
                 cancelButton.Position = new Rectangle(
-                    (int)(position.X + position.Width /2 + ButtonOffset) ,
+                    (int)(position.X + position.Width / 2 + ButtonOffset),
                     (int)(position.Y + position.Height + ButtonOffset / 2),
                     (position.Width / 2) - 2 * ButtonOffset,
                     (int)(descriptionSize.Y * 2)
@@ -375,7 +393,7 @@ namespace GamblerGame
             this.displayUseItem = false;
             this.displayBuyBox = false;
             PlayerInv.Remove(this);
-            
+
         }
 
         /// <summary>
