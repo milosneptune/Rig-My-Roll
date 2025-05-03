@@ -128,9 +128,13 @@ namespace GamblerGame
         {
             List<int> indexes = new List<int>();
             storeItems = new List<Item>();
+
+            // Stocks the store with four items
             for (int i = 0; i < 4; i++)
             {
                 int nextIndex = rng.Next(0, items.Count);
+
+                // Making sure no same items
                 if (!indexes.Contains(nextIndex))
                 {
                     Item item = items[nextIndex];

@@ -42,7 +42,6 @@ namespace GamblerGame
         private Button buyButton;
         private Button cancelButton;
         private Button useItemButton;
-        //private Rectangle choiceBox;
         private bool displayUseItem;
         private bool displayBuyBox;
         public List<Item> PlayerInv
@@ -297,6 +296,7 @@ namespace GamblerGame
                 position.Width = (int)withDescriptionSize.X;
                 position.Height = (int)withDescriptionSize.Y;
 
+                // Text locations
                 textLocPressed = new Vector2(
                 (position.X + position.Width / 2) - nameSize.X / 2,
                 (position.Y + position.Height / 2) - (nameSize.Y + descriptionSize.Y) / 4
@@ -307,6 +307,7 @@ namespace GamblerGame
                     (position.Y) + (nameSize.Y)
                 );
 
+                // Description locations
                 descriptionLocPressed = new Vector2(
                     (position.X + position.Width / 2) - descriptionSize.X / 2,
                     (position.Y + position.Height / 2) - descriptionSize.Y / 4 + ButtonOffset
@@ -316,6 +317,7 @@ namespace GamblerGame
                     (position.Y + position.Height) - descriptionSize.Y - ButtonOffset
                 );
 
+                // Price locations
                 priceLocPressed = new Vector2(
                     (position.X + position.Width / 2) - priceSize.X / 2,
                     (descriptionLocPressed.Y) + (int)(2.5 * ButtonOffset)
@@ -324,14 +326,6 @@ namespace GamblerGame
                     (position.X + position.Width / 2) - priceSize.X / 2,
                     (descriptionLocUnpressed.Y) - (int)(2.5 * ButtonOffset)
                 );
-
-                /*choiceBox = new Rectangle(
-                    (int)position.X,
-                    (int)((position.Y + position.Height)),
-                    position.Width,
-                    (int)(descriptionSize.Y * 2)
-                    );
-                */
 
                 // Sets buy button location
                 buyButton.Position = new Rectangle(

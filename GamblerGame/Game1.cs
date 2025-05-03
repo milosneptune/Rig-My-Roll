@@ -445,6 +445,7 @@ namespace GamblerGame
                 case State.Game:
                     if (!paused && inRound)
                     {
+                        int inventoryCount = playerInventory.Count;
                         // Pause button
                         gameButtons[1].Update(gameTime);
 
@@ -452,6 +453,13 @@ namespace GamblerGame
                         for (int i = 0; i < playerInventory.Count; i++)
                         {
                             playerInventory[i].Update(gameTime);
+
+                            // If an item is removed from the list, use the same index for the next item.
+                            if (inventoryCount != playerInventory.Count)
+                            {
+                                i--;
+                                inventoryCount = playerInventory.Count;
+                            }
                         }
 
                         // Updates round score after each roll
